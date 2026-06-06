@@ -1,35 +1,55 @@
 import { AnimateOnScroll } from '@/components/motion/AnimateOnScroll';
 import { stack } from '@/data/stack';
+import { Container } from '@/components/ui/container';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import * as LucideIcons from 'lucide-react';
 
 export function StackSection() {
   return (
-    <section id="stack" className="py-24 px-4 md:px-6 bg-[var(--color-surface)]">
-      <div className="container mx-auto max-w-6xl">
+    <section id="stack" className="py-24 bg-[var(--color-surface)]">
+      <Container>
         <AnimateOnScroll>
-          <div className="mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-[var(--color-text-primary)] mb-4">Engineering Stack</h2>
-            <p className="text-[var(--color-text-secondary)] text-lg max-w-2xl">
-              Tools and technologies organized by system layers.
-            </p>
-          </div>
+          <SectionHeading
+            eyebrow="Tools & Technologies"
+            heading="Engineering Stack"
+            subtitle="The technologies I use to build scalable, full-stack applications, organized by system layers."
+          />
         </AnimateOnScroll>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {stack.map((layer, index) => (
-            <AnimateOnScroll key={layer.name} delay={0.1 + index * 0.1} className="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)]">
-              <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-2">{layer.name}</h3>
-              <p className="text-sm text-[var(--color-text-secondary)] mb-6">{layer.description}</p>
-              <div className="flex flex-wrap gap-2">
-                {layer.technologies.map(tech => (
-                  <span key={tech} className="px-2 py-1 text-xs font-medium rounded-md bg-[var(--color-surface)] text-[var(--color-text-primary)] border border-[var(--color-border)]">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </AnimateOnScroll>
-          ))}
+          {stack.map((layer, index) => {
+            const IconComponent = (LucideIcons as any)[layer.icon] || LucideIcons.Code;
+            
+            return (
+              <AnimateOnScroll key={layer.name} delay={0.1 + index * 0.1}>
+                <Card hoverable className="h-full flex flex-col p-8 bg-[var(--color-bg)] group border-[var(--color-border)]">
+                  <div className="w-12 h-12 rounded-full bg-[var(--color-accent-500)]/10 text-[var(--color-accent-500)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-[var(--duration-normal)]">
+                    <IconComponent className="w-6 h-6" />
+                  </div>
+                  
+                  <h3 className="text-[var(--text-xl)] font-bold font-display text-[var(--color-text-primary)] mb-2 group-hover:text-[var(--color-accent-500)] transition-colors">
+                    {layer.name}
+                  </h3>
+                  
+                  <p className="text-[var(--text-sm)] text-[var(--color-text-secondary)] mb-8 flex-grow">
+                    {layer.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mt-auto">
+                    {layer.technologies.map(tech => (
+                      <Badge key={tech} variant="outline" className="bg-[var(--color-surface)]">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
+                </Card>
+              </AnimateOnScroll>
+            );
+          })}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

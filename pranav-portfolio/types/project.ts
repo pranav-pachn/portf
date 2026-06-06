@@ -13,6 +13,14 @@ export interface FeaturedProject {
   githubUrl: string | null;
   image: string;
   accentColor?: string;
+  motivation?: string;
+  nextImprovement?: string;
+  caseStudy?: {
+    overview: string;
+    problemContext: string;
+    systemDesignSteps: import('./architecture').FlowNode[];
+    screenshots: { src: string; alt: string; caption: string }[];
+  };
 }
 
 export interface OtherProject {

@@ -3,9 +3,10 @@
 import { AnimateOnScroll } from '@/components/motion/AnimateOnScroll';
 import { Spotlight } from '@/components/ui/spotlight';
 import { Button } from '@/components/ui/button';
+import { MagneticButton } from '@/components/motion/MagneticButton';
 import { Badge } from '@/components/ui/badge';
 import { Container } from '@/components/ui/container';
-import { Github, Linkedin, ArrowRight } from 'lucide-react';
+import { Github, Linkedin, ArrowRight, FileText } from 'lucide-react';
 import { site } from '@/data/site';
 
 export function HeroSection() {
@@ -47,16 +48,17 @@ export function HeroSection() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="slide" delay={0.4}>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center w-full sm:w-auto gap-4 mb-12">
-              <Button href="#work" size="lg" icon={<ArrowRight className="w-5 h-5 order-last ml-2 mr-0" />}>
-                View Work
-              </Button>
-              <Button href={site.socials.github} size="lg" variant="secondary" external icon={<Github className="w-5 h-5" />}>
-                GitHub
-              </Button>
-              <Button href={site.socials.linkedin} size="lg" variant="secondary" external icon={<Linkedin className="w-5 h-5" />}>
-                LinkedIn
-              </Button>
+            <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mb-12">
+              <MagneticButton>
+                <Button href="#work" size="lg" icon={<ArrowRight className="w-5 h-5 order-last ml-2 mr-0 group-hover:translate-x-1 transition-transform" />}>
+                  View My Work
+                </Button>
+              </MagneticButton>
+              <MagneticButton>
+                <Button href="/resume" variant="secondary" size="lg" icon={<FileText className="w-5 h-5 mr-2" />}>
+                  Read Resume
+                </Button>
+              </MagneticButton>
             </div>
           </AnimateOnScroll>
 

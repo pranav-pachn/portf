@@ -9,6 +9,7 @@ import { FeaturedProject } from '@/types/project';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { BehindTheBuild } from './BehindTheBuild';
 
 interface ProjectCardProps {
   project: FeaturedProject;
@@ -84,8 +85,13 @@ export function ProjectCard({ project, reversed = false }: ProjectCardProps) {
         </div>
 
         <div className="flex items-center gap-4 mb-6">
+          {project.caseStudy && (
+            <Button href={`/work/${project.id}`} size="sm" variant="primary">
+              Read Case Study
+            </Button>
+          )}
           {project.liveUrl && (
-            <Button href={project.liveUrl} external size="sm" icon={<ExternalLink className="w-4 h-4 order-last ml-2 mr-0" />}>
+            <Button href={project.liveUrl} external size="sm" variant={project.caseStudy ? 'ghost' : 'primary'} icon={<ExternalLink className="w-4 h-4 order-last ml-2 mr-0" />}>
               View Live
             </Button>
           )}
@@ -96,59 +102,7 @@ export function ProjectCard({ project, reversed = false }: ProjectCardProps) {
           )}
         </div>
 
-        {/* Behind the Build Accordion */}
-        <div className="mt-auto border-t border-[var(--color-border)] pt-4">
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center justify-between w-full text-left text-[var(--text-sm)] font-semibold text-[var(--color-text-primary)] hover:text-[var(--project-accent)] transition-colors focus:outline-none"
-          >
-            Behind the Build
-            {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </button>
-          
-          <AnimatePresence>
-            {isExpanded && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="pt-6 space-y-6 pb-2">
-                  <div>
-                    <h5 className="text-[var(--text-xs)] font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-3">Architecture Decisions</h5>
-                    <ul className="list-disc pl-4 space-y-2 text-[var(--text-sm)] text-[var(--color-text-secondary)]">
-                      {project.architectureDecisions.map((decision, i) => (
-                        <li key={i} className="pl-1 marker:text-[var(--project-accent)]">{decision}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <h5 className="text-[var(--text-xs)] font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">Engineering Challenge</h5>
-                    <p className="text-[var(--text-sm)] text-[var(--color-text-secondary)] leading-relaxed">
-                      {project.engineeringChallenge}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h5 className="text-[var(--text-xs)] font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">Iteration</h5>
-                    <p className="text-[var(--text-sm)] text-[var(--color-text-secondary)] leading-relaxed">
-                      {project.iteration}
-                    </p>
-                  </div>
-
-                  <div className="border-l-2 border-[var(--project-accent)] pl-4 italic bg-[var(--project-accent)]/5 p-4 rounded-r-[var(--radius-md)]">
-                    <h5 className="text-[var(--text-xs)] font-bold uppercase tracking-wider text-[var(--color-text-primary)] not-italic mb-2">Takeaway</h5>
-                    <p className="text-[var(--text-sm)] text-[var(--color-text-secondary)]">
-                      "{project.learned}"
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        <BehindTheBuild project={project} variant="accordion" />
       </div>
     </div>
   );

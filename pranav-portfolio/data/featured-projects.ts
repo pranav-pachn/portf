@@ -16,10 +16,27 @@ export const featuredProjects: FeaturedProject[] = [
     engineeringChallenge: 'Balancing NLP model accuracy against response time — solved by running heuristic pre-filters to reduce inference load.',
     iteration: 'Initially used a single monolithic scoring function; refactored into a pipeline with discrete verification stages after the first version produced opaque risk scores.',
     learned: 'Explainability is a product feature, not a debugging tool — users trust systems they can understand.',
+    motivation: 'Built to solve a personal frustration — encountering fraudulent recruiter outreach with no reliable way to verify legitimacy before engaging.',
+    nextImprovement: 'Add browser extension for inline verification and expand the training corpus with crowd-sourced labeled data.',
     liveUrl: null,
     githubUrl: 'https://github.com/pranav-pachn/JobShield-AI',
     image: '/projects/jobshield.png',
-    accentColor: 'hsl(210, 80%, 55%)'
+    accentColor: 'hsl(210, 80%, 55%)',
+    caseStudy: {
+      overview: 'JobShield AI is a multi-layer fraud detection platform that combines domain analysis, heuristic scoring, and NLP to protect job seekers from sophisticated recruitment scams.',
+      problemContext: 'The modern job search landscape is plagued by sophisticated recruitment scams. Fraudsters create convincing replica domains, spoof legitimate recruiting agencies, and use social engineering to extract personal information or advance fees from desperate job seekers.\n\nExisting solutions either rely on static blacklists (which are easily bypassed by new domains) or opaque AI models that simply output a binary "safe/unsafe" score without explaining why. Job seekers need a way to verify outreach legitimacy in real-time, with clear explanations of what exactly is suspicious about a given message or sender.',
+      systemDesignSteps: [
+        { id: 'input', label: 'Input Processing', caption: 'Email/Message Text', icon: 'Mail' },
+        { id: 'domain', label: 'Domain Verification', caption: 'DNS & SSL Checks', icon: 'Globe' },
+        { id: 'heuristics', label: 'Heuristic Scoring', caption: 'Pattern Matching', icon: 'Code' },
+        { id: 'nlp', label: 'NLP Analysis', caption: 'Intent & Urgency', icon: 'Brain' },
+        { id: 'aggregation', label: 'Risk Aggregation', caption: 'Weighted Scoring', icon: 'Layers' },
+        { id: 'report', label: 'Explainable Report', caption: 'User Dashboard', icon: 'FileText' }
+      ],
+      screenshots: [
+        { src: '/projects/jobshield.png', alt: 'JobShield AI Dashboard', caption: 'The main risk assessment dashboard showing aggregated scores.' }
+      ]
+    }
   },
   {
     id: 'agrimitra360',
@@ -36,10 +53,26 @@ export const featuredProjects: FeaturedProject[] = [
     engineeringChallenge: 'Achieving real-time inference on low-resolution mobile uploads while maintaining diagnostic accuracy — solved via server-side preprocessing normalization.',
     iteration: 'First version returned raw classification labels; iterated to include Grad-CAM heatmaps and localized treatment recommendations after user testing showed farmers needed visual confirmation.',
     learned: 'AI UX for non-technical users requires visual proof, not just confidence scores — Grad-CAM overlays were more persuasive than numerical outputs.',
+    motivation: 'Wanted to apply AI to a real accessibility gap — farmers in multilingual regions who need actionable crop advice, not just classification labels.',
+    nextImprovement: 'Add offline inference via TensorFlow Lite for areas with unreliable connectivity.',
     liveUrl: null,
     githubUrl: 'https://github.com/pranav-pachn/AgriMitra360',
     image: '/projects/agrimitra.png',
-    accentColor: 'hsl(142, 60%, 45%)'
+    accentColor: 'hsl(142, 60%, 45%)',
+    caseStudy: {
+      overview: 'AgriMitra360 is an intelligent crop disease diagnosis platform tailored for multilingual agricultural communities, delivering real-time actionable insights with visual explainability.',
+      problemContext: 'In many developing agricultural regions, farmers face devastating crop losses due to delayed disease identification. Access to agricultural experts is limited, and existing digital tools often rely on text-heavy interfaces in a single language.\n\nFurthermore, when farmers use AI tools that simply return a text diagnosis ("Late Blight: 89%"), they often distrust the result. They need to see exactly why the AI made that decision and what immediate, localized steps they should take in their native language.',
+      systemDesignSteps: [
+        { id: 'image', label: 'Crop Image', caption: 'Mobile Upload', icon: 'Camera' },
+        { id: 'api', label: 'FastAPI Service', caption: 'Preprocessing', icon: 'Server' },
+        { id: 'model', label: 'Diagnosis Model', caption: 'TensorFlow CNN', icon: 'Cpu' },
+        { id: 'explain', label: 'Grad-CAM', caption: 'Heatmap Overlay', icon: 'Eye' },
+        { id: 'recommend', label: 'Recommendations', caption: 'Multilingual NLP', icon: 'Languages' }
+      ],
+      screenshots: [
+        { src: '/projects/agrimitra.png', alt: 'AgriMitra360 Dashboard', caption: 'The disease diagnosis view featuring Grad-CAM heatmap overlays.' }
+      ]
+    }
   },
   {
     id: 'modernmart',
@@ -56,9 +89,25 @@ export const featuredProjects: FeaturedProject[] = [
     engineeringChallenge: 'Managing optimistic UI updates for cart operations while keeping Supabase state consistent — solved with a custom sync hook that reconciles local and server state.',
     iteration: 'Originally built without tests; added comprehensive test coverage after a deployment broke the checkout flow — shifted to test-first for all subsequent features.',
     learned: 'Testing is a deployment prerequisite, not a nice-to-have; CI caught three breaking changes that manual QA missed.',
+    motivation: 'Most student e-commerce projects skip auth, testing, and CI — built this to prove production-grade patterns at the student project level.',
+    nextImprovement: 'Add real-time inventory sync and implement Stripe payment integration with webhook handling.',
     liveUrl: null,
     githubUrl: 'https://github.com/pranav-pachn/ModernMart',
     image: '/projects/modernmart.png',
-    accentColor: 'hsl(270, 60%, 55%)'
+    accentColor: 'hsl(270, 60%, 55%)',
+    caseStudy: {
+      overview: 'ModernMart is a production-ready e-commerce platform that emphasizes robust software engineering practices, including authentication, comprehensive testing, and CI/CD pipelines.',
+      problemContext: 'Many portfolio e-commerce projects focus solely on frontend visuals—displaying a grid of products and a cart—while ignoring the complex realities of building a real store.\n\nWithout authentication, role-based access control, reliable database syncing, and automated testing, a store cannot scale or be maintained. The challenge was to build an application that not only looked good but incorporated the strict engineering standards expected in industry.',
+      systemDesignSteps: [
+        { id: 'client', label: 'Next.js Client', caption: 'Optimistic UI', icon: 'Monitor' },
+        { id: 'auth', label: 'Supabase Auth', caption: 'JWT & Roles', icon: 'Key' },
+        { id: 'db', label: 'PostgreSQL', caption: 'Products & Orders', icon: 'Database' },
+        { id: 'sync', label: 'State Sync', caption: 'Custom Hook', icon: 'RefreshCw' },
+        { id: 'ci', label: 'CI Pipeline', caption: 'Jest Tests', icon: 'Workflow' }
+      ],
+      screenshots: [
+        { src: '/projects/modernmart.png', alt: 'ModernMart Storefront', caption: 'The main storefront showcasing state-synced cart operations.' }
+      ]
+    }
   }
 ];
