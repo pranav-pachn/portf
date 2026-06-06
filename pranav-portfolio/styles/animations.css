@@ -1,1 +1,56 @@
-/* animations */
+@layer utilities {
+  .animate-fade-in {
+    animation: fade-in 0.6s var(--ease-out) forwards;
+  }
+  .animate-slide-up {
+    animation: slide-up 0.6s var(--ease-out) forwards;
+  }
+  .animate-glow-pulse {
+    animation: glow-pulse 3s infinite alternate;
+  }
+  .animate-grid-fade {
+    animation: fade-in 1s var(--ease-out) forwards;
+  }
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow-pulse {
+  from { box-shadow: 0 0 5px 0 var(--color-glow); }
+  to { box-shadow: 0 0 15px 5px var(--color-glow); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-glow-pulse,
+  .animate-grid-fade,
+  .animate-shimmer {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

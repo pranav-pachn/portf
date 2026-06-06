@@ -1,1 +1,8 @@
-export type Experience = { id: string; title: string }
+export interface ExperienceItem {
+  id: string;
+  title: string;
+  organization: string;
+  dateRange: string;
+  description?: string;
+  type: 'education' | 'certification' | 'work';
+}
