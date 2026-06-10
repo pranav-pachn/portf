@@ -6,7 +6,7 @@ import { SectionHeading } from '@/components/ui/section-heading';
 
 export function ProjectsSection() {
   return (
-    <section id="work" className="py-24 bg-[var(--color-surface)]">
+    <section id="work" className="py-24 bg-surface">
       <Container>
         <AnimateOnScroll>
           <SectionHeading

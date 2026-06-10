@@ -24,7 +24,7 @@ export function ThemeToggle() {
     <MagneticButton>
       <button
         onClick={() => setTheme(isDark ? 'light' : 'dark')}
-        className="relative w-10 h-10 flex items-center justify-center rounded-full text-[var(--color-text-secondary)] hover:text-[var(--color-accent-500)] hover:bg-[var(--color-surface-hover)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-500)] overflow-hidden"
+        className="relative w-10 h-10 flex items-center justify-center rounded-full text-text-secondary hover:text-accent-500 hover:bg-surface-hover transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-500)] overflow-hidden"
         aria-label="Toggle theme"
       >
         <AnimatePresence mode="wait" initial={false}>

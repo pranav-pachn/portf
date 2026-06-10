@@ -18,20 +18,20 @@ export default function Playground() {
         <div className="space-y-16">
           {/* Typography */}
           <section className="space-y-6">
-            <h3 className="text-[var(--text-xl)] font-bold text-[var(--color-text-primary)] border-b border-[var(--color-border)] pb-2">Typography</h3>
+            <h3 className="text-xl font-bold text-text-primary border-b border-border pb-2">Typography</h3>
             <div className="space-y-4">
-              <div className="text-[var(--text-7xl)] font-display font-bold">Display 7XL</div>
-              <div className="text-[var(--text-5xl)] font-display font-bold">Display 5XL</div>
-              <div className="text-[var(--text-3xl)] font-display font-bold">Display 3XL</div>
-              <div className="text-[var(--text-xl)] font-semibold">Sans XL</div>
-              <div className="text-[var(--text-base)]">Sans Base - The quick brown fox jumps over the lazy dog.</div>
-              <div className="text-[var(--text-sm)] text-[var(--color-text-secondary)]">Sans Small - Secondary text for descriptions.</div>
+              <div className="text-7xl font-display font-bold">Display 7XL</div>
+              <div className="text-5xl font-display font-bold">Display 5XL</div>
+              <div className="text-3xl font-display font-bold">Display 3XL</div>
+              <div className="text-xl font-semibold">Sans XL</div>
+              <div className="text-base">Sans Base - The quick brown fox jumps over the lazy dog.</div>
+              <div className="text-sm text-text-secondary">Sans Small - Secondary text for descriptions.</div>
             </div>
           </section>
 
           {/* Buttons */}
           <section className="space-y-6">
-            <h3 className="text-[var(--text-xl)] font-bold text-[var(--color-text-primary)] border-b border-[var(--color-border)] pb-2">Buttons</h3>
+            <h3 className="text-xl font-bold text-text-primary border-b border-border pb-2">Buttons</h3>
             <div className="flex flex-wrap gap-4 items-center">
               <Button variant="primary">Primary Button</Button>
               <Button variant="secondary">Secondary Button</Button>
@@ -50,7 +50,7 @@ export default function Playground() {
 
           {/* Badges */}
           <section className="space-y-6">
-            <h3 className="text-[var(--text-xl)] font-bold text-[var(--color-text-primary)] border-b border-[var(--color-border)] pb-2">Badges</h3>
+            <h3 className="text-xl font-bold text-text-primary border-b border-border pb-2">Badges</h3>
             <div className="flex flex-wrap gap-4 items-center">
               <Badge variant="default">React</Badge>
               <Badge variant="accent">Next.js 15</Badge>
@@ -60,15 +60,15 @@ export default function Playground() {
 
           {/* Cards */}
           <section className="space-y-6">
-            <h3 className="text-[var(--text-xl)] font-bold text-[var(--color-text-primary)] border-b border-[var(--color-border)] pb-2">Cards</h3>
+            <h3 className="text-xl font-bold text-text-primary border-b border-border pb-2">Cards</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
-                <h4 className="text-[var(--text-lg)] font-bold text-[var(--color-text-primary)] mb-2">Default Card</h4>
-                <p className="text-[var(--color-text-secondary)]">Static card with elevated surface and subtle shadow.</p>
+                <h4 className="text-lg font-bold text-text-primary mb-2">Default Card</h4>
+                <p className="text-text-secondary">Static card with elevated surface and subtle shadow.</p>
               </Card>
               <Card hoverable>
-                <h4 className="text-[var(--text-lg)] font-bold text-[var(--color-text-primary)] mb-2">Hoverable Card</h4>
-                <p className="text-[var(--color-text-secondary)]">Lifts up and shows accent border and glow shadow on hover.</p>
+                <h4 className="text-lg font-bold text-text-primary mb-2">Hoverable Card</h4>
+                <p className="text-text-secondary">Lifts up and shows accent border and glow shadow on hover.</p>
               </Card>
             </div>
           </section>

@@ -1,6 +1,5 @@
-import '@/styles/tokens.css';
-import '@/styles/animations.css';
 import '@/app/globals.css';
+import '@/styles/animations.css';
 import { fontSans, fontDisplay } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
@@ -15,6 +14,21 @@ export const metadata = constructMetadata();
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              try {
+                var t = localStorage.getItem('theme');
+                var d = t === 'light' ? 'light' : 
+                        t === 'dark' ? 'dark' :
+                        window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', d);
+              } catch (e) {}
+            })();
+          `
+        }} />
+      </head>
       <body className={cn('min-h-screen antialiased', fontSans.variable, fontDisplay.variable)}>
         <ThemeProvider>
           <div className="flex flex-col min-h-screen">

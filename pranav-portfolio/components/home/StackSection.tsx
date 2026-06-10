@@ -8,7 +8,7 @@ import * as LucideIcons from 'lucide-react';
 
 export function StackSection() {
   return (
-    <section id="stack" className="py-24 bg-[var(--color-surface)]">
+    <section id="stack" className="py-24 bg-surface">
       <Container>
         <AnimateOnScroll>
           <SectionHeading
@@ -24,22 +24,22 @@ export function StackSection() {
             
             return (
               <AnimateOnScroll key={layer.name} delay={0.1 + index * 0.1}>
-                <Card hoverable className="h-full flex flex-col p-8 bg-[var(--color-bg)] group border-[var(--color-border)]">
-                  <div className="w-12 h-12 rounded-full bg-[var(--color-accent-500)]/10 text-[var(--color-accent-500)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-[var(--duration-normal)]">
+                <Card hoverable className="h-full flex flex-col p-8 bg-bg group border-border">
+                  <div className="w-12 h-12 rounded-full bg-accent-500/10 text-accent-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-[var(--duration-normal)]">
                     <IconComponent className="w-6 h-6" />
                   </div>
                   
-                  <h3 className="text-[var(--text-xl)] font-bold font-display text-[var(--color-text-primary)] mb-2 group-hover:text-[var(--color-accent-500)] transition-colors">
+                  <h3 className="text-xl font-bold font-display text-text-primary mb-2 group-hover:text-accent-500 transition-colors">
                     {layer.name}
                   </h3>
                   
-                  <p className="text-[var(--text-sm)] text-[var(--color-text-secondary)] mb-8 flex-grow">
+                  <p className="text-sm text-text-secondary mb-8 flex-grow">
                     {layer.description}
                   </p>
                   
                   <div className="flex flex-wrap gap-2 mt-auto">
                     {layer.technologies.map(tech => (
-                      <Badge key={tech} variant="outline" className="bg-[var(--color-surface)]">
+                      <Badge key={tech} variant="outline" className="bg-surface">
                         {tech}
                       </Badge>
                     ))}

@@ -22,7 +22,7 @@ export function ProjectCard({ project, reversed = false }: ProjectCardProps) {
   return (
     <div 
       className={cn(
-        "group relative flex flex-col lg:flex-row gap-8 lg:gap-16 items-start lg:items-center rounded-[var(--radius-xl)] bg-[var(--color-surface)] border border-[var(--color-border)] p-4 md:p-8 transition-all duration-[var(--duration-normal)] hover:border-[var(--color-accent-500)]/30 hover:shadow-[var(--shadow-lg)]",
+        "group relative flex flex-col lg:flex-row gap-8 lg:gap-16 items-start lg:items-center rounded-xl bg-surface border border-border p-4 md:p-8 transition-all duration-[var(--duration-normal)] hover:border-accent-500/30 hover:shadow-lg",
         reversed && "lg:flex-row-reverse"
       )}
       style={{
@@ -30,7 +30,7 @@ export function ProjectCard({ project, reversed = false }: ProjectCardProps) {
       } as React.CSSProperties}
     >
       {/* Image Area */}
-      <div className="w-full lg:w-3/5 shrink-0 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg)] aspect-[16/10] relative">
+      <div className="w-full lg:w-3/5 shrink-0 overflow-hidden rounded-lg border border-border bg-bg aspect-[16/10] relative">
         {project.image ? (
           <div className="w-full h-full relative group-hover:scale-105 transition-transform duration-[var(--duration-slow)] ease-[var(--ease-out)]">
             <Image
@@ -52,25 +52,25 @@ export function ProjectCard({ project, reversed = false }: ProjectCardProps) {
 
       {/* Content Area */}
       <div className="w-full lg:w-2/5 flex flex-col">
-        <h3 className="text-[var(--text-3xl)] font-bold font-display text-[var(--color-text-primary)] mb-2">
+        <h3 className="text-3xl font-bold font-display text-text-primary mb-2">
           {project.title}
         </h3>
         <p className="text-[var(--project-accent)] font-medium mb-6 leading-relaxed">
           {project.tagline}
         </p>
 
-        <div className="h-px w-full bg-[var(--color-border)] mb-6 transition-colors group-hover:bg-[var(--project-accent)]/30" />
+        <div className="h-px w-full bg-border mb-6 transition-colors group-hover:bg-[var(--project-accent)]/30" />
 
         <div className="space-y-5 mb-8">
           <div>
-            <h4 className="text-[var(--text-xs)] font-bold text-[var(--color-text-primary)] uppercase tracking-wider mb-2">The Problem</h4>
-            <p className="text-[var(--color-text-secondary)] text-[var(--text-sm)] leading-relaxed">
+            <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider mb-2">The Problem</h4>
+            <p className="text-text-secondary text-sm leading-relaxed">
               {project.problem}
             </p>
           </div>
           <div>
-            <h4 className="text-[var(--text-xs)] font-bold text-[var(--color-text-primary)] uppercase tracking-wider mb-2">The Solution</h4>
-            <p className="text-[var(--color-text-secondary)] text-[var(--text-sm)] leading-relaxed">
+            <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider mb-2">The Solution</h4>
+            <p className="text-text-secondary text-sm leading-relaxed">
               {project.solution}
             </p>
           </div>
@@ -78,7 +78,7 @@ export function ProjectCard({ project, reversed = false }: ProjectCardProps) {
 
         <div className="flex flex-wrap gap-2 mb-8">
           {project.stack.map(tech => (
-            <Badge key={tech} variant="default" className="bg-[var(--color-bg)]">
+            <Badge key={tech} variant="default" className="bg-bg">
               {tech}
             </Badge>
           ))}

@@ -49,21 +49,21 @@ function FlowNodeItem({ node, index, isLast }: { node: FlowNode; index: number; 
           padding="sm"
           className={cn(
             "relative z-10 flex flex-col items-center text-center h-full transition-colors duration-500",
-            isInView ? "border-[var(--diagram-accent)] shadow-[var(--shadow-glow)] bg-[var(--color-surface-elevated)]" : "border-[var(--color-border)]"
+            isInView ? "border-[var(--diagram-accent)] shadow-glow bg-surface-elevated" : "border-border"
           )}
         >
           <div 
             className={cn(
               "w-12 h-12 rounded-full flex items-center justify-center mb-3 transition-colors duration-500",
-              isInView ? "bg-[var(--diagram-accent)]/10 text-[var(--diagram-accent)]" : "bg-[var(--color-bg)] text-[var(--color-text-muted)]"
+              isInView ? "bg-[var(--diagram-accent)]/10 text-[var(--diagram-accent)]" : "bg-bg text-text-muted"
             )}
           >
             <IconComponent className="w-6 h-6" />
           </div>
-          <h4 className="text-[var(--text-sm)] font-bold text-[var(--color-text-primary)] leading-tight mb-1">
+          <h4 className="text-sm font-bold text-text-primary leading-tight mb-1">
             {node.label}
           </h4>
-          <p className="text-[var(--text-xs)] text-[var(--color-text-secondary)]">
+          <p className="text-xs text-text-secondary">
             {node.caption}
           </p>
         </Card>

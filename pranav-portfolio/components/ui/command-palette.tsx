@@ -70,24 +70,24 @@ export function CommandPalette() {
             transition={{ duration: 0.2 }}
             className="relative w-full max-w-xl mx-auto z-10"
           >
-            <Card className="overflow-hidden p-0 shadow-2xl border-[var(--color-border)] bg-[var(--color-surface)]">
-              <div className="flex items-center border-b border-[var(--color-border)] px-4">
-                <Search className="w-5 h-5 text-[var(--color-text-muted)]" />
+            <Card className="overflow-hidden p-0 shadow-2xl border-border bg-surface">
+              <div className="flex items-center border-b border-border px-4">
+                <Search className="w-5 h-5 text-text-muted" />
                 <input
                   type="text"
-                  className="w-full bg-transparent p-4 text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:outline-none"
+                  className="w-full bg-transparent p-4 text-text-primary placeholder-[var(--color-text-muted)] focus:outline-none"
                   placeholder="Type a command or search..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   autoFocus
                 />
-                <span className="text-[var(--text-xs)] text-[var(--color-text-muted)] px-2 py-1 bg-[var(--color-bg)] rounded-[var(--radius-sm)] border border-[var(--color-border)]">
+                <span className="text-xs text-text-muted px-2 py-1 bg-bg rounded-sm border border-border">
                   ESC
                 </span>
               </div>
               <div className="max-h-[60vh] overflow-y-auto p-2">
                 {filteredActions.length === 0 ? (
-                  <div className="p-4 text-center text-[var(--text-sm)] text-[var(--color-text-secondary)]">
+                  <div className="p-4 text-center text-sm text-text-secondary">
                     No results found.
                   </div>
                 ) : (
@@ -96,12 +96,12 @@ export function CommandPalette() {
                       <button
                         key={action.id}
                         onClick={action.onSelect}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-left rounded-[var(--radius-md)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-accent-500)] text-[var(--color-text-secondary)] transition-colors focus:outline-none focus:bg-[var(--color-surface-hover)] focus:text-[var(--color-accent-500)] group"
+                        className="w-full flex items-center gap-3 px-4 py-3 text-left rounded-md hover:bg-surface-hover hover:text-accent-500 text-text-secondary transition-colors focus:outline-none focus:bg-surface-hover focus:text-accent-500 group"
                       >
-                        <span className="text-[var(--color-text-muted)] group-hover:text-[var(--color-accent-500)] transition-colors">
+                        <span className="text-text-muted group-hover:text-accent-500 transition-colors">
                           {action.icon}
                         </span>
-                        <span className="text-[var(--text-sm)] font-medium text-[var(--color-text-primary)] group-hover:text-[var(--color-accent-500)] transition-colors">
+                        <span className="text-sm font-medium text-text-primary group-hover:text-accent-500 transition-colors">
                           {action.title}
                         </span>
                       </button>

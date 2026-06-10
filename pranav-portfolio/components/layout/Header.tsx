@@ -30,13 +30,13 @@ export function Header() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-[var(--duration-normal)] ease-[var(--ease-out)]',
         isScrolled
-          ? 'bg-[var(--color-bg)]/80 backdrop-blur-md border-b border-[var(--color-border)] py-3 shadow-[var(--shadow-sm)]'
+          ? 'bg-bg/80 backdrop-blur-md border-b border-border py-3 shadow-sm'
           : 'bg-transparent py-5'
       )}
     >
       <Container className="flex items-center justify-between">
-        <Link href="/" className="font-display font-bold text-[var(--text-xl)] tracking-tight text-[var(--color-text-primary)] transition-transform hover:scale-[1.02] active:scale-[0.98]">
-          Pranav<span className="text-[var(--color-accent-500)]">.</span>
+        <Link href="/" className="font-display font-bold text-xl tracking-tight text-text-primary transition-transform hover:scale-[1.02] active:scale-[0.98]">
+          Pranav<span className="text-accent-500">.</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -48,15 +48,15 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'relative text-[var(--text-sm)] font-medium transition-colors py-1 hover:text-[var(--color-accent-500)]',
-                  isActive ? 'text-[var(--color-text-primary)]' : 'text-[var(--color-text-secondary)]'
+                  'relative text-sm font-medium transition-colors py-1 hover:text-accent-500',
+                  isActive ? 'text-text-primary' : 'text-text-secondary'
                 )}
               >
                 {link.label}
                 {isActive && (
                   <motion.div
                     layoutId="activeSection"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[var(--color-accent-500)] rounded-[var(--radius-full)] shadow-[var(--shadow-glow)]"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent-500 rounded-full shadow-glow"
                   />
                 )}
               </Link>
@@ -70,7 +70,7 @@ export function Header() {
           <ThemeToggle />
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-[var(--color-text-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-500)] rounded-md"
+            className="text-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-500)] rounded-md"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -85,7 +85,7 @@ export function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[var(--color-surface)] border-b border-[var(--color-border)] overflow-hidden shadow-[var(--shadow-md)] rounded-b-[var(--radius-xl)]"
+            className="md:hidden bg-surface border-b border-border overflow-hidden shadow-md rounded-b-[var(--radius-xl)]"
           >
             <div className="flex flex-col px-4 py-4 space-y-2">
               {navLinks.map((link) => {
@@ -96,10 +96,10 @@ export function Header() {
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className={cn(
-                      "px-4 py-3 rounded-[var(--radius-md)] text-[var(--text-base)] font-medium transition-colors",
+                      "px-4 py-3 rounded-md text-base font-medium transition-colors",
                       isActive 
-                        ? "bg-[var(--color-accent-500)]/10 text-[var(--color-accent-500)]" 
-                        : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)]"
+                        ? "bg-accent-500/10 text-accent-500" 
+                        : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
                     )}
                   >
                     {link.label}
