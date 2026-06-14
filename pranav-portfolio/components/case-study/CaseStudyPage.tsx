@@ -14,6 +14,7 @@ import { CaseStudySection } from '@/components/case-study/CaseStudySection';
 import { ProjectMetaStrip } from '@/components/case-study/ProjectMetaStrip';
 import { NextProjectCard } from '@/components/case-study/NextProjectCard';
 import { BehindTheBuild } from '@/components/projects/BehindTheBuild';
+import { CursorHover } from '@/components/motion/CursorHover';
 
 interface CaseStudyPageProps {
   project: FeaturedProject;
@@ -47,7 +48,11 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
         title={project.title}
         subtitle={caseStudy.overview}
       >
-        <div className="mt-12 w-full aspect-[21/9] rounded-2xl overflow-hidden border border-border shadow-2xl relative">
+        <CursorHover
+          href={project.liveUrl || project.githubUrl}
+          external={true}
+          className="mt-12 w-full aspect-[21/9] rounded-2xl border border-border shadow-2xl"
+        >
           <Image 
             src={project.image || ''} 
             alt={`${project.title} Cover`} 
@@ -56,7 +61,7 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
             sizes="100vw"
             priority
           />
-        </div>
+        </CursorHover>
         
         <ProjectMetaStrip project={project} />
       </PageHeader>
