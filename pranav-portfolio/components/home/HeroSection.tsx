@@ -1,16 +1,28 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { AnimateOnScroll } from '@/components/motion/AnimateOnScroll';
 import { Spotlight } from '@/components/ui/spotlight';
 import { Button } from '@/components/ui/button';
 import { MagneticButton } from '@/components/motion/MagneticButton';
 import { Badge } from '@/components/ui/badge';
 import { Container } from '@/components/ui/container';
-import { Github, Linkedin, ArrowRight, FileText } from 'lucide-react';
+import { Github, Linkedin, ArrowRight } from 'lucide-react';
 import { site } from '@/data/site';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
+
+import { AnimatedText } from '@/components/motion/AnimatedText';
 
 export function HeroSection() {
   const stack = ['React', 'Next.js', 'TypeScript', 'FastAPI', 'TensorFlow'];
+  const shouldReduceMotion = useReducedMotion();
+
+  // The hero heading split into segments for letter animation
+  const headingSegments = [
+    { text: 'Building ', accent: false },
+    { text: 'AI-integrated', accent: true },
+    { text: ' web systems for real-world products.', accent: false },
+  ];
 
   return (
     <section id="hero" className="relative min-h-[90vh] flex items-center pt-32 pb-16 overflow-hidden">
@@ -21,7 +33,7 @@ export function HeroSection() {
       </div>
 
       <Container className="relative z-10">
-        <div className="max-w-4xl mx-auto md:mx-0 flex flex-col items-center md:items-start text-center md:text-left">
+        <div className="max-w-5xl mx-auto md:mx-0 flex flex-col items-center md:items-start text-center md:text-left">
           
           <AnimateOnScroll variant="slide" delay={0.1}>
             <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-6">
@@ -35,34 +47,36 @@ export function HeroSection() {
             </div>
           </AnimateOnScroll>
 
-          <AnimateOnScroll variant="slide" delay={0.2}>
+          {shouldReduceMotion ? (
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-display font-bold tracking-tight text-text-primary leading-[1.1] mb-6">
               Building <span className="text-accent-500">AI-integrated</span> web systems for real-world products.
             </h1>
-          </AnimateOnScroll>
+          ) : (
+            <AnimatedText
+              as="h1"
+              className="text-5xl sm:text-6xl md:text-7xl font-display font-bold tracking-tight text-text-primary leading-[1.1] mb-6"
+              segments={headingSegments}
+              delay={0.35}
+            />
+          )}
 
-          <AnimateOnScroll variant="slide" delay={0.3}>
+          <AnimateOnScroll variant="blur" delay={0.7}>
             <p className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed mb-10">
               Full-stack developer focused on polished interfaces, backend architecture, and explainable AI workflows — using React, Next.js, FastAPI, and modern deployment practices.
             </p>
           </AnimateOnScroll>
 
-          <AnimateOnScroll variant="slide" delay={0.4}>
+          <AnimateOnScroll variant="slide" delay={0.8}>
             <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mb-12">
               <MagneticButton>
                 <Button href="#work" size="lg" icon={<ArrowRight className="w-5 h-5 order-last ml-2 mr-0 group-hover:translate-x-1 transition-transform" />}>
                   View My Work
                 </Button>
               </MagneticButton>
-              <MagneticButton>
-                <Button href="/resume/pranav-pachunoori-resume.pdf" variant="secondary" size="lg" icon={<FileText className="w-5 h-5 mr-2" />}>
-                  Read Resume
-                </Button>
-              </MagneticButton>
             </div>
           </AnimateOnScroll>
 
-          <AnimateOnScroll variant="fade" delay={0.5}>
+          <AnimateOnScroll variant="fade" delay={0.9}>
             <div className="flex flex-col md:flex-row items-center md:items-center space-y-3 md:space-y-0 md:space-x-4">
               <span className="text-sm font-medium text-text-muted uppercase tracking-wider">Core Stack:</span>
               <div className="flex flex-wrap justify-center md:justify-start gap-2">

@@ -66,6 +66,14 @@ function FlowNodeItem({ node, index, isLast }: { node: FlowNode; index: number; 
           <p className="text-xs text-text-secondary">
             {node.caption}
           </p>
+          
+          {node.reason && (
+            <div className="absolute inset-0 bg-surface-elevated/95 backdrop-blur-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-3 text-center border border-[var(--diagram-accent)]/50 z-20">
+              <p className="text-xs text-text-primary font-medium leading-relaxed">
+                {node.reason}
+              </p>
+            </div>
+          )}
         </Card>
       </motion.div>
 

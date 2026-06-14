@@ -9,9 +9,9 @@ import { ArrowRight } from 'lucide-react';
 
 export function ArchitectureSection() {
   return (
-    <section id="architecture" className="py-24">
+    <section id="architecture" className="py-24 bg-surface">
       <Container>
-        <AnimateOnScroll>
+        <AnimateOnScroll variant="fade">
           <SectionHeading
             eyebrow="Systems Thinking"
             heading="Architecture & Systems"
@@ -21,8 +21,8 @@ export function ArchitectureSection() {
         
         <div className="space-y-12">
           {architectureDiagrams.map((diagram, index) => (
-            <AnimateOnScroll key={diagram.id} delay={0.1 * index}>
-              <Card hoverable className="p-0 overflow-hidden border-border">
+            <AnimateOnScroll key={diagram.id} variant="fade" delay={0.1 * index}>
+              <Card className="p-0 overflow-hidden border-border bg-bg">
                 <Link href={`/work/${diagram.id}`} className="block p-8 group">
                   <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                     <div>

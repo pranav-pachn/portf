@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { FloatingMenu } from '@/components/layout/FloatingMenu';
 import { CommandPalette } from '@/components/ui/command-palette';
 import { ScrollToTop } from '@/components/ui/scroll-to-top';
 import { constructMetadata } from '@/lib/metadata';
@@ -13,7 +14,7 @@ export const metadata = constructMetadata();
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className="relative">
       <head>
         <script dangerouslySetInnerHTML={{
           __html: `
@@ -29,10 +30,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `
         }} />
       </head>
-      <body className={cn('min-h-screen antialiased', fontSans.variable, fontDisplay.variable)}>
+      <body className={cn('relative min-h-screen antialiased', fontSans.variable, fontDisplay.variable)}>
         <ThemeProvider>
           <div className="flex flex-col min-h-screen">
             <Header />
+            <FloatingMenu />
             <main className="flex-1">{children}</main>
             <Footer />
             <CommandPalette />

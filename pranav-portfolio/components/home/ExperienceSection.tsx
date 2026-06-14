@@ -13,7 +13,7 @@ const typeIcons = {
 
 export function ExperienceSection() {
   return (
-    <section id="experience" className="py-24">
+    <section id="experience" className="py-24 bg-surface">
       <Container narrow>
         <AnimateOnScroll>
           <SectionHeading 
@@ -28,7 +28,7 @@ export function ExperienceSection() {
             const Icon = typeIcons[item.type];
             
             return (
-              <AnimateOnScroll key={item.id} delay={0.1 * index}>
+              <AnimateOnScroll key={item.id} variant="slideRight" delay={0.1 * index}>
                 <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group mb-8 last:mb-0">
                   
                   {/* Timeline dot */}

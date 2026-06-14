@@ -3,6 +3,7 @@ export interface FlowNode {
   label: string;
   caption: string;
   icon: string; // Lucide icon name
+  reason?: string;
 }
 
 export interface FlowDiagramData {

@@ -1,6 +1,8 @@
 export interface FeaturedProject {
   id: string;
   title: string;
+  category: string;
+  year: string;
   tagline: string;
   problem: string;
   solution: string;

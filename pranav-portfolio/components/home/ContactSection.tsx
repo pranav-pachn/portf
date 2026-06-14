@@ -3,7 +3,7 @@
 import { AnimateOnScroll } from '@/components/motion/AnimateOnScroll';
 import { site } from '@/data/site';
 import { socialLinks } from '@/data/social-links';
-import { ArrowRight, Mail } from 'lucide-react';
+import { ArrowRight, Mail, FileText } from 'lucide-react';
 import { Container } from '@/components/ui/container';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { Button } from '@/components/ui/button';
@@ -17,13 +17,23 @@ export function ContactSection() {
       
       <Container narrow className="relative z-10 text-center">
         <AnimateOnScroll variant="scale">
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+            <span className="text-sm font-bold text-text-primary uppercase tracking-wider">
+              Open to internships and engineering opportunities
+            </span>
+          </div>
+
           <SectionHeading 
             eyebrow="Get In Touch" 
             heading="Let's build something." 
             align="center" 
           />
-          <p className="text-text-secondary text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-            Currently looking for new opportunities, internships, and product-building roles. If you're building serious AI or full-stack systems, I'd love to chat.
+          <p className="text-text-secondary text-lg mb-12 max-w-xl mx-auto leading-relaxed">
+            If you're building serious AI or full-stack systems and need a developer who thinks about architecture and UI, I'd love to chat.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -37,7 +47,7 @@ export function ContactSection() {
                 Say Hello
               </Button>
             </MagneticButton>
-            <div className="flex items-center gap-4 mt-4 sm:mt-0">
+            <div className="flex flex-wrap items-center justify-center gap-4 mt-4 sm:mt-0">
               {socialLinks.map(link => (
                 <Button 
                   key={link.label}

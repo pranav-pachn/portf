@@ -79,6 +79,8 @@
     /* Background and Foreground used by default body styles if needed */
     --background: var(--color-bg);
     --foreground: var(--color-text-primary);
+    --max-width: 64rem; /* 1024px */
+    --max-width-wide: 72rem; /* 1152px */
   }
 
   html {

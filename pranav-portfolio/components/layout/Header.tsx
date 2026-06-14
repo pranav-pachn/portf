@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatedLink } from '@/components/ui/AnimatedLink';
+import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { navLinks } from '@/data/nav-links';
-import { ThemeToggle } from './ThemeToggle';
 import { useActiveSection } from '@/hooks/use-active-section';
 import { Container } from '@/components/ui/container';
 import { cn } from '@/lib/utils';
@@ -14,7 +15,7 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
-  const sectionIds = navLinks.map((link) => link.href.substring(1));
+  const sectionIds = navLinks.map((link) => link.href.replace('/#', ''));
   const activeSection = useActiveSection(sectionIds);
 
   useEffect(() => {
@@ -24,6 +25,9 @@ export function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const pathname = usePathname();
+  if (pathname !== '/') return null;
 
   return (
     <header
@@ -42,32 +46,21 @@ export function Header() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8">
           {navLinks.map((link) => {
-            const isActive = activeSection === link.href.substring(1);
+            const isActive = activeSection === link.href.replace('/#', '');
             return (
-              <Link
+              <AnimatedLink
                 key={link.href}
                 href={link.href}
-                className={cn(
-                  'relative text-sm font-medium transition-colors py-1 hover:text-accent-500',
-                  isActive ? 'text-text-primary' : 'text-text-secondary'
-                )}
+                active={isActive}
               >
                 {link.label}
-                {isActive && (
-                  <motion.div
-                    layoutId="activeSection"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent-500 rounded-full shadow-glow"
-                  />
-                )}
-              </Link>
+              </AnimatedLink>
             );
           })}
-          <ThemeToggle />
         </nav>
 
         {/* Mobile Nav Toggle */}
         <div className="flex items-center space-x-4 md:hidden">
-          <ThemeToggle />
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-500)] rounded-md"
@@ -89,7 +82,7 @@ export function Header() {
           >
             <div className="flex flex-col px-4 py-4 space-y-2">
               {navLinks.map((link) => {
-                const isActive = activeSection === link.href.substring(1);
+                const isActive = activeSection === link.href.replace('/#', '');
                 return (
                   <Link
                     key={link.href}

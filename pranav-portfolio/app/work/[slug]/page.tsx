@@ -36,5 +36,5 @@ export default async function WorkPage(props: { params: Promise<{ slug: string }
   const project = featuredProjects[projectIndex];
   const nextProject = featuredProjects[(projectIndex + 1) % featuredProjects.length];
 
-  return <CaseStudyPage project={project} nextProject={nextProject} />;
+  return <CaseStudyPage project={project} nextProject={nextProject} projectIndex={projectIndex} nextProjectIndex={(projectIndex + 1) % featuredProjects.length} />;
 }

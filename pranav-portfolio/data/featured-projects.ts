@@ -4,6 +4,8 @@ export const featuredProjects: FeaturedProject[] = [
   {
     id: 'jobshield-ai',
     title: 'JobShield AI',
+    category: 'AI / Security',
+    year: '2025',
     tagline: 'AI-powered recruiter fraud detection platform with explainable risk scoring',
     problem: 'Job seekers face fraudulent recruiter outreach with no reliable way to verify legitimacy before engaging.',
     solution: 'Multi-layer verification engine combining domain analysis, heuristic pattern matching, NLP scoring, and risk aggregation into an explainable fraud report.',
@@ -18,7 +20,7 @@ export const featuredProjects: FeaturedProject[] = [
     learned: 'Explainability is a product feature, not a debugging tool — users trust systems they can understand.',
     motivation: 'Built to solve a personal frustration — encountering fraudulent recruiter outreach with no reliable way to verify legitimacy before engaging.',
     nextImprovement: 'Add browser extension for inline verification and expand the training corpus with crowd-sourced labeled data.',
-    liveUrl: null,
+    liveUrl: 'https://jobshield-ai-taupe.vercel.app',
     githubUrl: 'https://github.com/pranav-pachn/JobShield-AI',
     image: '/projects/jobshield.png',
     accentColor: 'hsl(210, 80%, 55%)',
@@ -41,6 +43,8 @@ export const featuredProjects: FeaturedProject[] = [
   {
     id: 'agrimitra360',
     title: 'AgriMitra360',
+    category: 'AI / AgriTech',
+    year: '2025–2026',
     tagline: 'AI-driven agricultural advisory platform with crop disease diagnosis and multilingual guidance',
     problem: 'Farmers in multilingual regions lack accessible, real-time crop disease identification and actionable treatment guidance.',
     solution: 'Image-based crop analysis pipeline using FastAPI inference, Grad-CAM explainability overlays, and multilingual recommendation engine.',
@@ -55,7 +59,7 @@ export const featuredProjects: FeaturedProject[] = [
     learned: 'AI UX for non-technical users requires visual proof, not just confidence scores — Grad-CAM overlays were more persuasive than numerical outputs.',
     motivation: 'Wanted to apply AI to a real accessibility gap — farmers in multilingual regions who need actionable crop advice, not just classification labels.',
     nextImprovement: 'Add offline inference via TensorFlow Lite for areas with unreliable connectivity.',
-    liveUrl: null,
+    liveUrl: 'https://agri-360.vercel.app',
     githubUrl: 'https://github.com/pranav-pachn/AgriMitra360',
     image: '/projects/agrimitra.png',
     accentColor: 'hsl(142, 60%, 45%)',
@@ -77,6 +81,8 @@ export const featuredProjects: FeaturedProject[] = [
   {
     id: 'modernmart',
     title: 'ModernMart',
+    category: 'E-Commerce',
+    year: '2026',
     tagline: 'Full-featured e-commerce platform with auth flows, admin dashboards, and CI-backed quality',
     problem: 'Most student e-commerce projects lack real production patterns — no auth, no admin workflows, no testing, no CI.',
     solution: 'End-to-end e-commerce application with Supabase authentication, role-based admin panel, comprehensive test suite, and CI pipeline.',
@@ -91,7 +97,7 @@ export const featuredProjects: FeaturedProject[] = [
     learned: 'Testing is a deployment prerequisite, not a nice-to-have; CI caught three breaking changes that manual QA missed.',
     motivation: 'Most student e-commerce projects skip auth, testing, and CI — built this to prove production-grade patterns at the student project level.',
     nextImprovement: 'Add real-time inventory sync and implement Stripe payment integration with webhook handling.',
-    liveUrl: null,
+    liveUrl: 'https://modern-mart-gamma.vercel.app',
     githubUrl: 'https://github.com/pranav-pachn/ModernMart',
     image: '/projects/modernmart.png',
     accentColor: 'hsl(270, 60%, 55%)',
@@ -109,5 +115,41 @@ export const featuredProjects: FeaturedProject[] = [
         { src: '/projects/modernmart.png', alt: 'ModernMart Storefront', caption: 'The main storefront showcasing state-synced cart operations.' }
       ]
     }
+  },
+  {
+    id: 'citysketch',
+    title: 'CitySketch',
+    category: 'Urban Tech / AI',
+    year: '2026',
+    tagline: 'AI-powered smart city layout generator with 2D/3D visualization and real-world constraints',
+    problem: 'Urban planning prototyping requires specialized tools — most students and researchers lack accessible ways to generate and evaluate city layouts from simple descriptions.',
+    solution: 'Natural-language-driven layout engine using React + Three.js that generates scored 2D/3D city plans constrained by real-world geographic data via Geoapify and Overpass API.',
+    stack: ['React', 'Three.js', 'TypeScript', 'Geoapify', 'Overpass API'],
+    architectureDecisions: [],
+    engineeringChallenge: 'Translating natural language into valid zoning coordinates over real-world maps.',
+    iteration: '',
+    learned: '',
+    liveUrl: 'https://city-sketch.vercel.app',
+    githubUrl: 'https://github.com/pranav-pachn/citySketch',
+    image: '/projects/citysketch.png',
+    accentColor: 'hsl(45, 80%, 50%)'
+  },
+  {
+    id: 'misinfo-analyzer',
+    title: 'Misinfo Analyzer',
+    category: 'AI / Trust & Safety',
+    year: '2026',
+    tagline: 'Explainable AI platform for real-time misinformation detection in text and news URLs',
+    problem: 'Users encounter misinformation daily but lack accessible, transparent tools to verify claims — most AI detectors are black boxes.',
+    solution: 'Full-stack analysis platform combining NLP classification with explainability layers, supporting both raw text and live URL verification with transparent confidence scoring.',
+    stack: ['React', 'Python', 'NLP', 'Explainable AI', 'FastAPI'],
+    architectureDecisions: [],
+    engineeringChallenge: 'Real-time text extraction and inference on live news URLs without blocking the main thread.',
+    iteration: '',
+    learned: '',
+    liveUrl: 'https://ai-powered-misinformation-analysis.vercel.app',
+    githubUrl: 'https://github.com/pranav-pachn/AI-Powered-Misinformation-Analysis-Platform',
+    image: '/projects/misinfo.png',
+    accentColor: 'hsl(0, 70%, 55%)'
   }
 ];
