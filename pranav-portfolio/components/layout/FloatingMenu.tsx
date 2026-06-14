@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowLeft, ArrowRight, Layers, FileText, Github, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { featuredProjects } from '@/data/featured-projects';
+import { navLinks } from '@/data/nav-links';
 
 export function FloatingMenu() {
   const pathname = usePathname();
@@ -15,16 +16,26 @@ export function FloatingMenu() {
   const isWorkRoute = pathname.startsWith('/work/');
   const slug = isWorkRoute ? pathname.split('/')[2] : null;
 
-  // Only show on internal pages
-  if (pathname === '/') return null;
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  let mainLinks = [
-    { label: 'Back to Home', href: '/', icon: <ArrowLeft className="w-4 h-4 mr-3" /> },
-  ];
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // On home page, only show when scrolled down (since header disappears)
+  if (pathname === '/' && !isScrolled) return null;
+
+  let mainLinks: any[] = pathname === '/' 
+    ? [...navLinks]
+    : [
+        { label: 'Back to Home', href: '/', icon: <ArrowLeft className="w-4 h-4 mr-3" /> },
+      ];
   let externalLinks: any[] = [];
-  let otherLinks = [
-    { label: 'Resume', href: '/resume/pranav-pachunoori-resume.pdf', icon: <FileText className="w-4 h-4 mr-3" />, external: true },
-  ];
+  let otherLinks: any[] = pathname === '/' ? [] : [...navLinks];
 
   if (isWorkRoute && slug) {
     const projectIndex = featuredProjects.findIndex((p) => p.id === slug);
@@ -117,9 +128,11 @@ export function FloatingMenu() {
                   </div>
                 )}
                 
-                <div className="my-1 border-t border-border/50">
-                  {otherLinks.map(renderLink)}
-                </div>
+                {otherLinks.length > 0 && (
+                  <div className="my-1 border-t border-border/50">
+                    {otherLinks.map(renderLink)}
+                  </div>
+                )}
               </nav>
             </motion.div>
           )}

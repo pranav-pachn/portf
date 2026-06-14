@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedLink } from '@/components/ui/AnimatedLink';
@@ -12,17 +12,28 @@ import { Container } from '@/components/ui/container';
 import { cn } from '@/lib/utils';
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const sectionIds = navLinks.map((link) => link.href.replace('/#', ''));
   const activeSection = useActiveSection(sectionIds);
+  const [isHidden, setIsHidden] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+
+      // Hide if scrolling down and past 80px, show if scrolling up
+      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+        setIsHidden(true);
+      } else {
+        setIsHidden(false);
+      }
+      lastScrollY.current = currentScrollY;
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -33,9 +44,11 @@ export function Header() {
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-[var(--duration-normal)] ease-[var(--ease-out)]',
-        isScrolled
-          ? 'bg-bg/80 backdrop-blur-md border-b border-border py-3 shadow-sm'
-          : 'bg-transparent py-5'
+        isHidden 
+          ? 'opacity-0 -translate-y-full pointer-events-none'
+          : isScrolled
+            ? 'bg-surface/80 backdrop-blur-md border-b border-border py-3 shadow-sm translate-y-0 opacity-100'
+            : 'bg-transparent py-5 translate-y-0 opacity-100'
       )}
     >
       <Container className="flex items-center justify-between">

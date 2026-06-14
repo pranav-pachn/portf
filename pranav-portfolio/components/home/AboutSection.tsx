@@ -23,7 +23,7 @@ const roles = ['DEVELOPER', 'ENGINEER', 'CREATOR /'];
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-0 bg-bg overflow-hidden">
+    <section id="about" className="py-0 bg-bg overflow-hidden min-h-screen">
       {/* Top Split: Roles | Skills */}
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[70vh]">
         {/* Left — Editorial Roles */}
