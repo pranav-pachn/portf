@@ -12,10 +12,10 @@ export function SystemFlowPanel() {
 
   return (
     <section className="py-24 bg-surface min-h-screen flex items-center">
-      <Container>
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
+      <Container wide>
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
           
-          <div className="flex flex-col lg:w-1/3 flex-shrink-0">
+          <div className="flex flex-col lg:w-[25%] flex-shrink-0">
             <AnimateOnScroll variant="slideRight">
               <span className="text-sm font-bold text-text-muted uppercase tracking-widest mb-4 block">
                 System Flow
@@ -29,7 +29,7 @@ export function SystemFlowPanel() {
             </AnimateOnScroll>
           </div>
 
-          <div className="lg:w-2/3 w-full">
+          <div className="lg:w-[75%] w-full">
             <AnimateOnScroll variant="fade" delay={0.2}>
               <div className="bg-bg rounded-xl border border-border p-6 md:p-12 w-full overflow-hidden shadow-sm">
                 <FlowDiagram nodes={diagram.nodes} accentColor={diagram.accentColor} />

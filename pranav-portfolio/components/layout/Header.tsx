@@ -10,6 +10,7 @@ import { navLinks } from '@/data/nav-links';
 import { useActiveSection } from '@/hooks/use-active-section';
 import { Container } from '@/components/ui/container';
 import { cn } from '@/lib/utils';
+import { scrollToSection } from '@/lib/scroll';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -100,7 +101,10 @@ export function Header() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      setMobileMenuOpen(false);
+                      scrollToSection(e, link.href);
+                    }}
                     className={cn(
                       "px-4 py-3 rounded-md text-base font-medium transition-colors",
                       isActive 

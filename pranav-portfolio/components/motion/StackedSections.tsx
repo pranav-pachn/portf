@@ -18,6 +18,7 @@ export function StackedSections({ children }: { children: React.ReactNode }) {
           return (
             <div
               key={index}
+              data-stacked-section="true"
               className="md:sticky w-full"
               style={{ zIndex: index + 1, top: 'calc(100vh - 100%)' }}
             >
@@ -64,6 +65,7 @@ function StackedSectionItem({
   return (
     <div
       ref={ref}
+      data-stacked-section="true"
       className="md:sticky w-full"
       style={{ zIndex: index + 1, top: 'calc(100vh - 100%)' }}
     >

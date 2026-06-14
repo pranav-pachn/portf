@@ -8,6 +8,7 @@ import { Menu, X, ArrowLeft, ArrowRight, Layers, FileText, Github, ExternalLink 
 import { cn } from '@/lib/utils';
 import { featuredProjects } from '@/data/featured-projects';
 import { navLinks } from '@/data/nav-links';
+import { scrollToSection } from '@/lib/scroll';
 
 export function FloatingMenu() {
   const pathname = usePathname();
@@ -78,7 +79,15 @@ export function FloatingMenu() {
     }
 
     return (
-      <Link key={link.href} href={link.href} onClick={() => setIsOpen(false)} className={className}>
+      <Link 
+        key={link.href} 
+        href={link.href} 
+        onClick={(e) => {
+          setIsOpen(false);
+          scrollToSection(e, link.href);
+        }} 
+        className={className}
+      >
         {content}
       </Link>
     );

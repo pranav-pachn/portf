@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
+import { scrollToSection } from '@/lib/scroll';
+
 interface AnimatedLinkProps {
   href: string;
   children: ReactNode;
@@ -49,7 +51,14 @@ export function AnimatedLink({ href, children, external, className, active, onCl
   }
 
   return (
-    <Link href={href} className={baseClassName} onClick={onClick}>
+    <Link 
+      href={href} 
+      className={baseClassName} 
+      onClick={(e) => {
+        if (onClick) onClick();
+        scrollToSection(e, href);
+      }}
+    >
       {inner}
     </Link>
   );

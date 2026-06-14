@@ -9,6 +9,7 @@ import { FloatingMenu } from '@/components/layout/FloatingMenu';
 import { CommandPalette } from '@/components/ui/command-palette';
 import { ScrollToTop } from '@/components/ui/scroll-to-top';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
+import { RouteTransition } from '@/components/motion/RouteTransition';
 import { constructMetadata } from '@/lib/metadata';
 
 export const metadata = constructMetadata();
@@ -37,7 +38,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ScrollProgress />
             <Header />
             <FloatingMenu />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 flex flex-col">
+              <RouteTransition>
+                {children}
+              </RouteTransition>
+            </main>
             <Footer />
             <CommandPalette />
             <ScrollToTop />
