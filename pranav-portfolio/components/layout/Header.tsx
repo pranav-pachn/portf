@@ -20,20 +20,18 @@ export function Header() {
   const activeSection = useActiveSection(sectionIds);
   const [isHidden, setIsHidden] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setIsScrolled(currentScrollY > 20);
 
-      // Hide if scrolling down and past 80px, show if scrolling up
-      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+      // Only show at the very top of the page. Hide once scrolled past 80px.
+      if (currentScrollY > 80) {
         setIsHidden(true);
       } else {
         setIsHidden(false);
       }
-      lastScrollY.current = currentScrollY;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);

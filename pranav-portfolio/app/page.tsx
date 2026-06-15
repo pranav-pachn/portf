@@ -23,27 +23,41 @@ export default function Home() {
 
   return (
     <StackedSections>
-      <HeroPanel />
-      <WhatIBuildPanel />
-      <HowIBuildPanel />
+      {/* SECTION 1: Identity & Approach */}
+      <div className="flex flex-col w-full bg-bg">
+        <HeroPanel />
+        <WhatIBuildPanel />
+        <HowIBuildPanel />
+      </div>
       
-      <WorkIntroPanel />
-      {mainProjects.map((project, index) => (
-        <ProjectPanel key={project.id} project={project} index={index} />
-      ))}
-      <ComingSoonProjectsPanel projects={comingSoonProjects} />
+      {/* SECTION 2: Selected Work */}
+      <div className="flex flex-col w-full bg-bg">
+        <WorkIntroPanel />
+        {mainProjects.map((project, index) => (
+          <ProjectPanel key={project.id} project={project} index={index} />
+        ))}
+        <ComingSoonProjectsPanel projects={comingSoonProjects} />
+      </div>
       
-      <ArchIntroPanel />
-      <SystemFlowPanel />
-      <ReliabilityPanel />
+      {/* SECTION 3: System Architecture */}
+      <div className="flex flex-col w-full bg-bg">
+        <ArchIntroPanel />
+        <SystemFlowPanel />
+        <ReliabilityPanel />
+      </div>
       
-      <DecisionsPanel />
-      <LessonsPanel />
+      {/* SECTION 4: Engineering Insights */}
+      <div className="flex flex-col w-full bg-bg">
+        <DecisionsPanel />
+        <LessonsPanel />
+      </div>
       
-      <AboutSection />
-      
-      <ExperiencePanel />
-      <ContactPanel />
+      {/* SECTION 5: About & Experience & Contact */}
+      <div className="flex flex-col w-full bg-bg">
+        <AboutSection />
+        <ExperiencePanel />
+        <ContactPanel />
+      </div>
     </StackedSections>
   );
 }

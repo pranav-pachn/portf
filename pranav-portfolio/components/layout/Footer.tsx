@@ -4,31 +4,40 @@ import { Container } from '@/components/ui/container';
 
 export function Footer() {
   return (
-    <footer className="py-8 md:py-12 border-t border-border bg-surface">
+    <footer className="py-12 md:py-16 border-t border-border bg-surface">
       <Container>
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-display font-bold text-lg text-text-primary">
-              Pranav<span className="text-accent-500">.</span>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
+          {/* Left Side */}
+          <div className="flex flex-col gap-2">
+            <span className="font-display font-bold text-xl text-text-primary">
+              Pranav.
             </span>
-            <span className="text-xs text-text-muted ml-2">
-              &copy; {new Date().getFullYear()} All rights reserved.
+            <span className="text-sm text-text-secondary font-medium">
+              Software Engineer - Full-Stack Developer
             </span>
           </div>
           
-          <div className="flex items-center space-x-6">
+          {/* Right Side */}
+          <div className="flex flex-wrap items-center gap-6">
             {socialLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium text-text-secondary hover:text-accent-500 transition-colors"
+                className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
               >
                 {link.label}
               </Link>
             ))}
           </div>
+        </div>
+
+        {/* Bottom Note */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-border/50">
+          <span className="text-xs text-text-muted">
+            &copy; {new Date().getFullYear()} Pranav Pachunoori
+          </span>
         </div>
       </Container>
     </footer>

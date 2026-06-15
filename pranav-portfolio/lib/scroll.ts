@@ -20,10 +20,16 @@ export const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: st
     return;
   }
 
-  // stickyWrapper.offsetTop is the natural layout position of the section slot —
-  // exactly where we need to scroll to reveal it.
+  // Calculate absolute top position using offsetTop recursively to get the natural (un-stuck) layout position
+  let absoluteTop = 0;
+  let currentEl: HTMLElement | null = stickyWrapper;
+  while (currentEl) {
+    absoluteTop += currentEl.offsetTop;
+    currentEl = currentEl.offsetParent as HTMLElement;
+  }
+
   window.scrollTo({
-    top: stickyWrapper.offsetTop,
+    top: absoluteTop,
     behavior: 'smooth',
   });
 
