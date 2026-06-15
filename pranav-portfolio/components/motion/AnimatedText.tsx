@@ -5,8 +5,9 @@ import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { letterRevealVariants, TIMING } from '@/lib/animations';
 
 interface Segment {
-  text: string;
+  text?: string;
   className?: string;
+  break?: boolean;
 }
 
 interface AnimatedTextProps {
@@ -37,17 +38,22 @@ export function AnimatedText({
   if (shouldReduceMotion || !animate) {
     return (
       <Component className={className}>
-        {normalizedSegments.map((segment, idx) => (
-          <span key={idx} className={segment.className}>
-            {segment.text}
-          </span>
-        ))}
+        {normalizedSegments.map((segment, idx) => {
+          if (segment.break) {
+            return <br key={idx} className={segment.className} />;
+          }
+          return (
+            <span key={idx} className={segment.className}>
+              {segment.text}
+            </span>
+          );
+        })}
       </Component>
     );
   }
 
   // Generate plain text for aria-label
-  const plainText = normalizedSegments.map((s) => s.text).join('');
+  const plainText = normalizedSegments.map((s) => s.break ? ' ' : s.text || '').join('');
   const MotionComponent = motion.create(Component as any) as any;
 
   return (
@@ -67,6 +73,11 @@ export function AnimatedText({
       aria-label={plainText}
     >
       {normalizedSegments.map((segment, segIdx) => {
+        if (segment.break) {
+          return <br key={`br-${segIdx}`} className={segment.className} />;
+        }
+        if (!segment.text) return null;
+        
         return (
           <span key={segIdx} className={segment.className}>
             {segment.text.split(/(\s+)/).map((word, wordIdx) => {

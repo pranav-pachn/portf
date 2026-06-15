@@ -9,6 +9,7 @@ import { Menu, X } from 'lucide-react';
 import { navLinks } from '@/data/nav-links';
 import { useActiveSection } from '@/hooks/use-active-section';
 import { Container } from '@/components/ui/container';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { cn } from '@/lib/utils';
 import { scrollToSection } from '@/lib/scroll';
 
@@ -71,13 +72,17 @@ export function Header() {
               </AnimatedLink>
             );
           })}
+          <div className="pl-6 border-l border-border/50">
+            <ThemeToggle />
+          </div>
         </nav>
 
         {/* Mobile Nav Toggle */}
-        <div className="flex items-center space-x-4 md:hidden">
+        <div className="flex items-center space-x-2 md:hidden">
+          <ThemeToggle />
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-500)] rounded-md"
+            className="text-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-500)] rounded-md p-2"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -23,8 +23,8 @@ export function AnimatedLink({ href, children, external, className, active, onCl
       {children}
       <span 
         className={cn(
-          "absolute -bottom-1 left-0 right-0 h-[2px] bg-[var(--project-accent,var(--color-accent-500))] origin-center transition-transform duration-300 ease-out",
-          active ? "scale-x-100 shadow-glow" : "scale-x-0 group-hover:scale-x-100"
+          "absolute -bottom-1 left-0 right-0 h-[1px] bg-text-primary/30 origin-center transition-transform duration-300 ease-out",
+          active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
         )}
       />
     </>

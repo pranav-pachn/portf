@@ -7,7 +7,6 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { FloatingMenu } from '@/components/layout/FloatingMenu';
 import { CommandPalette } from '@/components/ui/command-palette';
-import { ScrollToTop } from '@/components/ui/scroll-to-top';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { RouteTransition } from '@/components/motion/RouteTransition';
 import { constructMetadata } from '@/lib/metadata';
@@ -45,7 +44,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </main>
             <Footer />
             <CommandPalette />
-            <ScrollToTop />
           </div>
         </ThemeProvider>
       </body>
