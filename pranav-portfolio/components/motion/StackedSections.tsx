@@ -8,6 +8,31 @@ export function StackedSections({ children }: { children: React.ReactNode }) {
   const childrenArray = React.Children.toArray(children);
   const shouldReduceMotion = useReducedMotion();
 
+  // Handle hash navigation when arriving from a different page
+  React.useEffect(() => {
+    if (window.location.hash) {
+      // Small delay to ensure layout and sticky positioning are computed
+      setTimeout(() => {
+        const id = window.location.hash.substring(1);
+        const element = document.getElementById(id);
+        if (element) {
+          const stickyWrapper = element.closest('[data-stacked-section]') as HTMLElement | null;
+          if (stickyWrapper) {
+            let absoluteTop = 0;
+            let currentEl: HTMLElement | null = stickyWrapper;
+            while (currentEl) {
+              absoluteTop += currentEl.offsetTop;
+              currentEl = currentEl.offsetParent as HTMLElement;
+            }
+            window.scrollTo({ top: absoluteTop, behavior: 'smooth' });
+          } else {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }, 100);
+    }
+  }, []);
+
   return (
     <div className="relative">
       {childrenArray.map((child, index) => {
@@ -19,8 +44,8 @@ export function StackedSections({ children }: { children: React.ReactNode }) {
             <div
               key={index}
               data-stacked-section="true"
-              className="md:sticky w-full"
-              style={{ zIndex: index + 1, top: 'calc(100vh - 100%)' }}
+              className={`sticky w-full ${isLast ? '' : 'mb-[30vh]'}`}
+              style={{ zIndex: index + 1, top: 'min(0px, calc(100vh - 100%))' }}
             >
               <div className="w-full bg-bg">
                 {child}
@@ -49,10 +74,25 @@ function StackedSectionItem({
   isLast: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [topOffset, setTopOffset] = React.useState('0px');
+
+  React.useEffect(() => {
+    if (!ref.current) return;
+    const observer = new ResizeObserver(() => {
+      if (!ref.current) return;
+      const height = ref.current.offsetHeight;
+      const vh = window.innerHeight;
+      if (height <= vh) {
+        setTopOffset('0px');
+      } else {
+        setTopOffset(`${vh - height}px`);
+      }
+    });
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
 
   // Track the scroll progress of THIS section's original layout box.
-  // "start start" -> top of section hits top of viewport
-  // "end start" -> bottom of section hits top of viewport (meaning user scrolled 1 section height past it)
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['end end', 'end start'],
@@ -66,8 +106,8 @@ function StackedSectionItem({
     <div
       ref={ref}
       data-stacked-section="true"
-      className="md:sticky w-full"
-      style={{ zIndex: index + 1, top: 'calc(100vh - 100%)' }}
+      className={`sticky w-full ${isLast ? '' : 'mb-[30vh]'}`}
+      style={{ zIndex: index + 1, top: topOffset }}
     >
       <motion.div
         style={{

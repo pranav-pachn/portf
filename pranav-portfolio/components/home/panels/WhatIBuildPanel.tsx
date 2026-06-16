@@ -31,7 +31,7 @@ export function WhatIBuildPanel() {
   ];
 
   return (
-    <section id="what-i-build" className="py-32 md:py-40 bg-surface min-h-screen flex items-center">
+    <section id="what-i-build" className="py-32 md:py-40 bg-surface min-h-screen flex flex-col justify-center">
       <Container>
         <AnimateOnScroll>
           <SectionHeading
