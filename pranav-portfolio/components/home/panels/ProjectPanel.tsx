@@ -65,13 +65,45 @@ export function ProjectPanel({ project, index }: ProjectPanelProps) {
                 ))}
               </div>
               
-              <Link 
-                href={`/work/${project.id}`}
-                className="inline-flex items-center text-[var(--project-accent)] hover:text-text-primary transition-colors font-bold group"
-              >
-                Read Case Study 
-                <ArrowRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <div className="flex flex-wrap items-center gap-6">
+                {project.caseStudy ? (
+                  <Link 
+                    href={`/work/${project.id}`}
+                    className="inline-flex items-center text-[var(--project-accent)] hover:text-text-primary transition-colors font-bold group"
+                  >
+                    Read Case Study 
+                    <ArrowRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                ) : (
+                  <span className="inline-flex items-center text-text-muted font-bold cursor-not-allowed text-sm">
+                    Case Study Coming Soon
+                  </span>
+                )}
+                
+                {project.liveUrl && (
+                  <a 
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-text-secondary hover:text-[var(--project-accent)] transition-colors font-medium text-sm group"
+                  >
+                    Live
+                    <ArrowRight className="w-4 h-4 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                  </a>
+                )}
+
+                {project.githubUrl && (
+                  <a 
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-text-secondary hover:text-[var(--project-accent)] transition-colors font-medium text-sm group"
+                  >
+                    Source
+                    <ArrowRight className="w-4 h-4 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                  </a>
+                )}
+              </div>
             </AnimateOnScroll>
           </div>
 
