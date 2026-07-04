@@ -31,7 +31,7 @@ export function HowIBuildPanel() {
   ];
 
   return (
-    <section id="how-i-build" className="py-24 bg-bg border-t border-border min-h-screen flex items-center">
+    <section id="how-i-build" className="py-24 bg-bg border-t border-border flex items-center">
       <Container>
         <AnimateOnScroll>
           <SectionHeading

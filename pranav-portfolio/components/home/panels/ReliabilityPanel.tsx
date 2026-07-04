@@ -11,7 +11,7 @@ export function ReliabilityPanel() {
   if (!diagram) return null;
 
   return (
-    <section className="py-24 bg-bg min-h-screen flex items-center border-t border-border">
+    <section className="py-24 bg-bg flex items-center border-t border-border">
       <Container wide>
         <div className="flex flex-col lg:flex-row-reverse gap-8 lg:gap-16 items-center">
           

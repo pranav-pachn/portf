@@ -15,7 +15,7 @@ const typeIcons = {
 
 export function ExperiencePanel() {
   return (
-    <section id="experience" className="py-24 bg-surface border-t border-border min-h-screen flex items-center">
+    <section id="experience" className="py-24 bg-surface border-t border-border flex items-center">
       <Container narrow>
         <AnimateOnScroll>
           <SectionHeading 

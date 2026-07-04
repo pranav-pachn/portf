@@ -22,7 +22,7 @@ export function DecisionsPanel() {
   ];
 
   return (
-    <section id="build-decisions" className="py-24 bg-surface border-y border-border min-h-screen flex items-center">
+    <section id="build-decisions" className="py-24 bg-surface border-y border-border flex items-center">
       <Container>
         <AnimateOnScroll>
           <SectionHeading

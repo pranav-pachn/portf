@@ -11,7 +11,7 @@ export function SystemFlowPanel() {
   if (!diagram) return null;
 
   return (
-    <section className="py-24 bg-surface min-h-screen flex items-center">
+    <section className="py-24 bg-surface flex items-center">
       <Container wide>
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
           

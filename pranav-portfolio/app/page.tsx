@@ -23,31 +23,41 @@ export default function Home() {
 
   return (
     <StackedSections>
-      {/* SECTION 1: Identity & Approach */}
-      <HeroPanel />
-      <WhatIBuildPanel />
-      <HowIBuildPanel />
+      {/* MACRO 1: Identity & Approach */}
+      <div>
+        <HeroPanel />
+        <WhatIBuildPanel />
+        <HowIBuildPanel />
+      </div>
       
-      {/* SECTION 2: Selected Work */}
-      <WorkIntroPanel />
-      {mainProjects.map((project, index) => (
-        <ProjectPanel key={project.id} project={project} index={index} />
-      ))}
-      <ComingSoonProjectsPanel projects={comingSoonProjects} />
+      {/* MACRO 2: Selected Work */}
+      <div>
+        <WorkIntroPanel />
+        {mainProjects.map((project, index) => (
+          <ProjectPanel key={project.id} project={project} index={index} />
+        ))}
+        <ComingSoonProjectsPanel projects={comingSoonProjects} />
+      </div>
       
-      {/* SECTION 3: System Architecture */}
-      <ArchIntroPanel />
-      <SystemFlowPanel />
-      <ReliabilityPanel />
+      {/* MACRO 3: System Architecture */}
+      <div>
+        <ArchIntroPanel />
+        <SystemFlowPanel />
+        <ReliabilityPanel />
+      </div>
       
-      {/* SECTION 4: Engineering Insights */}
-      <DecisionsPanel />
-      <LessonsPanel />
+      {/* MACRO 4: Engineering Insights */}
+      <div>
+        <DecisionsPanel />
+        <LessonsPanel />
+      </div>
       
-      {/* SECTION 5: About & Experience & Contact */}
-      <AboutSection />
-      <ExperiencePanel />
-      <ContactPanel />
+      {/* MACRO 5: About & Experience & Contact */}
+      <div>
+        <AboutSection />
+        <ExperiencePanel />
+        <ContactPanel />
+      </div>
     </StackedSections>
   );
 }

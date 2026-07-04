@@ -22,7 +22,7 @@ export function LessonsPanel() {
   ];
 
   return (
-    <section className="py-24 bg-bg min-h-screen flex items-center">
+    <section className="py-24 bg-bg flex items-center">
       <Container>
         <AnimateOnScroll>
           <SectionHeading
