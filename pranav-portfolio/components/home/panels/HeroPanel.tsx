@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { MagneticButton } from '@/components/motion/MagneticButton';
 import { Container } from '@/components/ui/container';
 import { ArrowRight } from 'lucide-react';
+import { FloatingBackground } from '@/components/motion/FloatingBackground';
 
 export function HeroPanel() {
   const stack = ['React', 'Next.js', 'TypeScript', 'FastAPI', 'TensorFlow'];
@@ -15,6 +16,7 @@ export function HeroPanel() {
     <section id="hero" className="relative min-h-screen flex items-center pt-32 pb-16 overflow-hidden">
       {/* Background Layer */}
       <div className="absolute inset-0 z-0 bg-bg bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] animate-grid-fade" />
+      <FloatingBackground />
       <div className="hidden lg:block absolute inset-0 z-0">
         <Spotlight />
       </div>

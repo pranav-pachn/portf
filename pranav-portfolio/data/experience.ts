@@ -2,6 +2,23 @@ import { ExperienceItem } from '../types/experience';
 
 export const experience: ExperienceItem[] = [
   {
+    id: 'pragament',
+    title: 'Software Development Intern',
+    organization: 'PRAGAMENT TECH SOLUTIONS PRIVATE LIMITED',
+    dateRange: '01-07-2026 to 01-10-2026',
+    description: 'Contributed to the development and maintenance of production web applications by building responsive React interfaces, implementing Flask-based backend services, integrating REST APIs, and troubleshooting production issues. Collaborated with cross-functional teams using Git workflows while gaining hands-on experience in modern full-stack software development.',
+    techStack: ['React', 'Python', 'Flask', 'REST APIs', 'Git'],
+    outcomes: [
+      'Full-stack feature development',
+      'Production debugging',
+      'API integration',
+      'Team collaboration',
+    ],
+    logo: '/projects/pragamant.webp',
+    invertLogo: true,
+    type: 'work',
+  },
+  {
     id: 'btech',
     title: 'B.Tech in Computer Science and Engineering',
     organization: 'B V Raju Institute of Technology',

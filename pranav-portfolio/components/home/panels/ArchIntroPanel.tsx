@@ -2,6 +2,7 @@
 
 import { AnimateOnScroll } from '@/components/motion/AnimateOnScroll';
 import { Container } from '@/components/ui/container';
+import { GsapTitleReveal } from '@/components/motion/GsapTitleReveal';
 
 export function ArchIntroPanel() {
   return (
@@ -12,9 +13,9 @@ export function ArchIntroPanel() {
             <span className="text-sm font-bold text-accent-500 uppercase tracking-widest mb-6">
               Architecture & Systems
             </span>
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-black text-text-primary tracking-tight max-w-4xl mb-8">
+            <GsapTitleReveal as="h2" className="text-4xl md:text-6xl lg:text-7xl font-display font-black text-text-primary tracking-tight max-w-4xl mb-8">
               How I think about systems.
-            </h2>
+            </GsapTitleReveal>
             <p className="text-xl md:text-2xl text-text-secondary max-w-3xl leading-relaxed font-medium">
               Beyond the interface. Building for reliability through clear service boundaries, modular validation, and explainable AI workflows.
             </p>

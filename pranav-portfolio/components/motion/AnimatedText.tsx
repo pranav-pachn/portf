@@ -1,8 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { letterRevealVariants, TIMING } from '@/lib/animations';
+import { useGSAP } from '@gsap/react';
+import { gsap } from '@/lib/gsap';
+import SplitType from 'split-type';
+import { cn } from '@/lib/utils';
 
 interface Segment {
   text?: string;
@@ -17,7 +20,6 @@ interface AnimatedTextProps {
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span';
   className?: string;
   delay?: number;
-  stagger?: number;
   animate?: boolean;
 }
 
@@ -27,85 +29,78 @@ export function AnimatedText({
   as: Component = 'h1',
   className = '',
   delay = 0,
-  stagger = TIMING.stagger,
   animate = true,
 }: AnimatedTextProps) {
+  const containerRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
   // Normalize input into segments
   const normalizedSegments: Segment[] = segments || (text ? [{ text }] : []);
 
-  if (shouldReduceMotion || !animate) {
-    return (
-      <Component className={className}>
-        {normalizedSegments.map((segment, idx) => {
-          if (segment.break) {
-            return <br key={idx} className={segment.className} />;
-          }
-          return (
-            <span key={idx} className={segment.className}>
-              {segment.text}
-            </span>
-          );
-        })}
-      </Component>
-    );
-  }
+  useGSAP(() => {
+    if (shouldReduceMotion || !animate || !containerRef.current) return;
+
+    // We only want to animate the chars inside our segments
+    const elementsToSplit = containerRef.current.querySelectorAll('.split-target');
+    
+    if (elementsToSplit.length === 0) return;
+
+    // Split text into characters
+    const split = new SplitType(elementsToSplit as NodeListOf<HTMLElement>, { types: 'chars,words' });
+
+    if (!split.chars) return;
+
+    // Initial state: hidden, shifted down, rotated, blurred
+    gsap.set(split.chars, {
+      opacity: 0,
+      y: 40,
+      rotateX: -40,
+      filter: 'blur(10px)',
+      transformOrigin: '0% 50% -50',
+    });
+
+    // Animation timeline
+    gsap.to(split.chars, {
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      filter: 'blur(0px)',
+      duration: 0.8,
+      stagger: 0.02,
+      ease: 'power3.out',
+      delay: delay,
+    });
+
+    return () => {
+      split.revert();
+    };
+  }, { scope: containerRef, dependencies: [text, segments, animate, shouldReduceMotion, delay] });
 
   // Generate plain text for aria-label
   const plainText = normalizedSegments.map((s) => s.break ? ' ' : s.text || '').join('');
-  const MotionComponent = motion.create(Component as any) as any;
 
   return (
-    <MotionComponent
-      className={className}
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: stagger,
-            delayChildren: delay,
-          },
-        },
-      }}
-      initial="hidden"
-      animate="visible"
+    <Component 
+      ref={containerRef as any} 
+      className={cn(className, "flex flex-wrap items-baseline gap-x-0")} 
       aria-label={plainText}
     >
       {normalizedSegments.map((segment, segIdx) => {
         if (segment.break) {
-          return <br key={`br-${segIdx}`} className={segment.className} />;
+          return <div key={`br-${segIdx}`} className="basis-full h-0" />;
         }
         if (!segment.text) return null;
         
         return (
-          <span key={segIdx} className={segment.className}>
-            {segment.text.split(/(\s+)/).map((word, wordIdx) => {
-              if (word.match(/^\s+$/)) {
-                return (
-                  <span key={`${segIdx}-${wordIdx}`} className="inline-block">
-                    {word.replace(/ /g, '\u00A0')}
-                  </span>
-                );
-              }
-              return (
-                <span key={`${segIdx}-${wordIdx}`} className="inline-block whitespace-nowrap">
-                  {word.split('').map((char, charIdx) => (
-                    <motion.span
-                      key={`${segIdx}-${wordIdx}-${charIdx}`}
-                      variants={letterRevealVariants}
-                      className="inline-block"
-                      aria-hidden="true"
-                    >
-                      {char}
-                    </motion.span>
-                  ))}
-                </span>
-              );
-            })}
+          <span 
+            key={segIdx} 
+            className={cn("split-target inline-block whitespace-pre", segment.className)}
+            aria-hidden="true"
+          >
+            {segment.text}
           </span>
         );
       })}
-    </MotionComponent>
+    </Component>
   );
 }

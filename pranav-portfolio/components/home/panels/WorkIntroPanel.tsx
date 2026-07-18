@@ -2,6 +2,7 @@
 
 import { AnimateOnScroll } from '@/components/motion/AnimateOnScroll';
 import { Container } from '@/components/ui/container';
+import { GsapTitleReveal } from '@/components/motion/GsapTitleReveal';
 
 export function WorkIntroPanel() {
   return (
@@ -12,9 +13,9 @@ export function WorkIntroPanel() {
             <span className="text-sm font-bold text-accent-500 uppercase tracking-widest mb-6">
               Selected Work
             </span>
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-black text-text-primary tracking-tight max-w-4xl mb-8">
+            <GsapTitleReveal as="h2" className="text-4xl md:text-6xl lg:text-7xl font-display font-black text-text-primary tracking-tight max-w-4xl mb-8">
               AI-integrated systems built to ship, not just to demo.
-            </h2>
+            </GsapTitleReveal>
             <div className="flex items-center space-x-4 text-text-muted">
               <span className="w-12 h-px bg-border"></span>
               <span className="text-sm font-medium uppercase tracking-widest">3 Featured Projects</span>

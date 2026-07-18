@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
@@ -7,6 +8,8 @@ import { FeaturedProject } from '@/types/project';
 import { Badge } from '@/components/ui/badge';
 import { Container } from '@/components/ui/container';
 import { AnimateOnScroll } from '@/components/motion/AnimateOnScroll';
+import { useGSAP } from '@gsap/react';
+import { gsap } from '@/lib/gsap';
 
 interface ProjectPanelProps {
   project: FeaturedProject;
@@ -15,9 +18,47 @@ interface ProjectPanelProps {
 
 export function ProjectPanel({ project, index }: ProjectPanelProps) {
   const formattedIndex = (index + 1).toString().padStart(2, '0');
+  const containerRef = useRef<HTMLElement>(null);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  useGSAP(() => {
+    if (!containerRef.current || !imageContainerRef.current) return;
+
+    // 1. Image Reveal (Masking)
+    gsap.fromTo(imageContainerRef.current, {
+      clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)',
+    }, {
+      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+      duration: 1.5,
+      ease: 'power4.inOut',
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 60%',
+      }
+    });
+
+    // 2. Subtle Image Parallax
+    if (imageRef.current) {
+      gsap.fromTo(imageRef.current, {
+        y: -30,
+        scale: 1.1,
+      }, {
+        y: 30,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
+    }
+
+  }, { scope: containerRef });
 
   return (
-    <section className="py-24 min-h-screen flex items-center bg-bg" style={{ '--project-accent': project.accentColor || 'var(--color-accent-500)' } as React.CSSProperties}>
+    <section ref={containerRef} className="py-24 min-h-screen flex items-center bg-bg" style={{ '--project-accent': project.accentColor || 'var(--color-accent-500)' } as React.CSSProperties}>
       <Container>
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
           
@@ -108,29 +149,31 @@ export function ProjectPanel({ project, index }: ProjectPanelProps) {
           </div>
 
           {/* Right Column: Image */}
-          <div className="flex flex-col lg:w-1/2 w-full">
-            <AnimateOnScroll variant="scale">
-              <Link href={`/work/${project.id}`} className="block group">
-                <div className="w-full aspect-[4/3] md:aspect-[16/10] overflow-hidden rounded-xl border border-border/60 bg-surface/50 relative transition-all duration-500 group-hover:border-[var(--project-accent)]/50 group-hover:shadow-[0_0_40px_-15px_var(--project-accent)]">
-                  {project.image ? (
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-[var(--ease-out)]"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-[var(--project-accent)]/50 font-display text-xl font-bold">
-                      {project.title} Screenshot
-                    </div>
-                  )}
-                  
-                  {/* Subtle glow overlay on hover */}
-                  <div className="absolute inset-0 bg-[var(--project-accent)]/0 group-hover:bg-[var(--project-accent)]/10 transition-colors duration-500 pointer-events-none mix-blend-overlay" />
-                </div>
-              </Link>
-            </AnimateOnScroll>
+          <div className="flex flex-col lg:w-1/2 w-full pt-8 lg:pt-0">
+            <Link href={`/work/${project.id}`} className="block group">
+              <div 
+                ref={imageContainerRef}
+                className="w-full aspect-[4/3] md:aspect-[16/10] overflow-hidden rounded-xl border border-border/60 bg-surface/50 relative transition-colors duration-500 group-hover:border-[var(--project-accent)]/50 group-hover:shadow-[0_0_40px_-15px_var(--project-accent)]"
+              >
+                {project.image ? (
+                  <Image
+                    ref={imageRef as any}
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-[var(--ease-out)]"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-[var(--project-accent)]/50 font-display text-xl font-bold">
+                    {project.title} Screenshot
+                  </div>
+                )}
+                
+                {/* Subtle glow overlay on hover */}
+                <div className="absolute inset-0 bg-[var(--project-accent)]/0 group-hover:bg-[var(--project-accent)]/10 transition-colors duration-500 pointer-events-none mix-blend-overlay" />
+              </div>
+            </Link>
           </div>
 
         </div>

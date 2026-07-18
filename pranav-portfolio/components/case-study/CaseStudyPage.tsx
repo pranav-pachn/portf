@@ -1,8 +1,9 @@
 'use client';
 
+import { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { FeaturedProject } from '@/types/project';
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
@@ -10,11 +11,13 @@ import { SectionHeading } from '@/components/ui/section-heading';
 import { AnimateOnScroll } from '@/components/motion/AnimateOnScroll';
 import { FlowDiagram } from '@/components/architecture/FlowDiagram';
 import { PageHeader } from '@/components/layout/PageHeader';
-import { CaseStudySection } from '@/components/case-study/CaseStudySection';
 import { ProjectMetaStrip } from '@/components/case-study/ProjectMetaStrip';
 import { NextProjectCard } from '@/components/case-study/NextProjectCard';
 import { BehindTheBuild } from '@/components/projects/BehindTheBuild';
 import { CursorHover } from '@/components/motion/CursorHover';
+import { useGSAP } from '@gsap/react';
+import { gsap } from '@/lib/gsap';
+import { cn } from '@/lib/utils';
 
 interface CaseStudyPageProps {
   project: FeaturedProject;
@@ -24,6 +27,31 @@ interface CaseStudyPageProps {
 }
 
 export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectIndex }: CaseStudyPageProps) {
+  const horizontalContainerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (!horizontalContainerRef.current || !wrapperRef.current) return;
+
+    const sections = gsap.utils.toArray('.horizontal-panel', wrapperRef.current);
+    
+    // Only apply horizontal scroll on desktop, let it stack naturally on mobile if preferred, 
+    // or keep horizontal for all. We'll do horizontal for all to maintain the narrative.
+    gsap.to(sections, {
+      xPercent: -100 * (sections.length - 1),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: horizontalContainerRef.current,
+        pin: true,
+        scrub: 1,
+        snap: 1 / (sections.length - 1),
+        // Base the end distance on the total width to scroll
+        end: () => `+=${wrapperRef.current?.offsetWidth || 0}`,
+      }
+    });
+
+  }, { scope: horizontalContainerRef });
+
   if (!project.caseStudy) {
     return (
       <div className="min-h-screen pt-32 pb-16 flex items-center justify-center text-center bg-bg">
@@ -38,11 +66,20 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
 
   const { caseStudy } = project;
   const formattedIndex = (projectIndex + 1).toString().padStart(2, '0');
+  
+  // Calculate how many horizontal panels we have
+  const panels = [
+    { id: 'problem', title: 'The Problem' },
+    { id: 'solution', title: 'The Solution' },
+    { id: 'architecture', title: 'Architecture' },
+    { id: 'behind-build', title: 'Behind the Build' },
+    ...(project.engineeringChallenge || project.iteration || project.learned ? [{ id: 'outcome', title: 'Outcome & Learnings' }] : [])
+  ];
 
   return (
     <article className="min-h-screen bg-bg" style={{ '--project-accent': project.accentColor || 'var(--color-accent-500)' } as React.CSSProperties}>
       
-      {/* 1. Header with Cover Image and Meta Strip */}
+      {/* 1. Header with Cover Image and Meta Strip (Vertical Scroll) */}
       <PageHeader 
         projectIndex={formattedIndex}
         title={project.title}
@@ -66,61 +103,83 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
         <ProjectMetaStrip project={project} />
       </PageHeader>
 
-      {/* 2. Problem */}
-      <CaseStudySection index="01" title="The Problem" background="default" width="narrow">
-        <div className="space-y-6 text-lg border-l-4 border-[var(--project-accent)] pl-6 text-text-secondary">
-          {caseStudy.problemContext.split('\n\n').map((paragraph, i) => (
-            <p key={i}>{paragraph}</p>
-          ))}
+      {/* HORIZONTAL NARRATIVE SECTION */}
+      <div ref={horizontalContainerRef} className="overflow-hidden bg-bg relative">
+        <div 
+          ref={wrapperRef} 
+          className="flex flex-row h-screen" 
+          style={{ width: `${panels.length * 100}vw` }}
+        >
+          {/* Panel 1: Problem */}
+          <section className="horizontal-panel w-screen h-screen flex flex-col justify-center items-center px-6 md:px-24">
+            <div className="max-w-4xl w-full">
+              <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-4 block">01 — The Problem</span>
+              <div className="space-y-6 text-xl md:text-2xl border-l-4 border-[var(--project-accent)] pl-8 py-4 text-text-secondary leading-relaxed">
+                {caseStudy.problemContext.split('\n\n').map((paragraph, i) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Panel 2: Solution */}
+          <section className="horizontal-panel w-screen h-screen flex flex-col justify-center items-center px-6 md:px-24 bg-surface">
+            <div className="max-w-4xl w-full">
+              <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-4 block">02 — The Solution</span>
+              <h3 className="text-3xl md:text-5xl leading-tight text-text-primary font-medium font-display">
+                {project.solution}
+              </h3>
+            </div>
+          </section>
+
+          {/* Panel 3: Architecture */}
+          <section className="horizontal-panel w-screen h-screen flex flex-col justify-center items-center px-6 md:px-12">
+            <div className="max-w-6xl w-full">
+              <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-8 block text-center">03 — Architecture</span>
+              <FlowDiagram nodes={caseStudy.systemDesignSteps} accentColor={project.accentColor} />
+            </div>
+          </section>
+
+          {/* Panel 4: Behind the Build */}
+          <section className="horizontal-panel w-screen h-screen overflow-y-auto overflow-x-hidden flex flex-col py-24 px-6 md:px-24 bg-surface">
+            <div className="max-w-5xl w-full mx-auto my-auto">
+              <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-8 block text-center">04 — Behind the Build</span>
+              <BehindTheBuild project={project} variant="full" />
+            </div>
+          </section>
+
+          {/* Panel 5: Outcome (Optional) */}
+          {(project.engineeringChallenge || project.iteration || project.learned) && (
+            <section className="horizontal-panel w-screen h-screen flex flex-col justify-center items-center px-6 md:px-24">
+              <div className="max-w-4xl w-full">
+                <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-12 block">05 — Outcome & Learnings</span>
+                <div className="space-y-12">
+                  {project.engineeringChallenge && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">The Hardest Part</h3>
+                      <p className="text-xl text-text-secondary leading-relaxed">{project.engineeringChallenge}</p>
+                    </div>
+                  )}
+                  {project.iteration && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">Iteration & Trade-offs</h3>
+                      <p className="text-xl text-text-secondary leading-relaxed">{project.iteration}</p>
+                    </div>
+                  )}
+                  {project.learned && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">Key Takeaway</h3>
+                      <p className="text-xl text-text-secondary leading-relaxed">{project.learned}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
+          )}
         </div>
-      </CaseStudySection>
+      </div>
 
-      {/* 3. Solution */}
-      <CaseStudySection index="02" title="The Solution" background="surface" width="narrow">
-        <p className="text-xl leading-relaxed text-text-primary font-medium">
-          {project.solution}
-        </p>
-      </CaseStudySection>
-
-      {/* 4. Architecture */}
-      <CaseStudySection index="03" title="Architecture" background="default" width="wide">
-        <div className="mt-8">
-          <FlowDiagram nodes={caseStudy.systemDesignSteps} accentColor={project.accentColor} />
-        </div>
-      </CaseStudySection>
-
-      {/* 5. Behind the Build */}
-      <CaseStudySection index="04" title="Behind the Build" background="surface" width="standard">
-        <BehindTheBuild project={project} variant="full" />
-      </CaseStudySection>
-
-      {/* 6. Outcome / Learnings (combined with tech challenges) */}
-      {(project.engineeringChallenge || project.iteration || project.learned) && (
-        <CaseStudySection index="05" title="Outcome & Learnings" background="default" width="narrow">
-          <div className="space-y-12">
-            {project.engineeringChallenge && (
-              <div>
-                <h3 className="text-xl font-bold text-text-primary mb-4 font-display">The Hardest Part</h3>
-                <p className="text-lg text-text-secondary leading-relaxed">{project.engineeringChallenge}</p>
-              </div>
-            )}
-            {project.iteration && (
-              <div>
-                <h3 className="text-xl font-bold text-text-primary mb-4 font-display">Iteration & Trade-offs</h3>
-                <p className="text-lg text-text-secondary leading-relaxed">{project.iteration}</p>
-              </div>
-            )}
-            {project.learned && (
-              <div>
-                <h3 className="text-xl font-bold text-text-primary mb-4 font-display">Key Takeaway</h3>
-                <p className="text-lg text-text-secondary leading-relaxed">{project.learned}</p>
-              </div>
-            )}
-          </div>
-        </CaseStudySection>
-      )}
-
-      {/* Visuals (Screenshots) */}
+      {/* Visuals (Screenshots) - Back to Vertical */}
       {caseStudy.screenshots.length > 0 && (
         <section className="py-24 bg-surface border-t border-border">
           <Container wide>

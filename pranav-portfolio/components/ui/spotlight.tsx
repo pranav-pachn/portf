@@ -1,33 +1,62 @@
 'use client'
 
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
+import { useGSAP } from '@gsap/react'
+import { gsap } from '@/lib/gsap'
 
 export function Spotlight() {
   const divRef = useRef<HTMLDivElement>(null)
-  const [isMounted, setIsMounted] = useState(false)
-  const [position, setPosition] = useState({ x: 0, y: 0 })
-  const [opacity, setOpacity] = useState(0)
+  const spotlightRef = useRef<HTMLDivElement>(null)
+
+  const { contextSafe } = useGSAP({ scope: divRef })
+
+  // Initialize quick setters for high performance tracking
+  const xTo = useRef<gsap.QuickToFunc>();
+  const yTo = useRef<gsap.QuickToFunc>();
 
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
+    if (spotlightRef.current) {
+      // Set initial opacity to 0
+      gsap.set(spotlightRef.current, { opacity: 0 });
+      
+      // Create highly optimized setters
+      xTo.current = gsap.quickTo(spotlightRef.current, "x", { duration: 0.4, ease: "power3" });
+      yTo.current = gsap.quickTo(spotlightRef.current, "y", { duration: 0.4, ease: "power3" });
+    }
+  }, []);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!divRef.current || !isMounted) return
+  const handleMouseMove = contextSafe((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!divRef.current || !xTo.current || !yTo.current) return
 
     const div = divRef.current
     const rect = div.getBoundingClientRect()
+    
+    // We are essentially moving a div with a radial gradient background
+    // Calculate center offset (assuming the spotlight div is large, e.g. 1200x1200px)
+    // We want the center of the gradient to match the mouse position
+    
+    const x = e.clientX - rect.left - 600; // 600 is half the width of our spotlight div
+    const y = e.clientY - rect.top - 600;
 
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top })
-  }
+    xTo.current(x);
+    yTo.current(y);
+  })
 
-  const handleMouseEnter = () => {
-    setOpacity(1)
-  }
+  const handleMouseEnter = contextSafe(() => {
+    gsap.to(spotlightRef.current, {
+      opacity: 1,
+      duration: 0.5,
+      ease: "power2.out"
+    })
+  })
 
-  const handleMouseLeave = () => {
-    setOpacity(0)
-  }
+  const handleMouseLeave = contextSafe(() => {
+    gsap.to(spotlightRef.current, {
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.out"
+    })
+  })
 
   return (
     <div
@@ -37,11 +66,12 @@ export function Spotlight() {
       onMouseLeave={handleMouseLeave}
       className="pointer-events-auto absolute inset-0 z-0 overflow-hidden"
     >
+      {/* We use a large absolute div with a fixed gradient that we translate around for much better performance than updating background styles on every frame */}
       <div
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+        ref={spotlightRef}
+        className="pointer-events-none absolute left-0 top-0 w-[1200px] h-[1200px] opacity-0"
         style={{
-          opacity,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, var(--color-glow), transparent 40%)`,
+          background: `radial-gradient(circle at center, var(--color-glow) 0%, transparent 50%)`,
         }}
       />
     </div>

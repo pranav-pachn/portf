@@ -1,35 +1,20 @@
 'use client';
 
 import { AnimateOnScroll } from '@/components/motion/AnimateOnScroll';
-import { Container } from '@/components/ui/container';
 import { motion } from 'framer-motion';
-
-const skillGroups = [
-  {
-    title: 'Languages & Tools',
-    skills: ['Python', 'SQL', 'C++', 'Java', 'TypeScript', 'JavaScript', 'Git', 'Postman', 'Docker', 'Firebase'],
-  },
-  {
-    title: 'Frameworks & Libraries',
-    skills: ['React', 'Node.js', 'Express.js', 'Flask', 'FastAPI', 'Next.js', 'Bootstrap', 'TailwindCSS', 'Framer Motion'],
-  },
-  {
-    title: 'Core CS Concepts',
-    skills: ['DSA', 'DBMS', 'OOP', 'Operating Systems', 'System Design'],
-  },
-];
+import { EngineeringManuals } from './EngineeringManuals';
 
 const roles = ['DEVELOPER', 'ENGINEER', 'CREATOR /'];
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-0 bg-bg overflow-hidden min-h-screen">
-      {/* Top Split: Roles | Skills */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[70vh]">
+    <section id="about" className="py-0 bg-bg overflow-hidden flex flex-col">
+      {/* Top Split: Roles | Bio */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[50vh] border-b border-border">
         {/* Left — Editorial Roles */}
-        <div className="flex flex-col justify-center px-8 md:px-16 py-20 border-r border-border">
+        <div className="flex flex-col justify-center px-8 md:px-16 py-20 lg:border-r border-border">
           <AnimateOnScroll variant="blur">
-            <div className="mb-12">
+            <div className="mb-4">
               {roles.map((role, i) => (
                 <motion.h2
                   key={role}
@@ -44,9 +29,12 @@ export function AboutSection() {
               ))}
             </div>
           </AnimateOnScroll>
+        </div>
 
-          <AnimateOnScroll variant="fade" delay={0.4}>
-            <div className="space-y-4 max-w-lg">
+        {/* Right — Bio */}
+        <div className="flex flex-col justify-center px-8 md:px-16 py-20 bg-surface">
+          <AnimateOnScroll variant="fade" delay={0.2}>
+            <div className="space-y-6 max-w-xl text-lg">
               <p className="text-text-secondary leading-relaxed">
                 A software engineer passionate about <span className="text-text-primary font-medium">Full-Stack Development</span> focused on building AI-integrated web systems that combine clean user experiences with scalable backend architecture.
               </p>
@@ -56,47 +44,25 @@ export function AboutSection() {
               <p className="text-text-secondary leading-relaxed">
                 I believe great software is not only about writing code, but about understanding problems, making engineering decisions, and creating solutions that are <span className="text-text-primary font-medium">useful, maintainable, and impactful.</span>
               </p>
-              <p className="text-text-secondary leading-relaxed">
-                Currently exploring advanced full-stack engineering, AI applications, and scalable product development while building projects that solve real-world problems.
-              </p>
             </div>
           </AnimateOnScroll>
         </div>
+      </div>
 
-        {/* Right — Skills */}
-        <div className="flex flex-col justify-center px-8 md:px-16 py-20 bg-surface">
-          <AnimateOnScroll variant="blur">
-            <h2 className="font-display font-black text-5xl md:text-6xl text-text-primary mb-12 tracking-tight">
-              Skills
+      {/* Bottom: Engineering Manuals */}
+      <div className="w-full bg-surface pb-32 pt-24 px-4 md:px-8 border-b border-border">
+        <AnimateOnScroll variant="blur">
+          <div className="max-w-6xl mx-auto mb-16 text-center xl:text-left">
+            <h2 className="font-display font-black text-4xl md:text-5xl text-text-primary tracking-tight">
+              Engineering Expertise
             </h2>
-          </AnimateOnScroll>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-10">
-            {skillGroups.map((group, gi) => (
-              <AnimateOnScroll key={group.title} delay={0.1 + gi * 0.1}>
-                <div>
-                  <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-5 pb-2 border-b border-border">
-                    {group.title}
-                  </h3>
-                  <ul className="space-y-3">
-                    {group.skills.map((skill, si) => (
-                      <motion.li
-                        key={skill}
-                        initial={{ opacity: 0, x: 12 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.05 * si + gi * 0.08, duration: 0.4 }}
-                        className="text-sm text-text-secondary hover:text-text-primary transition-colors cursor-default"
-                      >
-                        {skill}
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-              </AnimateOnScroll>
-            ))}
+            <p className="text-text-secondary mt-4 max-w-2xl mx-auto xl:mx-0">
+              My technical foundation spans across the entire product stack.
+            </p>
           </div>
-        </div>
+        </AnimateOnScroll>
+        
+        <EngineeringManuals />
       </div>
     </section>
   );
