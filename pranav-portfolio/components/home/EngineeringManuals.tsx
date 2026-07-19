@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ManualBook } from './ManualBook';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { useGSAP } from '@gsap/react';
+import { gsap } from '@/lib/gsap';
 import { X } from 'lucide-react';
 
 const booksData = [
@@ -51,9 +53,34 @@ export function EngineeringManuals() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [openBookId]);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { contextSafe } = useGSAP({ scope: containerRef });
+
+  useGSAP(() => {
+    if (shouldReduceMotion) return;
+
+    gsap.fromTo('.book-wrapper', {
+      y: 60,
+      opacity: 0,
+      rotate: -3,
+    }, {
+      y: 0,
+      opacity: 1,
+      rotate: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 80%',
+      }
+    });
+  }, { scope: containerRef, dependencies: [shouldReduceMotion] });
+
   return (
     <>
       <div 
+        ref={containerRef}
         className="w-full h-full flex flex-col justify-center items-center py-12 relative z-10"
         style={{ perspective: '2500px' }} // Provides 3D context
       >
@@ -64,17 +91,9 @@ export function EngineeringManuals() {
             const isDimmed = isAnyBookOpen && !isOpen;
 
             return (
-              <motion.div
+              <div
                 key={book.id}
-                initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 40, rotate: -2 }}
-                whileInView={shouldReduceMotion ? {} : { opacity: 1, y: 0, rotate: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{
-                  duration: 0.7,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: index * 0.15,
-                }}
-                className={`relative w-full max-w-[16rem] md:max-w-[18rem] lg:max-w-[20rem] xl:max-w-[22rem] transition-all duration-500 ${isDimmed ? 'opacity-40 grayscale-[30%]' : 'opacity-100'}`}
+                className={`book-wrapper relative w-full max-w-[16rem] md:max-w-[18rem] lg:max-w-[20rem] xl:max-w-[22rem] transition-all duration-500 ${isDimmed ? 'opacity-40 grayscale-[30%]' : 'opacity-100'}`}
                 style={{ zIndex: isOpen ? 50 : 10 }}
               >
                 <ManualBook 
@@ -83,7 +102,7 @@ export function EngineeringManuals() {
                   onToggle={() => setOpenBookId(isOpen ? null : book.id)} 
                   shouldReduceMotion={shouldReduceMotion}
                 />
-              </motion.div>
+              </div>
             );
           })}
         </div>

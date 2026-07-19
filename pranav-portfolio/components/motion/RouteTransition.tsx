@@ -1,69 +1,46 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-
-// Global variable to persist the previous pathname across soft navigations
-let globalPrevPath = '';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 export function RouteTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const shouldReduceMotion = useReducedMotion();
+
+  // On initial mount, we don't want to play the enter animation from a completely black screen
+  // unless we want that effect. Usually we just want to animate the content in.
+  // The sweep is mainly for route changes.
   
-  // Determine transition type synchronously during render
-  let transitionType = 'none';
-  
-  if (globalPrevPath && globalPrevPath !== pathname) {
-    if (globalPrevPath === '/' && pathname.startsWith('/work/')) {
-      transitionType = 'page-turn';
-    } else if (globalPrevPath.startsWith('/work/') && pathname === '/') {
-      transitionType = 'page-turn-reverse';
-    } else if (globalPrevPath.startsWith('/work/') && pathname.startsWith('/work/')) {
-      transitionType = 'light';
-    } else {
-      transitionType = 'light';
-    }
+  if (shouldReduceMotion) {
+    return <div className="w-full h-full relative">{children}</div>;
   }
 
-  // Update global tracking after render
-  useEffect(() => {
-    globalPrevPath = pathname;
-  }, [pathname]);
-
-  const variants = {
-    'page-turn': {
-      initial: { opacity: 0, y: '30vh', scale: 0.95 },
-      animate: { opacity: 1, y: 0, scale: 1 },
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
-    },
-    'page-turn-reverse': {
-      initial: { opacity: 0, y: '-30vh', scale: 0.95 },
-      animate: { opacity: 1, y: 0, scale: 1 },
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
-    },
-    'light': {
-      initial: { opacity: 0, y: 20 },
-      animate: { opacity: 1, y: 0 },
-      transition: { duration: 0.4, ease: 'easeOut' }
-    },
-    'none': {
-      initial: { opacity: 1, y: 0, scale: 1 },
-      animate: { opacity: 1, y: 0, scale: 1 },
-      transition: { duration: 0 }
-    }
-  };
-
-  const selectedVariant = variants[transitionType as keyof typeof variants];
-
   return (
-    <motion.div
-      key={pathname}
-      initial={selectedVariant.initial}
-      animate={selectedVariant.animate}
-      transition={selectedVariant.transition}
-      className="w-full h-full relative"
-    >
-      {children}
-    </motion.div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={pathname}
+        className="w-full h-full relative"
+      >
+        {/* Content Animation */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] } }}
+          exit={{ opacity: 0, y: -20, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
+          className="w-full h-full"
+        >
+          {children}
+        </motion.div>
+
+        {/* The Premium Overlay Sweep */}
+        <motion.div
+          className="fixed inset-0 z-[60] bg-[#0a0a0a] pointer-events-none"
+          initial={{ scaleY: 1, transformOrigin: "bottom" }}
+          animate={{ scaleY: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }}
+          exit={{ scaleY: 1, transformOrigin: "top", transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }}
+        />
+      </motion.div>
+    </AnimatePresence>
   );
 }

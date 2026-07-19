@@ -17,6 +17,8 @@ export interface FeaturedProject {
   accentColor?: string;
   motivation?: string;
   nextImprovement?: string;
+  engineeringFocus?: { label: string; stars: number }[];
+  keyDecision?: string;
   caseStudy?: {
     overview: string;
     problemContext: string;

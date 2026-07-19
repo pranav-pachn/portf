@@ -11,13 +11,14 @@ import * as LucideIcons from 'lucide-react';
 interface FlowDiagramProps {
   nodes: FlowNode[];
   accentColor?: string;
+  disableAnimation?: boolean;
 }
 
-export function FlowDiagram({ nodes, accentColor = 'var(--color-accent-500)' }: FlowDiagramProps) {
+export function FlowDiagram({ nodes, accentColor = 'var(--color-accent-500)', disableAnimation = false }: FlowDiagramProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || disableAnimation) return;
     
     // Create a master timeline linked to scroll
     const tl = gsap.timeline({
@@ -109,7 +110,7 @@ export function FlowDiagram({ nodes, accentColor = 'var(--color-accent-500)' }: 
       }
     });
 
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [disableAnimation] });
 
   return (
     <div 

@@ -48,12 +48,42 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
     if (isOpen) {
       const tl = gsap.timeline();
       
+      // Calculate centering shifts based on current viewport
+      let targetX = 0;
+      let targetY = 0;
+      let targetScale = 1.04; // Default slight pop out
+      
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        // The opened book is 2x width, centered around its left edge (the spine).
+        targetX = (window.innerWidth / 2) - rect.left;
+        targetY = (window.innerHeight / 2) - (rect.top + rect.height / 2);
+        
+        // Ensure the opened book fits on mobile screens by scaling it down if necessary
+        const openWidth = rect.width * 2;
+        const maxWidth = window.innerWidth * 0.9; // 90% of screen width to leave some margin
+        const openHeight = rect.height;
+        const maxHeight = window.innerHeight * 0.8; // 80% of screen height
+        
+        let widthScale = 1.04;
+        let heightScale = 1.04;
+        
+        if (openWidth > maxWidth) {
+          widthScale = maxWidth / openWidth;
+        }
+        if (openHeight > maxHeight) {
+          heightScale = maxHeight / openHeight;
+        }
+        
+        targetScale = Math.min(widthScale, heightScale);
+      }
+
       // 1. Container shift and lift
       tl.to(containerRef.current, {
-        scale: 1.04,
+        scale: targetScale,
         z: 50,
-        y: 0,
-        x: '30%',
+        y: targetY,
+        x: targetX,
         rotateY: 0,
         boxShadow: '0 24px 60px rgba(0,0,0,0.8), 0 0 40px var(--color-glow)',
         duration: 0.6,

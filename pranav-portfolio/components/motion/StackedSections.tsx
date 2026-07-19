@@ -44,7 +44,7 @@ export function StackedSections({ children }: { children: React.ReactNode }) {
             <div
               key={index}
               data-stacked-section="true"
-              className={`sticky w-full ${isLast ? '' : 'mb-[30vh]'}`}
+              className={`sticky w-full ${isLast ? '' : 'mb-[5vh]'}`}
               style={{ zIndex: index + 1, top: 'min(0px, calc(100vh - 100%))' }}
             >
               <div className="w-full bg-bg">
@@ -74,23 +74,6 @@ function StackedSectionItem({
   isLast: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [topOffset, setTopOffset] = React.useState('0px');
-
-  React.useEffect(() => {
-    if (!ref.current) return;
-    const observer = new ResizeObserver(() => {
-      if (!ref.current) return;
-      const height = ref.current.offsetHeight;
-      const vh = window.innerHeight;
-      if (height <= vh) {
-        setTopOffset('0px');
-      } else {
-        setTopOffset(`${vh - height}px`);
-      }
-    });
-    observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
 
   // Track the scroll progress of THIS section's original layout box.
   const { scrollYProgress } = useScroll({
@@ -106,8 +89,8 @@ function StackedSectionItem({
     <div
       ref={ref}
       data-stacked-section="true"
-      className={`sticky w-full ${isLast ? '' : 'mb-[30vh]'}`}
-      style={{ zIndex: index + 1, top: topOffset }}
+      className={`sticky w-full ${isLast ? '' : 'mb-[5vh]'}`}
+      style={{ zIndex: index + 1, top: 'min(0px, calc(100vh - 100%))' }}
     >
       <motion.div
         style={{

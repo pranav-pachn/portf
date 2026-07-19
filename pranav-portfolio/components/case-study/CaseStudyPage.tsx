@@ -27,31 +27,6 @@ interface CaseStudyPageProps {
 }
 
 export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectIndex }: CaseStudyPageProps) {
-  const horizontalContainerRef = useRef<HTMLDivElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    if (!horizontalContainerRef.current || !wrapperRef.current) return;
-
-    const sections = gsap.utils.toArray('.horizontal-panel', wrapperRef.current);
-    
-    // Only apply horizontal scroll on desktop, let it stack naturally on mobile if preferred, 
-    // or keep horizontal for all. We'll do horizontal for all to maintain the narrative.
-    gsap.to(sections, {
-      xPercent: -100 * (sections.length - 1),
-      ease: 'none',
-      scrollTrigger: {
-        trigger: horizontalContainerRef.current,
-        pin: true,
-        scrub: 1,
-        snap: 1 / (sections.length - 1),
-        // Base the end distance on the total width to scroll
-        end: () => `+=${wrapperRef.current?.offsetWidth || 0}`,
-      }
-    });
-
-  }, { scope: horizontalContainerRef });
-
   if (!project.caseStudy) {
     return (
       <div className="min-h-screen pt-32 pb-16 flex items-center justify-center text-center bg-bg">
@@ -94,7 +69,7 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
             src={project.image || ''} 
             alt={`${project.title} Cover`} 
             fill 
-            className="object-cover" 
+            className="object-contain" 
             sizes="100vw"
             priority
           />
@@ -103,80 +78,74 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
         <ProjectMetaStrip project={project} />
       </PageHeader>
 
-      {/* HORIZONTAL NARRATIVE SECTION */}
-      <div ref={horizontalContainerRef} className="overflow-hidden bg-bg relative">
-        <div 
-          ref={wrapperRef} 
-          className="flex flex-row h-screen" 
-          style={{ width: `${panels.length * 100}vw` }}
-        >
-          {/* Panel 1: Problem */}
-          <section className="horizontal-panel w-screen h-screen flex flex-col justify-center items-center px-6 md:px-24">
-            <div className="max-w-4xl w-full">
-              <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-4 block">01 — The Problem</span>
-              <div className="space-y-6 text-xl md:text-2xl border-l-4 border-[var(--project-accent)] pl-8 py-4 text-text-secondary leading-relaxed">
-                {caseStudy.problemContext.split('\n\n').map((paragraph, i) => (
-                  <p key={i}>{paragraph}</p>
-                ))}
+      {/* VERTICAL NARRATIVE SECTION */}
+      <div className="flex flex-col">
+        {/* Panel 1: Problem */}
+        <section className="py-24 px-6 md:px-24 border-b border-border">
+          <div className="max-w-4xl mx-auto">
+            <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-4 block">01 — The Problem</span>
+            <div className="space-y-6 text-xl md:text-2xl border-l-4 border-[var(--project-accent)] pl-8 py-4 text-text-secondary leading-relaxed">
+              {caseStudy.problemContext.split('\n\n').map((paragraph, i) => (
+                <p key={i}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Panel 2: Solution */}
+        <section className="py-24 px-6 md:px-24 bg-surface border-b border-border">
+          <div className="max-w-4xl mx-auto text-center">
+            <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-4 block">02 — The Solution</span>
+            <h3 className="text-3xl md:text-5xl leading-tight text-text-primary font-medium font-display">
+              {project.solution}
+            </h3>
+          </div>
+        </section>
+
+        {/* Panel 3: Architecture */}
+        <section className="py-24 px-6 md:px-12 border-b border-border">
+          <div className="max-w-6xl mx-auto">
+            <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-12 block text-center">03 — Architecture</span>
+            <FlowDiagram nodes={caseStudy.systemDesignSteps} accentColor={project.accentColor} />
+          </div>
+        </section>
+
+        {/* Panel 4: Behind the Build */}
+        <section className="py-24 px-6 md:px-24 bg-surface border-b border-border">
+          <div className="max-w-5xl mx-auto">
+            <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-12 block text-center">04 — Behind the Build</span>
+            <BehindTheBuild project={project} variant="full" />
+          </div>
+        </section>
+
+        {/* Panel 5: Outcome (Optional) */}
+        {(project.engineeringChallenge || project.iteration || project.learned) && (
+          <section className="py-24 px-6 md:px-24 border-b border-border">
+            <div className="max-w-4xl mx-auto">
+              <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-12 block">05 — Outcome & Learnings</span>
+              <div className="space-y-12">
+                {project.engineeringChallenge && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">The Hardest Part</h3>
+                    <p className="text-xl text-text-secondary leading-relaxed">{project.engineeringChallenge}</p>
+                  </div>
+                )}
+                {project.iteration && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">Iteration & Trade-offs</h3>
+                    <p className="text-xl text-text-secondary leading-relaxed">{project.iteration}</p>
+                  </div>
+                )}
+                {project.learned && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">Key Takeaway</h3>
+                    <p className="text-xl text-text-secondary leading-relaxed">{project.learned}</p>
+                  </div>
+                )}
               </div>
             </div>
           </section>
-
-          {/* Panel 2: Solution */}
-          <section className="horizontal-panel w-screen h-screen flex flex-col justify-center items-center px-6 md:px-24 bg-surface">
-            <div className="max-w-4xl w-full">
-              <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-4 block">02 — The Solution</span>
-              <h3 className="text-3xl md:text-5xl leading-tight text-text-primary font-medium font-display">
-                {project.solution}
-              </h3>
-            </div>
-          </section>
-
-          {/* Panel 3: Architecture */}
-          <section className="horizontal-panel w-screen h-screen flex flex-col justify-center items-center px-6 md:px-12">
-            <div className="max-w-6xl w-full">
-              <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-8 block text-center">03 — Architecture</span>
-              <FlowDiagram nodes={caseStudy.systemDesignSteps} accentColor={project.accentColor} />
-            </div>
-          </section>
-
-          {/* Panel 4: Behind the Build */}
-          <section className="horizontal-panel w-screen h-screen overflow-y-auto overflow-x-hidden flex flex-col py-24 px-6 md:px-24 bg-surface">
-            <div className="max-w-5xl w-full mx-auto my-auto">
-              <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-8 block text-center">04 — Behind the Build</span>
-              <BehindTheBuild project={project} variant="full" />
-            </div>
-          </section>
-
-          {/* Panel 5: Outcome (Optional) */}
-          {(project.engineeringChallenge || project.iteration || project.learned) && (
-            <section className="horizontal-panel w-screen h-screen flex flex-col justify-center items-center px-6 md:px-24">
-              <div className="max-w-4xl w-full">
-                <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-12 block">05 — Outcome & Learnings</span>
-                <div className="space-y-12">
-                  {project.engineeringChallenge && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">The Hardest Part</h3>
-                      <p className="text-xl text-text-secondary leading-relaxed">{project.engineeringChallenge}</p>
-                    </div>
-                  )}
-                  {project.iteration && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">Iteration & Trade-offs</h3>
-                      <p className="text-xl text-text-secondary leading-relaxed">{project.iteration}</p>
-                    </div>
-                  )}
-                  {project.learned && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">Key Takeaway</h3>
-                      <p className="text-xl text-text-secondary leading-relaxed">{project.learned}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </section>
-          )}
-        </div>
+        )}
       </div>
 
       {/* Visuals (Screenshots) - Back to Vertical */}
@@ -189,7 +158,7 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
                 {caseStudy.screenshots.map((shot, i) => (
                   <figure key={i} className="flex flex-col items-center text-center">
                     <div className="relative w-full rounded-xl overflow-hidden border border-border shadow-lg aspect-[16/10] mb-6">
-                      <Image src={shot.src} alt={shot.alt} fill className="object-cover" />
+                      <Image src={shot.src} alt={shot.alt} fill className="object-contain" />
                     </div>
                     <figcaption className="text-text-secondary text-sm font-medium">
                       {shot.caption}

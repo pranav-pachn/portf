@@ -57,7 +57,7 @@ export function NextProjectCard({ project, index }: NextProjectCardProps) {
                     src={project.image}
                     alt={project.title}
                     fill
-                    className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                    className="object-contain transform group-hover:scale-105 transition-transform duration-700 ease-out"
                     sizes="(max-width: 768px) 100vw, 40vw"
                   />
                 ) : (

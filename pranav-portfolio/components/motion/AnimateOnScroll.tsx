@@ -3,11 +3,11 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, ReactNode } from 'react';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { fadeIn, slideUp, scaleIn, slideRight, blurIn } from './variants';
+import { fadeIn, slideUp, scaleIn, slideRight, blurIn, maskReveal } from './variants';
 
 interface Props {
   children: ReactNode;
-  variant?: 'fade' | 'slide' | 'scale' | 'slideRight' | 'blur';
+  variant?: 'fade' | 'slide' | 'scale' | 'slideRight' | 'blur' | 'maskReveal';
   className?: string;
   delay?: number;
 }
@@ -22,6 +22,7 @@ export function AnimateOnScroll({ children, variant = 'slide', className = '', d
   if (variant === 'scale') selectedVariant = scaleIn;
   if (variant === 'slideRight') selectedVariant = slideRight;
   if (variant === 'blur') selectedVariant = blurIn;
+  if (variant === 'maskReveal') selectedVariant = maskReveal;
 
   if (shouldReduceMotion) {
     return <div className={className}>{children}</div>;

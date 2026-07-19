@@ -107,3 +107,12 @@ export const staggerContainer: Variants = {
     },
   },
 };
+
+export const maskReveal: Variants = {
+  hidden: { clipPath: 'inset(100% 0 0 0)', y: 20 },
+  visible: { 
+    clipPath: 'inset(0% 0 0 0)', 
+    y: 0,
+    transition: { duration: 0.7, ease: TIMING.ease } 
+  },
+};

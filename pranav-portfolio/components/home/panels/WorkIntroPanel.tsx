@@ -8,18 +8,18 @@ export function WorkIntroPanel() {
   return (
     <section id="work" className="py-24 bg-surface min-h-screen flex items-center justify-center text-center">
       <Container>
-        <AnimateOnScroll variant="scale">
-          <div className="flex flex-col items-center">
-            <span className="text-sm font-bold text-accent-500 uppercase tracking-widest mb-6">
-              Selected Work
-            </span>
-            <GsapTitleReveal as="h2" className="text-4xl md:text-6xl lg:text-7xl font-display font-black text-text-primary tracking-tight max-w-4xl mb-8">
-              AI-integrated systems built to ship, not just to demo.
-            </GsapTitleReveal>
-            <div className="flex items-center space-x-4 text-text-muted">
-              <span className="w-12 h-px bg-border"></span>
-              <span className="text-sm font-medium uppercase tracking-widest">3 Featured Projects</span>
-              <span className="w-12 h-px bg-border"></span>
+        <AnimateOnScroll variant="maskReveal" delay={0.1}>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full max-w-6xl mx-auto border-t border-border/50 pt-16 md:pt-24 gap-8">
+            <div className="w-full md:w-1/3">
+              <span className="text-xs font-bold text-accent-500 uppercase tracking-widest block mb-4 md:mb-0">
+                (Engineering Case Studies)
+              </span>
+            </div>
+            
+            <div className="w-full md:w-2/3">
+              <GsapTitleReveal as="h2" className="text-2xl md:text-3xl lg:text-4xl text-text-primary leading-snug font-medium max-w-3xl">
+                Building AI-powered products that combine thoughtful design, robust engineering, and intelligent workflows to solve real-world problems.
+              </GsapTitleReveal>
             </div>
           </div>
         </AnimateOnScroll>

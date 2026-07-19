@@ -59,7 +59,7 @@ export function ProjectRow({ project, index }: ProjectRowProps) {
                 src={project.image}
                 alt={project.title}
                 fill
-                className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-[var(--ease-out)]"
+                className="object-contain transform group-hover:scale-105 transition-transform duration-700 ease-[var(--ease-out)]"
                 sizes="(max-width: 768px) 100vw, 60vw"
               />
             ) : (

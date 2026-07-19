@@ -4,5 +4,6 @@ export {
   scaleIn,
   slideRight,
   blurIn,
-  staggerContainer
+  staggerContainer,
+  maskReveal
 } from '@/lib/animations';
