@@ -20,7 +20,7 @@ export function PageHeader({ projectIndex, title, subtitle, children }: PageHead
       
       {/* Oversized background number anchor */}
       {projectIndex && (
-        <div className="absolute -top-10 -right-10 text-[16rem] md:text-[24rem] font-display font-bold text-border/20 pointer-events-none select-none z-0">
+        <div className="absolute -top-10 -right-10 text-[16rem] md:text-[24rem] font-mono font-light text-border/20 pointer-events-none select-none z-0 tracking-widest">
           {projectIndex}
         </div>
       )}
@@ -30,13 +30,13 @@ export function PageHeader({ projectIndex, title, subtitle, children }: PageHead
           <AnimatedText
             as="h1"
             text={title}
-            className="text-5xl md:text-7xl font-display font-bold text-text-primary tracking-tight mb-8 leading-[1.1]"
+            className="text-5xl md:text-7xl font-sans font-bold text-text-primary tracking-[-0.04em] mb-8 leading-[1]"
             delay={0.2}
           />
 
           {subtitle && (
             <AnimateOnScroll variant="slide" delay={0.6}>
-              <p className="text-xl md:text-2xl text-text-secondary font-medium leading-relaxed max-w-3xl mb-12">
+              <p className="text-[20px] text-text-secondary font-normal leading-[1.6] max-w-[34rem] mb-12">
                 {subtitle}
               </p>
             </AnimateOnScroll>

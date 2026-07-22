@@ -6,7 +6,7 @@ export const featuredProjects: FeaturedProject[] = [
     title: 'SpecForge',
     category: 'AI Engineering Platform',
     year: '2026',
-    tagline: 'Transforming ideas into production-ready engineering workflows using AI-powered planning, specification generation, and execution pipelines.',
+    tagline: 'AI engineering workspace that converts product ideas into structured specifications, development tasks, and implementation plans.',
     problem: 'Teams struggle to translate ideas into actionable engineering plans without losing context or introducing ambiguity.',
     solution: 'An AI-driven platform that orchestrates LLM workflows to generate structured product requirements, database schemas, and execution plans.',
     stack: ['Next.js', 'TypeScript', 'Supabase', 'Tailwind', 'AI SDK', 'OpenRouter', 'Gemini'],
@@ -27,7 +27,7 @@ export const featuredProjects: FeaturedProject[] = [
     ],
     keyDecision: 'Separated AI orchestration from the UI layer to allow multiple model providers and future agent workflows without changing the frontend.',
     caseStudy: {
-      overview: 'SpecForge is a flagship AI engineering platform.',
+      overview: 'SpecForge helps convert product ideas into structured specifications, development tasks, and implementation plans using AI-assisted workflows.',
       problemContext: 'The gap between product ideas and engineering execution is often filled with ambiguity. SpecForge bridges this gap by automatically generating specifications, system designs, and execution plans from natural language.',
       systemDesignSteps: [],
       screenshots: []
@@ -36,9 +36,9 @@ export const featuredProjects: FeaturedProject[] = [
   {
     id: 'jobshield-ai',
     title: 'JobShield AI',
-    category: 'AI Fraud Detection Platform',
+    category: 'AI Security Platform',
     year: '2025',
-    tagline: 'AI-powered platform that analyzes job listings, recruiter profiles, and suspicious signals to detect recruitment scams with explainable risk analysis.',
+    tagline: 'Analyzes job postings and recruiter information to identify potential recruitment scams using heuristics and AI-assisted risk scoring.',
     problem: 'Job seekers face fraudulent recruiter outreach with no reliable way to verify legitimacy before engaging.',
     solution: 'Multi-layer verification engine combining domain analysis, heuristic pattern matching, NLP scoring, and risk aggregation into an explainable fraud report.',
     stack: ['React', 'Next.js', 'TypeScript', 'FastAPI', 'TensorFlow', 'NLP', 'Explainable AI'],
@@ -64,7 +64,7 @@ export const featuredProjects: FeaturedProject[] = [
     ],
     keyDecision: 'Built explainability into the output layer natively rather than bolting it on as an afterthought, ensuring users always understand the "why" behind a risk score.',
     caseStudy: {
-      overview: 'JobShield AI is a multi-layer fraud detection platform that combines domain analysis, heuristic scoring, and NLP to protect job seekers from sophisticated recruitment scams.',
+      overview: 'JobShield AI helps job seekers verify recruiter outreach and identify recruitment scams by combining domain verification, heuristic pattern matching, and NLP risk scoring.',
       problemContext: 'The modern job search landscape is plagued by sophisticated recruitment scams. Fraudsters create convincing replica domains, spoof legitimate recruiting agencies, and use social engineering to extract personal information or advance fees from desperate job seekers.\n\nExisting solutions either rely on static blacklists (which are easily bypassed by new domains) or opaque AI models that simply output a binary "safe/unsafe" score without explaining why. Job seekers need a way to verify outreach legitimacy in real-time, with clear explanations of what exactly is suspicious about a given message or sender.',
       systemDesignSteps: [
         { id: 'input', label: 'Input Processing', caption: 'Email/Message Text', icon: 'Mail' },
@@ -82,9 +82,9 @@ export const featuredProjects: FeaturedProject[] = [
   {
     id: 'matrixos',
     title: 'MatrixOS',
-    category: 'Productivity Operating System',
+    category: 'Productivity Workspace',
     year: '2026',
-    tagline: 'A modern workspace that unifies notes, tasks, projects, AI assistants, and workflows into a single productivity platform.',
+    tagline: 'Workspace designed to organize projects, notes, and AI-assisted workflows in one place.',
     problem: 'Knowledge workers constantly context-switch between disparate tools for notes, tasks, and project management.',
     solution: 'A unified operating system for productivity with a powerful block-based editor and embedded AI workflows.',
     stack: ['React', 'Next.js', 'TypeScript', 'PostgreSQL', 'Tailwind CSS', 'WebSockets'],
@@ -107,9 +107,9 @@ export const featuredProjects: FeaturedProject[] = [
   {
     id: 'agrimitra360',
     title: 'AgriMitra360',
-    category: 'AI Agriculture Assistant',
+    category: 'Computer Vision',
     year: '2025–2026',
-    tagline: 'Intelligent farming assistant using computer vision and AI to diagnose crop diseases and deliver multilingual recommendations.',
+    tagline: 'Helps farmers identify crop diseases and receive actionable recommendations using computer vision and multilingual NLP.',
     problem: 'Farmers in multilingual regions lack accessible, real-time crop disease identification and actionable treatment guidance.',
     solution: 'Image-based crop analysis pipeline using FastAPI inference, Grad-CAM explainability overlays, and multilingual recommendation engine.',
     stack: ['React', 'FastAPI', 'TensorFlow', 'Grad-CAM', 'MongoDB', 'Multilingual NLP'],
@@ -134,7 +134,7 @@ export const featuredProjects: FeaturedProject[] = [
     ],
     keyDecision: 'Chose Grad-CAM to give farmers visual proof of which leaf regions triggered the diagnosis, significantly increasing trust in the AI.',
     caseStudy: {
-      overview: 'AgriMitra360 is an intelligent crop disease diagnosis platform tailored for multilingual agricultural communities, delivering real-time actionable insights with visual explainability.',
+      overview: 'AgriMitra360 analyzes crop images to identify diseases and generate multilingual treatment recommendations using computer vision models.',
       problemContext: 'In many developing agricultural regions, farmers face devastating crop losses due to delayed disease identification. Access to agricultural experts is limited, and existing digital tools often rely on text-heavy interfaces in a single language.\n\nFurthermore, when farmers use AI tools that simply return a text diagnosis ("Late Blight: 89%"), they often distrust the result. They need to see exactly why the AI made that decision and what immediate, localized steps they should take in their native language.',
       systemDesignSteps: [
         { id: 'image', label: 'Crop Image', caption: 'Mobile Upload', icon: 'Camera' },
@@ -151,9 +151,9 @@ export const featuredProjects: FeaturedProject[] = [
   {
     id: 'citysketch',
     title: 'CitySketch',
-    category: 'Interactive Mapping Platform',
+    category: 'Interactive Mapping',
     year: '2026',
-    tagline: 'Map-based application combining location intelligence with modern visualization and responsive user experience.',
+    tagline: 'Interactive mapping application for exploring and visualizing urban locations through a responsive interface.',
     problem: 'Urban planning prototyping requires specialized tools — most students and researchers lack accessible ways to generate and evaluate city layouts from simple descriptions.',
     solution: 'Natural-language-driven layout engine using React + Three.js that generates scored 2D/3D city plans constrained by real-world geographic data via Geoapify and Overpass API.',
     stack: ['React', 'Three.js', 'TypeScript', 'Geoapify', 'Overpass API'],
@@ -177,7 +177,7 @@ export const featuredProjects: FeaturedProject[] = [
     title: 'ModernMart',
     category: 'E-Commerce',
     year: '2026',
-    tagline: 'Full-featured e-commerce platform with auth flows, admin dashboards, and CI-backed quality',
+    tagline: 'End-to-end e-commerce platform with Supabase auth, role-based admin, and a CI pipeline backed by comprehensive tests.',
     problem: 'Most student e-commerce projects lack real production patterns — no auth, no admin workflows, no testing, no CI.',
     solution: 'End-to-end e-commerce application with Supabase authentication, role-based admin panel, comprehensive test suite, and CI pipeline.',
     stack: ['React', 'Next.js', 'TypeScript', 'Supabase', 'Node.js', 'Tailwind CSS', 'Jest', 'CI/CD'],
@@ -196,7 +196,7 @@ export const featuredProjects: FeaturedProject[] = [
     image: '/projects/modernmart.png',
     accentColor: 'hsl(270, 60%, 55%)',
     caseStudy: {
-      overview: 'ModernMart is a production-ready e-commerce platform that emphasizes robust software engineering practices, including authentication, comprehensive testing, and CI/CD pipelines.',
+      overview: 'ModernMart provides an end-to-end e-commerce storefront with customer and admin workflows built using Supabase authentication, optimistic UI state synchronization, and automated CI pipelines.',
       problemContext: 'Many portfolio e-commerce projects focus solely on frontend visuals—displaying a grid of products and a cart—while ignoring the complex realities of building a real store.\n\nWithout authentication, role-based access control, reliable database syncing, and automated testing, a store cannot scale or be maintained. The challenge was to build an application that not only looked good but incorporated the strict engineering standards expected in industry.',
       systemDesignSteps: [
         { id: 'client', label: 'Next.js Client', caption: 'Optimistic UI', icon: 'Monitor' },
@@ -215,7 +215,7 @@ export const featuredProjects: FeaturedProject[] = [
     title: 'Misinfo Analyzer',
     category: 'AI / Trust & Safety',
     year: '2026',
-    tagline: 'Explainable AI platform for real-time misinformation detection in text and news URLs',
+    tagline: 'Classifies text and live news URLs as misinformation using NLP, with transparent confidence scoring and explainability layers.',
     problem: 'Users encounter misinformation daily but lack accessible, transparent tools to verify claims — most AI detectors are black boxes.',
     solution: 'Full-stack analysis platform combining NLP classification with explainability layers, supporting both raw text and live URL verification with transparent confidence scoring.',
     stack: ['React', 'Python', 'NLP', 'Explainable AI', 'FastAPI'],

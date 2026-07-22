@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
+import { cn } from '@/lib/utils';
 
 interface BookData {
   id: string;
@@ -97,7 +98,6 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
         ease: 'power3.inOut'
       }, 0.1);
 
-      // 3. Stagger skills fade in (Spread 1)
       const skills = skillsSpread1Ref.current?.querySelectorAll('li');
       if (skills) {
         tl.fromTo(skills, {
@@ -107,14 +107,13 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
           opacity: 1,
           x: 0,
           duration: 0.4,
-          stagger: 0.08,
+          stagger: 0.05,
           ease: 'power2.out'
-        }, 0.6); // Start as cover finishes opening
+        }, 0.5);
       }
     } else {
       const tl = gsap.timeline();
-      
-      // Reverse animations
+
       tl.to(coverRef.current, {
         rotateY: 0,
         duration: 0.6,
@@ -132,7 +131,6 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
         ease: 'power2.out'
       }, 0.2);
       
-      // Hide skills
       const skills = skillsSpread1Ref.current?.querySelectorAll('li');
       if (skills) {
         gsap.set(skills, { opacity: 0, x: 10 });
@@ -153,7 +151,6 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
         ease: 'power3.inOut'
       }, 0);
 
-      // Animate skills on spread 2
       const leftSkills = skillsSpread2LeftRef.current?.querySelectorAll('li');
       const rightSkills = skillsSpread2RightRef.current?.querySelectorAll('li');
       
@@ -169,7 +166,7 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
           ease: 'power2.out'
         }, 0.4);
       }
-    } else if (isOpen) { // Only animate back if book is open, otherwise let parent close handle it
+    } else if (isOpen) {
       const tl = gsap.timeline();
       
       tl.to(flipPageRef.current, {
@@ -184,7 +181,6 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
         gsap.set([...Array.from(leftSkills), ...Array.from(rightSkills)], { opacity: 0, x: 10 });
       }
     } else {
-      // Instant reset if closed
       gsap.set(flipPageRef.current, { rotateY: 0 });
     }
   }, [pageTurned, shouldReduceMotion]);
@@ -225,6 +221,26 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
       className={`relative w-full aspect-[2/3] cursor-pointer group`}
       style={{ transformStyle: 'preserve-3d' }}
     >
+      {/* Book Paper Thickness Layers behind closed cover */}
+      <div 
+        className={cn(
+          "absolute inset-0 bg-[#f0ede6] rounded-r-md rounded-l-sm border-r border-y border-[#dcd8ce] transition-opacity duration-500 pointer-events-none -z-10 translate-x-[3px] translate-y-[2px]",
+          isOpen ? "opacity-0" : "opacity-100"
+        )} 
+      />
+      <div 
+        className={cn(
+          "absolute inset-0 bg-[#e6e2da] rounded-r-md rounded-l-sm border-r border-y border-[#d0ccc0] transition-opacity duration-500 pointer-events-none -z-20 translate-x-[6px] translate-y-[4px]",
+          isOpen ? "opacity-0" : "opacity-100"
+        )} 
+      />
+      <div 
+        className={cn(
+          "absolute inset-0 bg-[#dcd8ce] rounded-r-md rounded-l-sm border-r border-y border-[#c4c0b2] transition-opacity duration-500 pointer-events-none -z-30 translate-x-[9px] translate-y-[6px] shadow-lg",
+          isOpen ? "opacity-0" : "opacity-100"
+        )} 
+      />
+
       {/* 
         BOOK BASE (Spread 2 Right - Workflow) 
         This is the very back of the book. Always facing forward (0deg).
@@ -358,7 +374,7 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
             </span>
             
             <div>
-              <h3 className="font-display text-4xl md:text-5xl font-black text-white leading-[1.1] whitespace-pre-line tracking-tight">
+              <h3 className="font-sans text-4xl md:text-5xl font-bold text-white leading-[1] tracking-[-0.04em] whitespace-pre-line">
                 {book.title}
               </h3>
               <div className="w-12 h-[2px] bg-accent-500 mt-6" />
@@ -381,7 +397,7 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
           <div className="flex-1 flex flex-col justify-center">
             {isOpen && !pageTurned && (
               <div className="animate-fade-in-up" style={{ animationDelay: '400ms', animationDuration: '600ms', animationFillMode: 'both' }}>
-                <h4 className="font-display text-2xl font-bold mb-6 tracking-tight text-[#0d0d0d]">
+                <h4 className="font-sans text-2xl font-bold tracking-[-0.03em] mb-6 text-[#0d0d0d]">
                   {book.title.replace('\n', ' ')}
                 </h4>
                 <p className="text-sm leading-relaxed text-[#525252] font-medium">

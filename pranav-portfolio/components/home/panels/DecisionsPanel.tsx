@@ -37,10 +37,10 @@ export function DecisionsPanel() {
           {decisions.map((decision, index) => (
             <AnimateOnScroll key={decision.title} delay={0.1 + index * 0.1}>
               <Card className="h-full p-8 bg-bg border-t-4 shadow-sm" style={{ borderTopColor: 'var(--color-accent-500)' }}>
-                <h3 className="text-xl font-bold font-display text-text-primary mb-4">
+                <h3 className="text-xl font-bold font-sans tracking-[-0.03em] text-text-primary mb-4">
                   {decision.title}
                 </h3>
-                <p className="text-sm text-text-secondary leading-relaxed">
+                <p className="text-sm text-text-secondary leading-[1.6] font-normal max-w-[34rem]">
                   {decision.desc}
                 </p>
               </Card>

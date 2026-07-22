@@ -31,7 +31,7 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
     return (
       <div className="min-h-screen pt-32 pb-16 flex items-center justify-center text-center bg-bg">
         <Container>
-          <h1 className="text-4xl font-display font-bold mb-4 text-text-primary">Case Study Coming Soon</h1>
+          <h1 className="text-4xl font-sans font-bold tracking-[-0.04em] mb-4 text-text-primary">Case Study Coming Soon</h1>
           <p className="text-text-secondary mb-8">The deep dive for {project.title} is currently being written.</p>
           <Button href="/#work" variant="secondary" icon={<ArrowLeft className="w-4 h-4 order-first mr-2" />}>Back to Projects</Button>
         </Container>
@@ -70,7 +70,7 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
             alt={`${project.title} Cover`} 
             fill 
             className="object-contain" 
-            sizes="100vw"
+            sizes="(max-width: 768px) 95vw, (max-width: 1200px) 80vw, 1200px"
             priority
           />
         </CursorHover>
@@ -83,8 +83,8 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
         {/* Panel 1: Problem */}
         <section className="py-24 px-6 md:px-24 border-b border-border">
           <div className="max-w-4xl mx-auto">
-            <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-4 block">01 — The Problem</span>
-            <div className="space-y-6 text-xl md:text-2xl border-l-4 border-[var(--project-accent)] pl-8 py-4 text-text-secondary leading-relaxed">
+            <span className="font-mono text-[var(--project-accent)] font-semibold tracking-[0.14em] uppercase text-[13px] mb-4 block">01 — The Problem</span>
+            <div className="space-y-6 text-xl md:text-2xl border-l-4 border-[var(--project-accent)] pl-8 py-4 text-text-secondary leading-[1.6] font-normal">
               {caseStudy.problemContext.split('\n\n').map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
               ))}
@@ -95,8 +95,8 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
         {/* Panel 2: Solution */}
         <section className="py-24 px-6 md:px-24 bg-surface border-b border-border">
           <div className="max-w-4xl mx-auto text-center">
-            <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-4 block">02 — The Solution</span>
-            <h3 className="text-3xl md:text-5xl leading-tight text-text-primary font-medium font-display">
+            <span className="font-mono text-[var(--project-accent)] font-semibold tracking-[0.14em] uppercase text-[13px] mb-4 block">02 — The Solution</span>
+            <h3 className="text-3xl md:text-[48px] leading-[1.1] tracking-[-0.04em] text-text-primary font-bold font-sans">
               {project.solution}
             </h3>
           </div>
@@ -105,7 +105,7 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
         {/* Panel 3: Architecture */}
         <section className="py-24 px-6 md:px-12 border-b border-border">
           <div className="max-w-6xl mx-auto">
-            <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-12 block text-center">03 — Architecture</span>
+            <span className="font-mono text-[var(--project-accent)] font-semibold tracking-[0.14em] uppercase text-[13px] mb-12 block text-center">03 — Architecture</span>
             <FlowDiagram nodes={caseStudy.systemDesignSteps} accentColor={project.accentColor} />
           </div>
         </section>
@@ -113,7 +113,7 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
         {/* Panel 4: Behind the Build */}
         <section className="py-24 px-6 md:px-24 bg-surface border-b border-border">
           <div className="max-w-5xl mx-auto">
-            <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-12 block text-center">04 — Behind the Build</span>
+            <span className="font-mono text-[var(--project-accent)] font-semibold tracking-[0.14em] uppercase text-[13px] mb-12 block text-center">04 — Behind the Build</span>
             <BehindTheBuild project={project} variant="full" />
           </div>
         </section>
@@ -122,24 +122,24 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
         {(project.engineeringChallenge || project.iteration || project.learned) && (
           <section className="py-24 px-6 md:px-24 border-b border-border">
             <div className="max-w-4xl mx-auto">
-              <span className="text-[var(--project-accent)] font-bold tracking-widest uppercase text-sm mb-12 block">05 — Outcome & Learnings</span>
+              <span className="font-mono text-[var(--project-accent)] font-semibold tracking-[0.14em] uppercase text-[13px] mb-12 block">05 — Outcome & Learnings</span>
               <div className="space-y-12">
                 {project.engineeringChallenge && (
                   <div>
-                    <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">The Hardest Part</h3>
-                    <p className="text-xl text-text-secondary leading-relaxed">{project.engineeringChallenge}</p>
+                    <h3 className="text-2xl font-bold text-text-primary mb-4 font-sans tracking-[-0.03em]">The Hardest Part</h3>
+                    <p className="text-xl text-text-secondary leading-[1.6] font-normal">{project.engineeringChallenge}</p>
                   </div>
                 )}
                 {project.iteration && (
                   <div>
-                    <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">Iteration & Trade-offs</h3>
-                    <p className="text-xl text-text-secondary leading-relaxed">{project.iteration}</p>
+                    <h3 className="text-2xl font-bold text-text-primary mb-4 font-sans tracking-[-0.03em]">Iteration & Trade-offs</h3>
+                    <p className="text-xl text-text-secondary leading-[1.6] font-normal">{project.iteration}</p>
                   </div>
                 )}
                 {project.learned && (
                   <div>
-                    <h3 className="text-2xl font-bold text-text-primary mb-4 font-display">Key Takeaway</h3>
-                    <p className="text-xl text-text-secondary leading-relaxed">{project.learned}</p>
+                    <h3 className="text-2xl font-bold text-text-primary mb-4 font-sans tracking-[-0.03em]">Key Takeaway</h3>
+                    <p className="text-xl text-text-secondary leading-[1.6] font-normal">{project.learned}</p>
                   </div>
                 )}
               </div>

@@ -19,9 +19,27 @@ export function ProjectMetaStrip({ project }: ProjectMetaStripProps) {
           <span className="text-xs uppercase tracking-wider text-text-muted font-bold mb-1">
             {item.label}
           </span>
-          <span className="text-sm font-medium text-text-primary">
-            {item.value}
-          </span>
+          {item.label === 'Stack' ? (
+            <div className="flex flex-wrap gap-1.5 mt-0.5">
+              {project.stack.slice(0, 4).map((tech) => (
+                <span
+                  key={tech}
+                  className="px-2.5 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide text-text-secondary bg-surface rounded-md border border-border/80 hover:border-[var(--project-accent)] hover:bg-[var(--project-accent)]/10 transition-colors duration-200"
+                >
+                  {tech}
+                </span>
+              ))}
+              {project.stack.length > 4 && (
+                <span className="px-2 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide text-text-muted bg-surface/50 rounded-md border border-border/40">
+                  +{project.stack.length - 4}
+                </span>
+              )}
+            </div>
+          ) : (
+            <span className="text-sm font-medium text-text-primary">
+              {item.value}
+            </span>
+          )}
         </div>
       ))}
 

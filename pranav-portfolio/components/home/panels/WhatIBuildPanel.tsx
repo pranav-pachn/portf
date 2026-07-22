@@ -10,22 +10,22 @@ export function WhatIBuildPanel() {
   const items = [
     {
       title: 'AI-integrated web products',
-      desc: 'Seamlessly embedding LLMs and ML models into user-facing applications.',
+      desc: 'Integrating LLMs and ML models into web applications — from API design to the UI that wraps them.',
       icon: <Brain className="w-6 h-6" />
     },
     {
       title: 'Full-stack systems',
-      desc: 'Architecting robust data models, APIs, and scalable infrastructure.',
+      desc: 'Designing data models, building REST/streaming APIs, and wiring up databases and auth layers.',
       icon: <Layers className="w-6 h-6" />
     },
     {
       title: 'Polished product interfaces',
-      desc: 'Crafting responsive, accessible, and highly interactive user experiences.',
+      desc: 'Building responsive, interactive UIs with attention to motion, accessibility, and performance.',
       icon: <Layout className="w-6 h-6" />
     },
     {
       title: 'Startup-minded execution',
-      desc: 'Moving fast with a focus on product value, user needs, and quick iteration.',
+      desc: 'Shipping fast with a bias toward product value — iterating based on real use, not assumptions.',
       icon: <Zap className="w-6 h-6" />
     }
   ];
@@ -49,10 +49,10 @@ export function WhatIBuildPanel() {
                 <div className="w-12 h-12 rounded-lg bg-surface flex items-center justify-center text-accent-500 mb-6 group-hover:scale-110 transition-transform duration-300">
                   {item.icon}
                 </div>
-                <h3 className="text-xl font-bold font-display text-text-primary mb-3">
+                <h3 className="text-xl font-bold font-sans tracking-[-0.03em] text-text-primary mb-3">
                   {item.title}
                 </h3>
-                <p className="text-sm text-text-secondary leading-relaxed">
+                <p className="text-sm text-text-secondary leading-[1.6] font-normal max-w-[34rem]">
                   {item.desc}
                 </p>
               </Card>

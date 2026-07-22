@@ -9,10 +9,10 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
           {/* Left Side */}
           <div className="flex flex-col gap-2">
-            <span className="font-display font-bold text-xl text-text-primary">
+            <span className="font-sans font-bold tracking-[-0.03em] text-xl text-text-primary">
               Pranav.
             </span>
-            <span className="text-sm text-text-secondary font-medium">
+            <span className="text-sm text-text-secondary font-normal">
               Software Engineer - Full-Stack Developer
             </span>
           </div>
@@ -25,7 +25,7 @@ export function Footer() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+                className="text-sm font-normal text-text-secondary hover:text-text-primary transition-colors"
               >
                 {link.label}
               </Link>
@@ -35,7 +35,7 @@ export function Footer() {
 
         {/* Bottom Note */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-border/50">
-          <span className="text-xs text-text-muted">
+          <span className="font-mono text-xs font-light text-text-muted tracking-wide">
             &copy; {new Date().getFullYear()} Pranav Pachunoori
           </span>
         </div>

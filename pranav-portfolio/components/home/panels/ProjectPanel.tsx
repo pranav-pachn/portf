@@ -98,7 +98,7 @@ export function ProjectPanel({ project, index }: ProjectPanelProps) {
           <div className="mb-6 md:mb-10">
              <span 
                ref={indexRef}
-               className="text-[6rem] md:text-[10rem] leading-none font-display font-black text-border/40 select-none block"
+               className="text-[6rem] md:text-[10rem] leading-none font-mono font-light text-border/40 select-none block tracking-widest"
              >
                {formattedIndex}
              </span>
@@ -123,11 +123,11 @@ export function ProjectPanel({ project, index }: ProjectPanelProps) {
                     alt={project.title}
                     fill
                     className="object-contain"
-                    sizes="100vw"
+                    sizes="(max-width: 768px) 95vw, (max-width: 1200px) 70vw, 800px"
                     quality={90}
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-[var(--project-accent)]/30 font-display text-2xl font-bold">
+                  <div className="w-full h-full flex items-center justify-center text-[var(--project-accent)]/30 font-sans tracking-[-0.03em] text-2xl font-bold">
                     {project.title} Screenshot
                   </div>
                 )}
@@ -142,13 +142,13 @@ export function ProjectPanel({ project, index }: ProjectPanelProps) {
             
             {/* Title Row */}
             <div className="max-w-4xl">
-              <span className="text-sm font-bold text-text-muted uppercase tracking-widest block mb-4">
+              <span className="font-mono text-[13px] font-semibold text-text-muted uppercase tracking-[0.14em] block mb-4">
                 {project.category}
               </span>
-              <h3 className="text-4xl md:text-5xl lg:text-7xl font-display font-black text-text-primary mb-6 text-[var(--project-accent)] tracking-tight leading-none">
+              <h3 className="text-4xl md:text-5xl lg:text-[56px] font-sans font-bold text-text-primary mb-6 text-[var(--project-accent)] tracking-[-0.04em] leading-[1]">
                 {project.title}
               </h3>
-              <p className="text-lg md:text-2xl text-text-secondary leading-relaxed font-medium">
+              <p className="text-[20px] text-text-secondary leading-[1.6] max-w-[34rem] font-normal tracking-normal">
                 {project.tagline}
               </p>
             </div>
@@ -159,13 +159,13 @@ export function ProjectPanel({ project, index }: ProjectPanelProps) {
               {/* Left Column: Engineering Focus */}
               <div className="md:col-span-4">
                 <div>
-                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest block mb-5">
+                  <span className="font-mono text-xs font-semibold text-text-muted uppercase tracking-[0.14em] block mb-5">
                     Engineering Focus
                   </span>
                   {project.engineeringFocus && (
                     <div className="flex flex-col gap-3">
                       {project.engineeringFocus.map((focus) => (
-                        <span key={focus.label} className="text-base font-medium text-text-primary flex items-center gap-2">
+                        <span key={focus.label} className="text-base font-normal text-text-primary flex items-center gap-2">
                            <span className="w-1.5 h-1.5 rounded-full bg-[var(--project-accent)]/50" />
                            {focus.label}
                         </span>
@@ -178,10 +178,10 @@ export function ProjectPanel({ project, index }: ProjectPanelProps) {
               {/* Center Column: Key Decision */}
               <div className="md:col-span-8 lg:col-span-5">
                 <div>
-                  <span className="text-xs font-bold text-text-muted uppercase tracking-widest block mb-5">
+                  <span className="font-mono text-xs font-semibold text-text-muted uppercase tracking-[0.14em] block mb-5">
                     Key Engineering Decision
                   </span>
-                  <p className="text-base md:text-lg text-text-secondary leading-relaxed font-medium italic border-l-2 pl-4" style={{ borderLeftColor: 'var(--project-accent)' }}>
+                  <p className="text-base md:text-lg text-text-secondary leading-[1.6] font-normal italic border-l-2 pl-4" style={{ borderLeftColor: 'var(--project-accent)' }}>
                     "{project.keyDecision || project.architectureDecisions?.[0] || project.engineeringChallenge}"
                   </p>
                 </div>
@@ -236,17 +236,17 @@ export function ProjectPanel({ project, index }: ProjectPanelProps) {
             <div>
               <div className="flex flex-wrap items-center gap-3 pt-6">
                 {project.stack.slice(0, 5).map(tech => (
-                  <span key={tech} className="px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-text-secondary bg-surface rounded-full border border-border hover:border-[var(--project-accent)]/50 transition-colors">
+                  <span key={tech} className="px-3 py-1 font-mono text-[13px] font-medium uppercase tracking-wide text-text-secondary bg-surface rounded-md border border-border hover:border-[var(--project-accent)]/50 transition-colors">
                     {tech}
                   </span>
                 ))}
                 {project.stack.length > 5 && (
-                  <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-text-muted bg-surface/50 rounded-full border border-border/50">
+                  <span className="px-3 py-1 font-mono text-[13px] font-medium uppercase tracking-wide text-text-muted bg-surface/50 rounded-md border border-border/50">
                     +{project.stack.length - 5}
                   </span>
                 )}
                 {project.year && (
-                  <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--project-accent)] bg-[var(--project-accent)]/10 rounded-full border border-[var(--project-accent)]/20 ml-auto">
+                  <span className="px-3 py-1 font-mono text-[13px] font-semibold uppercase tracking-wide text-[var(--project-accent)] bg-[var(--project-accent)]/10 rounded-md border border-[var(--project-accent)]/20 ml-auto">
                     {project.year}
                   </span>
                 )}

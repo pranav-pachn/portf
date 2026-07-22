@@ -132,7 +132,7 @@ export function SystemFlowPanel() {
               key={d.id}
               onClick={() => setActiveIndex(i)}
               className={cn(
-                "px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 flex items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+                "font-mono px-4 py-2 rounded-full text-[13px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 flex items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
                 activeIndex === i 
                   ? "bg-bg shadow-sm text-text-primary" 
                   : "bg-transparent text-text-secondary hover:text-text-primary hover:bg-bg/50"
@@ -149,13 +149,13 @@ export function SystemFlowPanel() {
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
           <div className="flex flex-col lg:w-[25%] flex-shrink-0 text-center lg:text-left">
-            <span className="arch-text-reveal text-sm font-bold text-text-muted uppercase tracking-widest mb-4 block">
+            <span className="arch-text-reveal font-mono text-[13px] font-semibold text-text-muted uppercase tracking-[0.14em] mb-4 block">
               System Flow
             </span>
-            <h3 className="arch-text-reveal text-3xl md:text-4xl font-display font-black text-text-primary mb-6">
+            <h3 className="arch-text-reveal text-3xl md:text-4xl font-sans font-bold tracking-[-0.04em] leading-[1] text-text-primary mb-6">
               {diagram.title}
             </h3>
-            <p className="arch-text-reveal text-lg text-text-secondary leading-relaxed mb-8">
+            <p className="arch-text-reveal text-[20px] text-text-secondary leading-[1.6] max-w-[34rem] font-normal tracking-normal mb-8">
               {diagram.description}
             </p>
           </div>

@@ -49,10 +49,10 @@ export function HowIBuildPanel() {
                 <div className="w-12 h-12 rounded-lg bg-bg flex items-center justify-center text-accent-500 mb-6 group-hover:scale-110 transition-transform duration-300">
                   {item.icon}
                 </div>
-                <h3 className="text-xl font-bold font-display text-text-primary mb-3">
+                <h3 className="text-xl font-bold font-sans tracking-[-0.03em] text-text-primary mb-3">
                   {item.title}
                 </h3>
-                <p className="text-sm text-text-secondary leading-relaxed">
+                <p className="text-sm text-text-secondary leading-[1.6] font-normal max-w-[34rem]">
                   {item.desc}
                 </p>
               </Card>

@@ -9,7 +9,6 @@ import { Menu, X } from 'lucide-react';
 import { navLinks } from '@/data/nav-links';
 import { useActiveSection } from '@/hooks/use-active-section';
 import { Container } from '@/components/ui/container';
-import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { cn } from '@/lib/utils';
 import { scrollToSection } from '@/lib/scroll';
 
@@ -52,7 +51,7 @@ export function Header() {
       )}
     >
       <Container className="flex items-center justify-between">
-        <Link href="/" className="font-display font-bold text-xl tracking-tight text-text-primary transition-transform hover:scale-[1.02] active:scale-[0.98]">
+        <Link href="/" className="font-sans font-bold text-xl tracking-[-0.03em] text-text-primary transition-transform hover:scale-[1.02] active:scale-[0.98]">
           Pranav<span className="text-accent-500">.</span>
         </Link>
 
@@ -70,14 +69,10 @@ export function Header() {
               </AnimatedLink>
             );
           })}
-          <div className="pl-6 border-l border-border/50">
-            <ThemeToggle />
-          </div>
         </nav>
 
         {/* Mobile Nav Toggle */}
         <div className="flex items-center space-x-2 md:hidden">
-          <ThemeToggle />
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-500)] rounded-md p-2"

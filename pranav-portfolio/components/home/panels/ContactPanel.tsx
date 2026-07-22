@@ -19,31 +19,30 @@ export function ContactPanel() {
       <Container className="relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Left Side */}
-          <AnimateOnScroll variant="slide" delay={0.1}>
+          <AnimateOnScroll variant="maskReveal" delay={0.1}>
             <div className="flex flex-col items-start text-left">
-              <span className="text-sm font-bold text-accent-500 uppercase tracking-widest mb-6">
-                Contact
+              <span className="font-mono text-[13px] font-semibold text-accent-500 uppercase tracking-[0.14em] mb-6">
+                05 — CONTACT
               </span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-text-primary leading-[1.1] tracking-tight mb-8">
+              <h2 className="text-4xl md:text-5xl lg:text-[56px] font-sans font-bold text-text-primary leading-[1] tracking-[-0.04em] mb-8">
                 Let’s build something meaningful.
               </h2>
-              <p className="text-text-secondary text-lg leading-relaxed max-w-lg font-medium">
+              <p className="text-[20px] text-text-secondary leading-[1.6] max-w-[34rem] font-normal tracking-normal">
                 I’m currently open to internships and software engineering opportunities focused on full-stack products, AI-integrated systems, and scalable user experiences. If you're building something ambitious and need someone who cares about both architecture and execution, let’s connect.
               </p>
             </div>
           </AnimateOnScroll>
           
           {/* Right Side */}
-          <AnimateOnScroll variant="slide" delay={0.3}>
+          <AnimateOnScroll variant="maskReveal" delay={0.25}>
             <Card className="flex flex-col gap-8 p-8 md:p-10 border border-border bg-surface/50 backdrop-blur-xl rounded-3xl relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
               
               <div className="flex items-center gap-3 relative z-10 bg-bg/50 w-fit px-4 py-2 rounded-full border border-border/50">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                 </span>
-                <span className="text-xs font-semibold uppercase tracking-wider text-text-primary leading-none mt-px">
+                <span className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-text-primary leading-none mt-px">
                   Open to internships and engineering opportunities
                 </span>
               </div>

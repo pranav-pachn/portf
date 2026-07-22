@@ -17,13 +17,13 @@ export function ReliabilityPanel() {
           
           <div className="flex flex-col lg:w-[25%] flex-shrink-0">
             <AnimateOnScroll variant="slideRight">
-              <span className="text-sm font-bold text-text-muted uppercase tracking-widest mb-4 block">
+              <span className="font-mono text-[13px] font-semibold text-text-muted uppercase tracking-[0.14em] mb-4 block">
                 Reliability & AI
               </span>
-              <h3 className="text-3xl md:text-4xl font-display font-black text-text-primary mb-6">
+              <h3 className="text-3xl md:text-4xl font-sans font-bold tracking-[-0.04em] leading-[1] text-text-primary mb-6">
                 Validation & Explainability
               </h3>
-              <p className="text-lg text-text-secondary leading-relaxed mb-8">
+              <p className="text-base sm:text-lg text-text-secondary leading-[1.6] font-normal max-w-[34rem] mb-8">
                 {diagram.description}
               </p>
             </AnimateOnScroll>

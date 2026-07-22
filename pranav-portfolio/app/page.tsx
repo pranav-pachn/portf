@@ -1,49 +1,44 @@
 import { featuredProjects } from '@/data/featured-projects';
 
-// Panels
+// Panels & Chapters
 import { HeroPanel } from '@/components/home/panels/HeroPanel';
-import { WhatIBuildPanel } from '@/components/home/panels/WhatIBuildPanel';
-import { HowIBuildPanel } from '@/components/home/panels/HowIBuildPanel';
 import { WorkIntroPanel } from '@/components/home/panels/WorkIntroPanel';
-import { ProjectPanel } from '@/components/home/panels/ProjectPanel';
-
+import { StickyProjectShowcase } from '@/components/home/panels/StickyProjectShowcase';
 import { ArchIntroPanel } from '@/components/home/panels/ArchIntroPanel';
 import { SystemFlowPanel } from '@/components/home/panels/SystemFlowPanel';
-import { ReliabilityPanel } from '@/components/home/panels/ReliabilityPanel';
-import { DecisionsPanel } from '@/components/home/panels/DecisionsPanel';
-import { LessonsPanel } from '@/components/home/panels/LessonsPanel';
-import { AboutSection } from '@/components/home/AboutSection';
 import { ExperiencePanel } from '@/components/home/panels/ExperiencePanel';
+import { AboutSection } from '@/components/home/AboutSection';
 import { ContactPanel } from '@/components/home/panels/ContactPanel';
+
+// Motion Orchestration
+import { BlueprintTransition } from '@/components/motion/BlueprintTransition';
+import { ScrollColorProgression } from '@/components/motion/ScrollColorProgression';
 
 export default function Home() {
   const allProjects = featuredProjects.slice(0, 5);
 
   return (
-    <main className="bg-bg">
-      {/* MACRO 1: Identity & Approach */}
-      <HeroPanel />
-      <WhatIBuildPanel />
-      <HowIBuildPanel />
+    <main className="bg-bg relative transition-colors duration-700">
+      <ScrollColorProgression />
+
+      {/* CHAPTER 1: Identity (Hero + Blueprint Transition) */}
+      <BlueprintTransition>
+        <HeroPanel />
+      </BlueprintTransition>
       
-      {/* MACRO 2: Selected Work */}
+      {/* CHAPTER 2: Products (Sticky Showcase Engine) */}
       <WorkIntroPanel />
-      {allProjects.map((project, index) => (
-        <ProjectPanel key={project.id} project={project} index={index} />
-      ))}
+      <StickyProjectShowcase projects={allProjects} />
       
-      {/* MACRO 3: System Architecture */}
+      {/* CHAPTER 3: Engineering (Workflows & Experience) */}
       <ArchIntroPanel />
       <SystemFlowPanel />
-      <ReliabilityPanel />
-      
-      {/* MACRO 4: Engineering Insights */}
-      <DecisionsPanel />
-      <LessonsPanel />
-      
-      {/* MACRO 5: About & Experience & Contact */}
-      <AboutSection />
       <ExperiencePanel />
+      
+      {/* CHAPTER 4: Capability (Engineering Manuals + About Me) */}
+      <AboutSection />
+      
+      {/* CHAPTER 5: Closing (Contact) */}
       <ContactPanel />
     </main>
   );

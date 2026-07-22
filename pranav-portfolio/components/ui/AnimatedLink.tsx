@@ -19,20 +19,42 @@ export function AnimatedLink({ href, children, external, className, active, onCl
   const isExternal = external || href.startsWith('http');
   
   const inner = (
-    <>
-      {children}
+    <span className="relative flex items-center py-1">
+      <span className={cn(
+        "relative flex items-center overflow-hidden transition-colors duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
+        active ? "text-text-primary font-semibold" : "text-text-secondary group-hover:text-text-primary"
+      )}>
+        {/* Rolling Text Slot */}
+        <span className="relative inline-flex flex-col overflow-hidden leading-normal">
+          <span className="transition-transform duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full inline-block">
+            {children}
+          </span>
+          <span aria-hidden="true" className="absolute top-full left-0 transition-transform duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full inline-block text-accent-500 font-semibold">
+            {children}
+          </span>
+        </span>
+
+        {/* Branding dot matching Pranav. logo */}
+        <span className={cn(
+          "text-accent-500 font-bold transition-all duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ml-0.5",
+          active ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"
+        )}>
+          .
+        </span>
+      </span>
+
+      {/* CAD Measurement Underline */}
       <span 
         className={cn(
-          "absolute -bottom-1 left-0 right-0 h-[1px] bg-text-primary/30 origin-center transition-transform duration-300 ease-out",
-          active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+          "absolute bottom-0 left-0 right-0 h-[1.5px] origin-left transition-transform duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
+          active ? "bg-accent-500 scale-x-100" : "bg-text-primary/30 scale-x-0 group-hover:scale-x-100 group-hover:bg-accent-500/60"
         )}
       />
-    </>
+    </span>
   );
 
   const baseClassName = cn(
-    "relative group inline-flex items-center text-sm font-medium transition-colors py-1",
-    active ? "text-text-primary" : "text-text-secondary hover:text-text-primary",
+    "relative group inline-flex items-center text-base font-medium transition-all duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] select-none cursor-pointer",
     className
   );
 

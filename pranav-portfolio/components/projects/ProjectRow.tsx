@@ -26,17 +26,17 @@ export function ProjectRow({ project, index }: ProjectRowProps) {
         
         {/* Left Column: Content */}
         <div className="flex flex-col md:w-[40%] flex-shrink-0">
-          <span className="text-8xl font-display font-bold text-border/40 mb-6 transition-colors duration-500 group-hover:text-[var(--project-accent)]/80">
+          <span className="text-8xl font-mono font-light text-border/40 mb-6 transition-colors duration-500 group-hover:text-[var(--project-accent)]/80 tracking-widest">
             {formattedIndex}
           </span>
           
           <div className="h-px w-16 bg-border mb-6 group-hover:bg-[var(--project-accent)] transition-colors duration-500" />
           
-          <h3 className="text-3xl font-display font-bold text-text-primary mb-4 group-hover:text-[var(--project-accent)] transition-colors duration-300">
+          <h3 className="text-3xl font-sans font-bold tracking-[-0.04em] leading-[1] text-text-primary mb-4 group-hover:text-[var(--project-accent)] transition-colors duration-300">
             {project.title}
           </h3>
           
-          <p className="text-lg text-text-secondary mb-6 leading-relaxed">
+          <p className="text-[20px] text-text-secondary mb-6 leading-[1.6] max-w-[34rem] font-normal tracking-normal">
             {project.tagline}
           </p>
           
@@ -45,7 +45,7 @@ export function ProjectRow({ project, index }: ProjectRowProps) {
             <Badge variant="outline" className="border-border/50 text-text-secondary bg-transparent">{project.year}</Badge>
           </div>
           
-          <p className="text-sm font-medium text-text-muted mt-auto pt-4">
+          <p className="font-mono text-xs font-light text-text-muted mt-auto pt-4 tracking-wide">
             {project.stack.slice(0, 4).join(' • ')}
             {project.stack.length > 4 ? ' • ...' : ''}
           </p>
@@ -63,7 +63,7 @@ export function ProjectRow({ project, index }: ProjectRowProps) {
                 sizes="(max-width: 768px) 100vw, 60vw"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[var(--project-accent)]/50 font-display text-xl font-bold">
+              <div className="w-full h-full flex items-center justify-center text-[var(--project-accent)]/50 font-sans tracking-[-0.03em] text-xl font-bold">
                 {project.title} Screenshot
               </div>
             )}
@@ -72,7 +72,7 @@ export function ProjectRow({ project, index }: ProjectRowProps) {
             <div className="absolute inset-0 bg-[var(--project-accent)]/0 group-hover:bg-[var(--project-accent)]/5 transition-colors duration-500 pointer-events-none mix-blend-overlay" />
           </div>
           
-          <div className="flex items-center justify-end text-text-secondary group-hover:text-[var(--project-accent)] transition-colors duration-300 font-medium text-sm">
+          <div className="flex items-center justify-end text-text-secondary group-hover:text-[var(--project-accent)] transition-colors duration-300 font-medium hover:font-semibold text-base">
             Read Case Study <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
           </div>
         </div>

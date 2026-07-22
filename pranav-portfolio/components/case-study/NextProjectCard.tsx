@@ -28,20 +28,20 @@ export function NextProjectCard({ project, index }: NextProjectCardProps) {
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
             
             <div className="flex-1 w-full">
-              <span className="text-sm font-bold tracking-widest uppercase text-text-muted mb-4 block">
+              <span className="font-mono text-[13px] font-semibold tracking-[0.14em] uppercase text-text-muted mb-4 block">
                 Next Project
               </span>
               
               <div className="flex items-center gap-4 mb-4">
-                <span className="text-4xl md:text-5xl font-display font-bold text-border/40 group-hover:text-[var(--project-accent)]/50 transition-colors duration-500">
+                <span className="text-4xl md:text-5xl font-mono font-light text-border/40 group-hover:text-[var(--project-accent)]/50 transition-colors duration-500 tracking-widest">
                   {formattedIndex}
                 </span>
-                <span className="text-3xl md:text-5xl font-display font-bold text-text-primary group-hover:text-[var(--project-accent)] transition-colors duration-300">
+                <span className="text-3xl md:text-[48px] font-sans font-bold tracking-[-0.04em] leading-[1] text-text-primary group-hover:text-[var(--project-accent)] transition-colors duration-300">
                   {project.title}
                 </span>
               </div>
               
-              <p className="text-lg text-text-secondary leading-relaxed mb-8 max-w-xl">
+              <p className="text-[20px] text-text-secondary leading-[1.6] mb-8 max-w-[34rem] font-normal tracking-normal">
                 {project.tagline}
               </p>
               
@@ -61,7 +61,7 @@ export function NextProjectCard({ project, index }: NextProjectCardProps) {
                     sizes="(max-width: 768px) 100vw, 40vw"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-surface/50 text-[var(--project-accent)]/50 font-display font-bold">
+                  <div className="w-full h-full flex items-center justify-center bg-surface/50 text-[var(--project-accent)]/50 font-sans tracking-[-0.03em] font-bold">
                     Screenshot
                   </div>
                 )}

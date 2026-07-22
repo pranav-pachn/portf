@@ -16,10 +16,10 @@ export function ComingSoonProjectsPanel({ projects }: ComingSoonProjectsPanelPro
       <Container>
         <AnimateOnScroll variant="scale">
           <div className="text-center mb-16">
-            <span className="text-sm font-bold text-text-muted uppercase tracking-widest block mb-4">
+            <span className="font-mono text-[13px] font-semibold text-text-muted uppercase tracking-[0.14em] block mb-4">
               Coming Soon
             </span>
-            <h2 className="text-3xl md:text-5xl font-display font-black text-text-primary">
+            <h2 className="text-4xl md:text-[56px] font-sans font-bold text-text-primary tracking-[-0.04em] leading-[1]">
               More case studies in progress.
             </h2>
           </div>
@@ -33,17 +33,17 @@ export function ComingSoonProjectsPanel({ projects }: ComingSoonProjectsPanelPro
                 style={{ '--project-accent': project.accentColor || 'var(--color-accent-500)' } as React.CSSProperties}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-bold font-display text-text-primary group-hover:text-[var(--project-accent)] transition-colors">
+                  <h3 className="text-2xl font-bold font-sans tracking-[-0.03em] text-text-primary group-hover:text-[var(--project-accent)] transition-colors">
                     {project.title}
                   </h3>
                 </div>
-                <p className="text-sm text-text-secondary mb-6 flex-grow">
+                <p className="text-sm text-text-secondary mb-6 flex-grow leading-[1.6] font-normal max-w-[34rem]">
                   {project.tagline}
                 </p>
 
                 {/* Action Links */}
                 <div className="flex flex-wrap items-center gap-4 mb-6">
-                  <span className="inline-flex items-center text-text-muted font-bold cursor-not-allowed text-xs">
+                  <span className="inline-flex items-center text-text-muted font-medium cursor-not-allowed text-xs">
                     Case Study Coming Soon
                   </span>
                   
@@ -74,12 +74,12 @@ export function ComingSoonProjectsPanel({ projects }: ComingSoonProjectsPanelPro
 
                 <div className="flex flex-wrap gap-2 mt-auto pt-6 border-t border-border/50">
                   {project.stack.slice(0, 3).map(tech => (
-                    <span key={tech} className="px-2 py-1 text-xs font-medium text-text-muted bg-surface rounded">
+                    <span key={tech} className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] px-2.5 py-1 text-text-muted bg-surface rounded">
                       {tech}
                     </span>
                   ))}
                   {project.stack.length > 3 && (
-                    <span className="px-2 py-1 text-xs font-medium text-text-muted bg-surface rounded">
+                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] px-2.5 py-1 text-text-muted bg-surface rounded">
                       +{project.stack.length - 3}
                     </span>
                   )}

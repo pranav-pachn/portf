@@ -123,17 +123,17 @@ export function ExperiencePanel() {
                             )}
                           </div>
                           <div>
-                            <h3 className="font-display font-bold text-lg text-text-primary">
+                            <h3 className="font-sans font-bold tracking-[-0.03em] text-lg text-text-primary">
                               {item.title}
                             </h3>
-                            <div className="text-sm font-medium text-text-muted mt-0.5">
+                            <div className="font-mono text-xs font-light text-text-muted mt-1 tracking-wide">
                               {item.organization} • {item.dateRange}
                             </div>
                           </div>
                         </div>
                         
                         {item.description && (
-                          <p className="text-text-secondary text-sm leading-relaxed mt-2 mb-4">
+                          <p className="text-text-secondary text-sm leading-[1.6] mt-2 mb-4 font-normal max-w-[34rem]">
                             {item.description}
                           </p>
                         )}
@@ -144,7 +144,7 @@ export function ExperiencePanel() {
                               <div>
                                 <div className="flex flex-wrap gap-1.5">
                                   {item.techStack.map((tech, idx) => (
-                                    <span key={idx} className="text-[11px] font-bold px-2 py-0.5 rounded bg-surface border border-border text-text-secondary uppercase tracking-wider">
+                                    <span key={idx} className="font-mono text-[11px] font-semibold px-2.5 py-1 rounded bg-surface border border-border text-text-secondary uppercase tracking-[0.14em]">
                                       {tech}
                                     </span>
                                   ))}
@@ -176,8 +176,8 @@ export function ExperiencePanel() {
         </div>
 
         <AnimateOnScroll variant="fade" delay={0.2}>
-          <div className="mt-4 text-center text-sm font-medium text-text-muted border-t border-border/50 pt-8 max-w-2xl mx-auto">
-            <span className="text-[var(--color-accent-500)]">Currently focused on:</span> advanced full-stack engineering and AI product development.
+          <div className="mt-4 text-center text-sm font-normal text-text-muted border-t border-border/50 pt-8 max-w-[34rem] mx-auto leading-[1.6]">
+            <span className="text-[var(--color-accent-500)] font-medium">Currently focused on:</span> advanced full-stack engineering and AI product development.
           </div>
         </AnimateOnScroll>
 

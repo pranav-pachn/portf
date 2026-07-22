@@ -28,7 +28,7 @@ export function CaseStudySection({
       <Container narrow={width === 'narrow'} wide={width === 'wide'}>
         <AnimateOnScroll>
           <div className="flex flex-col mb-12">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-text-primary tracking-tight flex items-baseline gap-4">
+            <h2 className="text-3xl md:text-4xl font-sans font-bold text-text-primary tracking-[-0.04em] leading-[1] flex items-baseline gap-4">
               <span className="text-[var(--project-accent)] font-mono text-2xl md:text-3xl opacity-80">{index}</span>
               <span className="text-border mx-2">—</span>
               {title}
