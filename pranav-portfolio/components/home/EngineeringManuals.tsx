@@ -94,14 +94,16 @@ export function EngineeringManuals() {
               <div
                 key={book.id}
                 className={`book-wrapper relative w-full max-w-[16rem] md:max-w-[18rem] lg:max-w-[20rem] xl:max-w-[22rem] transition-all duration-500 ${isDimmed ? 'opacity-40 grayscale-[30%]' : 'opacity-100'}`}
-                style={{ zIndex: isOpen ? 50 : 10 }}
+                style={{ zIndex: isOpen ? 50 : 10, perspective: '1200px' }}
               >
-                <ManualBook 
-                  book={book} 
-                  isOpen={isOpen} 
-                  onToggle={() => setOpenBookId(isOpen ? null : book.id)} 
-                  shouldReduceMotion={shouldReduceMotion}
-                />
+                <div className={`w-full h-full transition-all duration-500 ease-out ${!isOpen && !isDimmed ? 'hover:[transform:translateY(-6px)_rotateY(-1.5deg)] hover:drop-shadow-2xl' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
+                  <ManualBook 
+                    book={book} 
+                    isOpen={isOpen} 
+                    onToggle={() => setOpenBookId(isOpen ? null : book.id)} 
+                    shouldReduceMotion={shouldReduceMotion}
+                  />
+                </div>
               </div>
             );
           })}

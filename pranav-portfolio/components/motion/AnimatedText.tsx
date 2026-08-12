@@ -20,6 +20,8 @@ interface AnimatedTextProps {
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span';
   className?: string;
   delay?: number;
+  duration?: number;
+  stagger?: number;
   animate?: boolean;
 }
 
@@ -29,6 +31,8 @@ export function AnimatedText({
   as: Component = 'h1',
   className = '',
   delay = 0,
+  duration = 0.8,
+  stagger = 0.02,
   animate = true,
 }: AnimatedTextProps) {
   const containerRef = useRef<HTMLElement>(null);
@@ -65,8 +69,8 @@ export function AnimatedText({
       y: 0,
       rotateX: 0,
       filter: 'blur(0px)',
-      duration: 0.8,
-      stagger: 0.02,
+      duration: duration,
+      stagger: stagger,
       ease: 'power3.out',
       delay: delay,
     });
@@ -74,7 +78,7 @@ export function AnimatedText({
     return () => {
       split.revert();
     };
-  }, { scope: containerRef, dependencies: [text, segments, animate, shouldReduceMotion, delay] });
+  }, { scope: containerRef, dependencies: [text, segments, animate, shouldReduceMotion, delay, duration, stagger] });
 
   // Generate plain text for aria-label
   const plainText = normalizedSegments.map((s) => s.break ? ' ' : s.text || '').join('');

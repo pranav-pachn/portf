@@ -51,6 +51,8 @@ export function HeroPanel() {
               as="h1"
               className="text-5xl sm:text-6xl md:text-7xl lg:text-[6rem] font-sans font-extrabold tracking-[-0.06em] text-text-primary leading-[0.95] mb-8 justify-center"
               delay={0.2}
+              duration={1.5}
+              stagger={0.05}
               segments={[
                 { text: 'Building ' },
                 { text: 'intelligent ', className: 'text-accent-500' },

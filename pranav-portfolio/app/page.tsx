@@ -10,9 +10,10 @@ import { ExperiencePanel } from '@/components/home/panels/ExperiencePanel';
 import { AboutSection } from '@/components/home/AboutSection';
 import { ContactPanel } from '@/components/home/panels/ContactPanel';
 
-// Motion Orchestration
+// Motion & UI
 import { BlueprintTransition } from '@/components/motion/BlueprintTransition';
 import { ScrollColorProgression } from '@/components/motion/ScrollColorProgression';
+import { ChapterIndicator } from '@/components/ui/ChapterIndicator';
 
 export default function Home() {
   const allProjects = featuredProjects.slice(0, 5);
@@ -20,6 +21,7 @@ export default function Home() {
   return (
     <main className="bg-bg relative transition-colors duration-700">
       <ScrollColorProgression />
+      <ChapterIndicator />
 
       {/* CHAPTER 1: Identity (Hero + Blueprint Transition) */}
       <BlueprintTransition>
