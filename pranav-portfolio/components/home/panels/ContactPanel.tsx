@@ -24,7 +24,7 @@ export function ContactPanel() {
               <span className="font-mono text-[13px] font-semibold text-accent-500 uppercase tracking-[0.14em] mb-6">
                 05 — CONTACT
               </span>
-              <h2 className="text-4xl md:text-5xl lg:text-[56px] font-sans font-bold text-text-primary leading-[1] tracking-[-0.04em] mb-8">
+              <h2 className="text-4xl md:text-5xl lg:text-[56px] font-display font-semibold text-text-primary leading-[1] tracking-[-0.04em] mb-8">
                 Let’s build something meaningful.
               </h2>
               <p className="text-[20px] text-text-secondary leading-[1.6] max-w-[34rem] font-normal tracking-normal">

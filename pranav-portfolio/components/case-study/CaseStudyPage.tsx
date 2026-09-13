@@ -31,7 +31,7 @@ export function CaseStudyPage({ project, nextProject, projectIndex, nextProjectI
     return (
       <div className="min-h-screen pt-32 pb-16 flex items-center justify-center text-center bg-bg">
         <Container>
-          <h1 className="text-4xl font-sans font-bold tracking-[-0.04em] mb-4 text-text-primary">Case Study Coming Soon</h1>
+          <h1 className="text-4xl font-display font-semibold tracking-[-0.04em] mb-4 text-text-primary">Case Study Coming Soon</h1>
           <p className="text-text-secondary mb-8">The deep dive for {project.title} is currently being written.</p>
           <Button href="/#work" variant="secondary" icon={<ArrowLeft className="w-4 h-4 order-first mr-2" />}>Back to Projects</Button>
         </Container>

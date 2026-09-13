@@ -36,7 +36,7 @@ export function NextProjectCard({ project, index }: NextProjectCardProps) {
                 <span className="text-4xl md:text-5xl font-mono font-light text-border/40 group-hover:text-[var(--project-accent)]/50 transition-colors duration-500 tracking-widest">
                   {formattedIndex}
                 </span>
-                <span className="text-3xl md:text-[48px] font-sans font-bold tracking-[-0.04em] leading-[1] text-text-primary group-hover:text-[var(--project-accent)] transition-colors duration-300">
+                <span className="text-3xl md:text-[48px] font-display font-semibold tracking-[-0.04em] leading-[1] text-text-primary group-hover:text-[var(--project-accent)] transition-colors duration-300">
                   {project.title}
                 </span>
               </div>

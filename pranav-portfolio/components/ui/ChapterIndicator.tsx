@@ -37,7 +37,7 @@ export function ChapterIndicator() {
             key={chapter.id} 
             className="flex items-center gap-1.5 transition-all duration-300"
             style={{ 
-              opacity: isActive ? 1 : 0.25,
+              opacity: isActive ? 1 : 0.15,
             }}
           >
             <div 

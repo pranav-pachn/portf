@@ -19,7 +19,7 @@ export function ComingSoonProjectsPanel({ projects }: ComingSoonProjectsPanelPro
             <span className="font-mono text-[13px] font-semibold text-text-muted uppercase tracking-[0.14em] block mb-4">
               Coming Soon
             </span>
-            <h2 className="text-4xl md:text-[56px] font-sans font-bold text-text-primary tracking-[-0.04em] leading-[1]">
+            <h2 className="text-4xl md:text-[56px] font-display font-semibold text-text-primary tracking-[-0.04em] leading-[1]">
               More case studies in progress.
             </h2>
           </div>

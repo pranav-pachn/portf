@@ -17,7 +17,7 @@ export function ArchIntroPanel() {
             </div>
             
             <div className="w-full md:w-2/3">
-              <GsapTitleReveal as="h2" className="text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-text-primary tracking-[-0.04em] leading-[1] max-w-[34rem]">
+              <GsapTitleReveal as="h2" className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-text-primary tracking-[-0.04em] leading-[1] max-w-[34rem]">
                 The workflows behind the products.
               </GsapTitleReveal>
             </div>

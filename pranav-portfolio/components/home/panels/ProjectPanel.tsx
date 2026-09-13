@@ -145,7 +145,7 @@ export function ProjectPanel({ project, index }: ProjectPanelProps) {
               <span className="font-mono text-[13px] font-semibold text-text-muted uppercase tracking-[0.14em] block mb-4">
                 {project.category}
               </span>
-              <h3 className="text-4xl md:text-5xl lg:text-[56px] font-sans font-bold text-text-primary mb-6 text-[var(--project-accent)] tracking-[-0.04em] leading-[1]">
+              <h3 className="text-4xl md:text-5xl lg:text-[56px] font-display font-semibold text-text-primary mb-6 text-[var(--project-accent)] tracking-[-0.04em] leading-[1]">
                 {project.title}
               </h3>
               <p className="text-[20px] text-text-secondary leading-[1.6] max-w-[34rem] font-normal tracking-normal">

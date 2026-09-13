@@ -17,20 +17,12 @@ export function Header() {
   
   const sectionIds = navLinks.map((link) => link.href.replace('/#', ''));
   const activeSection = useActiveSection(sectionIds);
-  const [isHidden, setIsHidden] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setIsScrolled(currentScrollY > 20);
-
-      // Only show at the very top of the page. Hide once scrolled past 80px.
-      if (currentScrollY > 80) {
-        setIsHidden(true);
-      } else {
-        setIsHidden(false);
-      }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -43,15 +35,13 @@ export function Header() {
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-[var(--duration-normal)] ease-[var(--ease-out)]',
-        isHidden 
-          ? 'opacity-0 -translate-y-full pointer-events-none'
-          : isScrolled
-            ? 'bg-surface/80 backdrop-blur-md border-b border-border py-3 shadow-sm translate-y-0 opacity-100'
-            : 'bg-transparent py-5 translate-y-0 opacity-100'
+        isScrolled
+          ? '-translate-y-full opacity-0 pointer-events-none'
+          : 'bg-transparent py-5 translate-y-0 opacity-100'
       )}
     >
       <Container className="flex items-center justify-between">
-        <Link href="/" className="font-sans font-bold text-xl tracking-[-0.03em] text-text-primary transition-transform hover:scale-[1.02] active:scale-[0.98]">
+        <Link href="/" className="font-display font-[600] text-[20px] tracking-[-0.03em] text-text-primary transition-transform hover:scale-[1.02] active:scale-[0.98]">
           Pranav<span className="text-accent-500">.</span>
         </Link>
 

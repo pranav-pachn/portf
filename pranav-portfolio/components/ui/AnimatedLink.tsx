@@ -21,22 +21,22 @@ export function AnimatedLink({ href, children, external, className, active, onCl
   const inner = (
     <span className="relative flex items-center py-1">
       <span className={cn(
-        "relative flex items-center overflow-hidden transition-colors duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
-        active ? "text-text-primary font-semibold" : "text-text-secondary group-hover:text-text-primary"
+        "relative flex items-center overflow-hidden transition-colors duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] font-medium",
+        active ? "text-text-primary" : "text-text-secondary group-hover:text-text-primary"
       )}>
         {/* Rolling Text Slot */}
         <span className="relative inline-flex flex-col overflow-hidden leading-normal">
           <span className="transition-transform duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full inline-block">
             {children}
           </span>
-          <span aria-hidden="true" className="absolute top-full left-0 transition-transform duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full inline-block text-accent-500 font-semibold">
+          <span aria-hidden="true" className="absolute top-full left-0 transition-transform duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full inline-block text-accent-500 font-medium">
             {children}
           </span>
         </span>
 
         {/* Branding dot matching Pranav. logo */}
         <span className={cn(
-          "text-accent-500 font-bold transition-all duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ml-0.5",
+          "text-accent-500 font-semibold transition-all duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ml-0.5",
           active ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"
         )}>
           .
@@ -54,7 +54,7 @@ export function AnimatedLink({ href, children, external, className, active, onCl
   );
 
   const baseClassName = cn(
-    "relative group inline-flex items-center text-base font-medium transition-all duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] select-none cursor-pointer",
+    "relative group inline-flex items-center text-[15px] transition-all duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] select-none cursor-pointer",
     className
   );
 

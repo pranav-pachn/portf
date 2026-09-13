@@ -19,14 +19,6 @@ export const experience: ExperienceItem[] = [
     type: 'work',
   },
   {
-    id: 'btech',
-    title: 'B.Tech in Computer Science and Engineering',
-    organization: 'B V Raju Institute of Technology',
-    dateRange: '2024 – 2028',
-    description: 'Developed foundational systems thinking, transitioning from basic programming to architecting full-stack web applications and AI pipelines. GPA 8.29.',
-    type: 'education',
-  },
-  {
     id: 'aws',
     title: 'AWS Foundations',
     organization: 'Amazon Web Services',

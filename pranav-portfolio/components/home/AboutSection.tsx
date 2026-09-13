@@ -16,7 +16,7 @@ export function AboutSection() {
             <span className="font-mono text-[13px] font-semibold tracking-[0.14em] uppercase text-accent-500 block mb-3">
               04 — ENGINEERING MANUALS
             </span>
-            <h2 className="font-sans font-bold tracking-[-0.04em] text-4xl md:text-5xl leading-[1] text-text-primary">
+            <h2 className="font-display font-semibold tracking-[-0.04em] text-4xl md:text-5xl leading-[1] text-text-primary">
               Engineering Expertise
             </h2>
             <p className="text-text-secondary mt-4 max-w-[34rem] leading-[1.6] font-normal mx-auto xl:mx-0">
@@ -41,7 +41,7 @@ export function AboutSection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-sans font-bold text-5xl sm:text-6xl md:text-[72px] text-text-primary leading-[1] tracking-[-0.04em]"
+                  className="font-display font-semibold text-5xl sm:text-6xl md:text-[72px] text-text-primary leading-[1] tracking-[-0.04em]"
                 >
                   {role}
                 </motion.h2>

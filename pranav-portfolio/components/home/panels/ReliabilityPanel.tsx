@@ -20,7 +20,7 @@ export function ReliabilityPanel() {
               <span className="font-mono text-[13px] font-semibold text-text-muted uppercase tracking-[0.14em] mb-4 block">
                 Reliability & AI
               </span>
-              <h3 className="text-3xl md:text-4xl font-sans font-bold tracking-[-0.04em] leading-[1] text-text-primary mb-6">
+              <h3 className="text-3xl md:text-4xl font-display font-semibold tracking-[-0.04em] leading-[1] text-text-primary mb-6">
                 Validation & Explainability
               </h3>
               <p className="text-base sm:text-lg text-text-secondary leading-[1.6] font-normal max-w-[34rem] mb-8">

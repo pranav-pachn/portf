@@ -24,7 +24,7 @@ export function SectionHeading({ className, heading, subtitle, eyebrow, align = 
           {eyebrow}
         </Badge>
       )}
-      <h2 className="text-4xl md:text-[56px] font-sans font-bold text-text-primary tracking-[-0.04em] leading-[1]">
+      <h2 className="text-4xl md:text-[56px] font-display font-semibold text-text-primary tracking-[-0.04em] leading-[1]">
         {heading}
       </h2>
       {subtitle && (

@@ -74,7 +74,7 @@ export function ExperiencePanel() {
                           </div>
                           <div>
                             <h3 className={cn(
-                              "font-sans font-bold tracking-[-0.03em] text-text-primary",
+                              "font-display font-semibold tracking-[-0.03em] text-text-primary",
                               isWork ? "text-xl md:text-2xl" : "text-lg"
                             )}>
                               {item.title}

@@ -30,7 +30,7 @@ export function PageHeader({ projectIndex, title, subtitle, children }: PageHead
           <AnimatedText
             as="h1"
             text={title}
-            className="text-5xl md:text-7xl font-sans font-bold text-text-primary tracking-[-0.04em] mb-8 leading-[1]"
+            className="text-5xl md:text-7xl font-display font-semibold text-text-primary tracking-[-0.04em] mb-8 leading-[1]"
             delay={0.2}
           />
 

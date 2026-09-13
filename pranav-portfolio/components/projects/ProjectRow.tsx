@@ -32,7 +32,7 @@ export function ProjectRow({ project, index }: ProjectRowProps) {
           
           <div className="h-px w-16 bg-border mb-6 group-hover:bg-[var(--project-accent)] transition-colors duration-500" />
           
-          <h3 className="text-3xl font-sans font-bold tracking-[-0.04em] leading-[1] text-text-primary mb-4 group-hover:text-[var(--project-accent)] transition-colors duration-300">
+          <h3 className="text-3xl font-display font-semibold tracking-[-0.04em] leading-[1] text-text-primary mb-4 group-hover:text-[var(--project-accent)] transition-colors duration-300">
             {project.title}
           </h3>
           

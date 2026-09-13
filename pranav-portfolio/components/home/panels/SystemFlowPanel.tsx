@@ -152,7 +152,7 @@ export function SystemFlowPanel() {
             <span className="arch-text-reveal font-mono text-[13px] font-semibold text-text-muted uppercase tracking-[0.14em] mb-4 block">
               System Flow
             </span>
-            <h3 className="arch-text-reveal text-3xl md:text-4xl font-sans font-bold tracking-[-0.04em] leading-[1] text-text-primary mb-6">
+            <h3 className="arch-text-reveal text-3xl md:text-4xl font-display font-semibold tracking-[-0.04em] leading-[1] text-text-primary mb-6">
               {diagram.title}
             </h3>
             <p className="arch-text-reveal text-[20px] text-text-secondary leading-[1.6] max-w-[34rem] font-normal tracking-normal mb-8">

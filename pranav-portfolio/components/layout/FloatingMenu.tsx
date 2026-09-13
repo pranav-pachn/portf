@@ -30,6 +30,7 @@ export function FloatingMenu() {
   // On home page, only show when scrolled down (since header disappears)
   if (pathname === '/' && !isScrolled) return null;
 
+
   let mainLinks: any[] = pathname === '/' 
     ? [...navLinks]
     : [

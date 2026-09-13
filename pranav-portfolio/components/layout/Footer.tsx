@@ -9,7 +9,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
           {/* Left Side */}
           <div className="flex flex-col gap-2">
-            <span className="font-sans font-bold tracking-[-0.03em] text-xl text-text-primary">
+            <span className="font-display font-semibold tracking-[-0.03em] text-xl text-text-primary">
               Pranav.
             </span>
             <span className="text-sm text-text-secondary font-normal">
