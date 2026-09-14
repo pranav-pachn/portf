@@ -8,5 +8,7 @@ export interface ExperienceItem {
   outcomes?: string[];
   logo?: string;
   invertLogo?: boolean;
-  type: 'education' | 'certification' | 'work';
+  type: 'education' | 'certification' | 'work' | 'opensource';
+  badge?: string;
+  highlight?: string;
 }

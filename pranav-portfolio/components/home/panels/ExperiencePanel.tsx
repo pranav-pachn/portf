@@ -6,16 +6,10 @@ import { experience } from '@/data/experience';
 import { Container } from '@/components/ui/container';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { Card } from '@/components/ui/card';
-import { GraduationCap, Briefcase, Award } from 'lucide-react';
+import { GitPullRequest, Sparkles } from 'lucide-react';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { cn } from '@/lib/utils';
 import { useExperienceTimeline } from '@/components/motion/useExperienceTimeline';
-
-const typeIcons = {
-  education: GraduationCap,
-  work: Briefcase,
-  certification: Award,
-};
+import { cn } from '@/lib/utils';
 
 export function ExperiencePanel() {
   const containerRef = useRef<HTMLElement>(null);
@@ -24,81 +18,117 @@ export function ExperiencePanel() {
   useExperienceTimeline({ containerRef, shouldReduceMotion });
 
   return (
-    <section ref={containerRef} id="experience" className="py-24 bg-surface border-t border-border flex items-center relative z-10">
+    <section 
+      ref={containerRef} 
+      id="experience" 
+      className="py-24 md:py-32 bg-surface/40 border-t border-border relative z-10 overflow-hidden"
+    >
       <Container narrow>
         <AnimateOnScroll variant="maskReveal">
           <SectionHeading 
-            eyebrow="03 — EXPERIENCE" 
-            heading="From fundamentals to production systems." 
+            eyebrow="04 — EXPERIENCE" 
+            heading="From learning to shipping production software." 
           />
         </AnimateOnScroll>
 
-        <div className="timeline-container relative max-w-3xl mx-auto mt-20 pb-0">
-          {/* Base Background Line */}
-          <div className="absolute left-[24px] md:left-[80px] top-0 bottom-0 w-px bg-border -translate-x-1/2" />
+        <div className="timeline-container relative max-w-4xl mx-auto mt-20 md:mt-24">
+          {/* Base Inactive Central Timeline Line */}
+          <div className="absolute left-6 md:left-1/2 top-0 bottom-12 w-[1.5px] bg-white/10 dark:bg-white/10 -translate-x-1/2" />
           
-          {/* Growing Accent Line */}
-          <div className="timeline-line absolute left-[24px] md:left-[80px] top-0 bottom-0 w-px bg-[var(--color-accent-500)] -translate-x-1/2 origin-top scale-y-0" />
+          {/* Active Growing Teal Line (Scrubbed on Scroll) */}
+          <div className="timeline-active-line absolute left-6 md:left-1/2 top-0 bottom-12 w-[1.5px] bg-[var(--color-accent-500)] -translate-x-1/2 origin-top scale-y-0" />
 
-          <div className="flex flex-col gap-12 md:gap-16 relative">
-            {experience.map((item, index) => {
-              const Icon = typeIcons[item.type];
-              const isWork = item.type === 'work';
-              
+          <div className="flex flex-col gap-16 md:gap-24 relative">
+            {experience.map((item, idx) => {
+              const isLeft = idx % 2 === 0;
+              const isPrimary = idx === 0;
+              const itemNum = `0${idx + 1}`;
+
               return (
-                <div key={item.id} className="timeline-item relative flex w-full justify-end">
-                  {/* Center Dot */}
-                  <div className="timeline-dot absolute left-[24px] md:left-[80px] top-8 w-4 h-4 rounded-full bg-surface border-[3px] border-[var(--color-accent-500)] -translate-x-1/2 z-10 opacity-0 scale-0" />
+                <div 
+                  key={item.id}
+                  className={cn(
+                    "timeline-item relative w-full flex flex-col items-start",
+                    isLeft 
+                      ? "timeline-item-left md:flex-row md:justify-start" 
+                      : "timeline-item-right md:flex-row md:justify-end"
+                  )}
+                >
+                  {/* Center Node / Dot */}
+                  <div className="timeline-dot absolute left-6 md:left-1/2 top-6 md:top-7 w-3.5 h-3.5 rounded-full bg-surface border-2 border-border -translate-x-1/2 z-20 transition-colors duration-300" />
+                  
+                  {/* Horizontal Connector Line (Desktop Only) */}
+                  {isLeft ? (
+                    <div className="timeline-connector hidden md:block absolute right-1/2 top-[34px] w-8 h-[1.5px] bg-[var(--color-accent-500)]/60 origin-right scale-x-0 opacity-0" />
+                  ) : (
+                    <div className="timeline-connector hidden md:block absolute left-1/2 top-[34px] w-8 h-[1.5px] bg-[var(--color-accent-500)]/60 origin-left scale-x-0 opacity-0" />
+                  )}
 
                   {/* Card Container */}
-                  <div className="w-full pl-14 md:pl-[140px]">
+                  <div className="w-full md:w-[calc(50%-32px)] pl-14 md:pl-0">
                     <div className="timeline-card opacity-0">
                       <Card className={cn(
-                        "p-6 h-full border-border bg-bg flex flex-col group hover:border-[var(--color-accent-500)]/50 transition-colors shadow-sm",
-                        isWork ? "md:p-8" : "md:p-6 opacity-90 hover:opacity-100"
+                        "p-6 md:p-7 border-border/80 bg-bg/95 transition-all duration-300 shadow-md relative overflow-hidden group",
+                        isPrimary 
+                          ? "hover:border-[var(--color-accent-500)]/60" 
+                          : "hover:border-[var(--color-accent-500)]/40"
                       )}>
-                        <div className="flex items-start md:items-center gap-4 mb-4 flex-col md:flex-row">
-                          <div className={cn(
-                            "flex flex-shrink-0 items-center justify-center rounded-lg bg-surface text-accent-500 group-hover:scale-110 transition-transform overflow-hidden border border-border/50",
-                            isWork ? "w-12 h-12" : "w-10 h-10"
-                          )}>
-                            {item.logo ? (
-                              <img 
-                                src={item.logo} 
-                                alt={`${item.organization} logo`} 
-                                className={`w-full h-full object-cover ${item.invertLogo ? 'invert dark:invert-0' : ''}`} 
-                              />
-                            ) : (
-                              <Icon className="w-5 h-5" />
-                            )}
-                          </div>
-                          <div>
-                            <h3 className={cn(
-                              "font-display font-semibold tracking-[-0.03em] text-text-primary",
-                              isWork ? "text-xl md:text-2xl" : "text-lg"
-                            )}>
-                              {item.title}
-                            </h3>
-                            <div className="font-mono text-xs font-medium text-text-muted mt-1.5 tracking-wide uppercase">
-                              {item.organization} <span className="mx-2 text-border">—</span> {item.dateRange}
+                        {/* Primary Gradient Header Accent */}
+                        {isPrimary && (
+                          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[var(--color-accent-500)] via-[var(--color-accent-500)]/40 to-transparent" />
+                        )}
+
+                        <div className="flex items-start justify-between gap-3 mb-4">
+                          <div className="flex items-center gap-3.5">
+                            {/* 44px Icon Container */}
+                            <div className="w-11 h-11 rounded-lg bg-surface border border-border/60 flex items-center justify-center p-2 overflow-hidden flex-shrink-0 group-hover:border-[var(--color-accent-500)]/40 transition-colors">
+                              {item.logo ? (
+                                <img 
+                                  src={item.logo} 
+                                  alt={`${item.organization} logo`} 
+                                  className={`w-full h-full object-contain ${item.invertLogo ? 'invert dark:invert-0' : ''}`} 
+                                />
+                              ) : item.type === 'opensource' ? (
+                                <GitPullRequest className="w-5 h-5 text-accent-500" />
+                              ) : (
+                                <Sparkles className="w-5 h-5 text-accent-500" />
+                              )}
+                            </div>
+                            <div>
+                              <div className="font-mono text-[10px] font-semibold text-accent-500 uppercase tracking-widest mb-1">
+                                {isPrimary ? `${itemNum} · PRIMARY EXPERIENCE` : item.type === 'opensource' ? `${itemNum} · OPEN SOURCE` : `${itemNum} · EXPERIENCE`}
+                              </div>
+                              <h3 className="font-display font-semibold text-lg md:text-xl tracking-tight text-text-primary leading-tight">
+                                {item.title}
+                              </h3>
                             </div>
                           </div>
                         </div>
-                        
-                        {item.description && (
-                          <p className="text-text-secondary text-sm md:text-base leading-[1.6] mt-2 mb-4 font-normal max-w-[34rem]">
-                            {item.description}
-                          </p>
-                        )}
 
-                        {(item.techStack || item.outcomes) && (
-                          <div className="mt-auto pt-5 border-t border-border/50">
+                        <div className="font-mono text-xs text-text-muted mb-3 flex flex-wrap items-center gap-2">
+                          <span className="text-text-primary font-medium">{item.organization}</span>
+                          <span className="text-border">—</span>
+                          <span>{item.dateRange}</span>
+                        </div>
+
+                        <p className="text-text-secondary text-sm md:text-base leading-relaxed mb-5 font-normal">
+                          {item.description}
+                        </p>
+
+                        {/* Focus Tech Stack or Badges */}
+                        {(item.techStack || item.badge || item.highlight) && (
+                          <div className="pt-4 border-t border-border/40">
                             {item.techStack && (
-                              <div className="mb-4">
-                                <div className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-2">Focus</div>
+                              <div>
+                                <div className="text-[10px] font-mono uppercase tracking-widest text-text-muted mb-2 font-semibold">
+                                  FOCUS
+                                </div>
                                 <div className="flex flex-wrap gap-1.5">
-                                  {item.techStack.map((tech, idx) => (
-                                    <span key={idx} className="font-mono text-[11px] font-semibold px-2.5 py-1 rounded bg-surface border border-border text-text-secondary uppercase tracking-[0.14em]">
+                                  {item.techStack.map((tech) => (
+                                    <span 
+                                      key={tech} 
+                                      className="font-mono text-[11px] px-2.5 py-1 rounded bg-surface border border-border/70 text-text-secondary tracking-wide uppercase"
+                                    >
                                       {tech}
                                     </span>
                                   ))}
@@ -106,17 +136,18 @@ export function ExperiencePanel() {
                               </div>
                             )}
 
-                            {item.outcomes && (
-                              <div className="overflow-hidden md:max-h-0 md:opacity-0 md:group-hover:max-h-[500px] md:group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] max-h-[500px] opacity-100">
-                                <div className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-2 pt-2 border-t border-border/30 md:border-transparent md:pt-0">Role Focus</div>
-                                <ul className="space-y-1.5">
-                                  {item.outcomes.map((outcome, idx) => (
-                                    <li key={idx} className="text-[13px] md:text-sm text-text-secondary flex items-start gap-2">
-                                      <span className="text-[var(--color-accent-500)] mt-0.5 font-bold">✓</span>
-                                      <span className="leading-snug">{outcome}</span>
-                                    </li>
-                                  ))}
-                                </ul>
+                            {(item.badge || item.highlight) && (
+                              <div className="flex items-center gap-2.5 mt-1">
+                                {item.badge && (
+                                  <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-accent-500/10 border border-accent-500/30 text-accent-500 tracking-wider">
+                                    {item.badge}
+                                  </span>
+                                )}
+                                {item.highlight && (
+                                  <span className="font-mono text-[11px] font-medium text-text-secondary">
+                                    {item.highlight}
+                                  </span>
+                                )}
                               </div>
                             )}
                           </div>
@@ -127,25 +158,41 @@ export function ExperiencePanel() {
                 </div>
               );
             })}
+
+            {/* Closing: Currently - Minimal Terminal-like Endpoint */}
+            <div className="timeline-item-currently relative w-full flex flex-col md:flex-row md:justify-start items-start">
+              {/* Center Node / Dot */}
+              <div className="timeline-dot absolute left-6 md:left-1/2 top-4 w-3.5 h-3.5 rounded-full bg-surface border-2 border-border -translate-x-1/2 z-20 transition-colors duration-300" />
+              
+              {/* L-bracket connector branch */}
+              <div className="timeline-connector hidden md:block absolute left-1/2 top-5 w-10 h-6 border-l-[1.5px] border-b-[1.5px] border-[var(--color-accent-500)]/60 origin-left scale-x-0 opacity-0" />
+              
+              {/* Terminal-like Content */}
+              <div className="w-full pl-14 md:pl-0 md:ml-[calc(50%+40px)] md:max-w-md">
+                <div className="timeline-currently-content opacity-0 bg-bg/85 border border-border/70 rounded-lg p-4 md:p-5 relative shadow-sm">
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-500 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-500" />
+                    </span>
+                    <span className="font-mono text-[11px] font-bold text-accent-500 tracking-widest uppercase">
+                      CURRENTLY
+                    </span>
+                  </div>
+                  <p className="text-text-primary text-sm md:text-base leading-relaxed font-normal">
+                    Building AI-powered products and scalable full-stack systems.
+                  </p>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          {/* Currently Section */}
-          <div className="currently-container relative flex w-full justify-end mt-16 pt-8 pb-12">
-            <div className="currently-dot absolute left-[24px] md:left-[80px] top-[42px] w-3 h-3 rounded-full bg-[var(--color-accent-500)] -translate-x-1/2 z-10 opacity-0 scale-0" />
-            <div className="w-full pl-14 md:pl-[140px]">
-               <div className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-2">Currently</div>
-               <p className="text-text-secondary text-base leading-[1.6] max-w-[34rem]">
-                 Building AI-powered products and scalable full-stack systems.
-               </p>
-            </div>
-          </div>
-          
-          {/* Terminal Connector for Bridge */}
-          <div className="terminal-connector-container absolute left-[24px] md:left-[80px] -bottom-[120px] w-px h-[120px] -translate-x-1/2 hidden md:block">
-             <div className="terminal-connector absolute top-0 left-0 w-full h-full bg-[var(--color-accent-500)] origin-top scale-y-0" />
+          {/* Fade-out Terminal Line transitioning into Engineering Manuals */}
+          <div className="timeline-fade-line-container relative mt-12 flex justify-center">
+            <div className="timeline-fade-line w-[1.5px] h-20 bg-gradient-to-b from-[var(--color-accent-500)] via-[var(--color-accent-500)]/30 to-transparent scale-y-0 origin-top" />
           </div>
         </div>
-
       </Container>
     </section>
   );

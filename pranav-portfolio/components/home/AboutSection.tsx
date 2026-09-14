@@ -14,7 +14,7 @@ export function AboutSection() {
         <AnimateOnScroll variant="blur">
           <div className="max-w-6xl mx-auto mb-16 text-center xl:text-left">
             <span className="font-mono text-[13px] font-semibold tracking-[0.14em] uppercase text-accent-500 block mb-3">
-              04 — ENGINEERING MANUALS
+              ENGINEERING MANUALS
             </span>
             <h2 className="font-display font-semibold tracking-[-0.04em] text-4xl md:text-5xl leading-[1] text-text-primary">
               Engineering Expertise

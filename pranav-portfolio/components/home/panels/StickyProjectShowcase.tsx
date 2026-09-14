@@ -155,7 +155,6 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
             opacity: 1, y: 0, duration: TRANS, ease: 'none',
             onStart:          () => gsap.set(nxtD, { zIndex: 10, pointerEvents: 'none' }),
             onComplete:       () => gsap.set(nxtD, { pointerEvents: 'auto' }),
-            onReverseStart:   () => gsap.set(nxtD, { pointerEvents: 'none' }),
             onReverseComplete:() => gsap.set(nxtD, { pointerEvents: 'none', zIndex: 0 }),
           },
           crossfadeAt,

@@ -24,6 +24,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             (function() {
               try {
                 document.documentElement.setAttribute('data-theme', 'dark');
+                if ('serviceWorker' in navigator) {
+                  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for (var r of registrations) { r.unregister(); }
+                  });
+                }
               } catch (e) {}
             })();
           `

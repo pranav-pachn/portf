@@ -7,16 +7,17 @@ import { useEffect, useState } from 'react';
 const chapters = [
   { id: 'hero', num: '01' },
   { id: 'work', num: '02' },
-  { id: 'architecture', num: '03' }, // Architecture + Experience
-  { id: 'about', num: '04' }, // Engineering Manuals + About
+  { id: 'architecture', num: '03' },
+  { id: 'experience', num: '04' }, // Experience + Engineering Manuals
   { id: 'contact', num: '05' },
 ];
+
+const SECTION_IDS = ['hero', 'work', 'architecture', 'experience', 'about', 'contact'];
 
 export function ChapterIndicator() {
   const [mounted, setMounted] = useState(false);
   
-  // Also include experience in the list of sections to track, but map it to 03
-  const activeSection = useActiveSection(['hero', 'work', 'architecture', 'experience', 'about', 'contact']);
+  const activeSection = useActiveSection(SECTION_IDS);
 
   useEffect(() => {
     setMounted(true);
@@ -24,11 +25,11 @@ export function ChapterIndicator() {
 
   if (!mounted) return null;
 
-  // Map experience to architecture chapter for the indicator
-  const displaySection = activeSection === 'experience' ? 'architecture' : activeSection;
+  // Map experience and about to chapter 04 for the indicator
+  const displaySection = activeSection === 'about' ? 'experience' : activeSection;
 
   return (
-    <div className="fixed left-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3 mix-blend-difference">
+    <div className="fixed left-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3 mix-blend-difference pointer-events-none">
       {chapters.map((chapter) => {
         const isActive = displaySection === chapter.id || (displaySection === '' && chapter.id === 'hero');
         

@@ -3,25 +3,27 @@ import { useState, useEffect } from 'react';
 
 export function useActiveSection(sectionIds: string[]) {
   const [activeSection, setActiveSection] = useState('');
+  const idsString = sectionIds.join(',');
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
+    const ids = idsString.split(',').filter(Boolean);
 
     const observerCallback: IntersectionObserverCallback = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
+          setActiveSection((prev) => (prev !== entry.target.id ? entry.target.id : prev));
         }
       });
     };
 
     const options = {
       root: null,
-      rootMargin: '-50% 0px -50% 0px',
+      rootMargin: '-40% 0px -40% 0px',
       threshold: 0,
     };
 
-    sectionIds.forEach((id) => {
+    ids.forEach((id) => {
       const element = document.getElementById(id);
       if (element) {
         const observer = new IntersectionObserver(observerCallback, options);
@@ -33,7 +35,7 @@ export function useActiveSection(sectionIds: string[]) {
     return () => {
       observers.forEach((observer) => observer.disconnect());
     };
-  }, [sectionIds]);
+  }, [idsString]);
 
   return activeSection;
 }

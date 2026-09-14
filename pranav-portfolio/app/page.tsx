@@ -32,12 +32,12 @@ export default function Home() {
       <WorkIntroPanel />
       <StickyProjectShowcase projects={allProjects} />
       
-      {/* CHAPTER 3: Engineering (Workflows & Experience) */}
+      {/* CHAPTER 3: System Architecture (Workflows) */}
       <ArchIntroPanel />
       <SystemFlowPanel />
-      <ExperiencePanel />
       
-      {/* CHAPTER 4: Capability (Engineering Manuals + About Me) */}
+      {/* CHAPTER 4: Experience + Engineering Manuals + About */}
+      <ExperiencePanel />
       <AboutSection />
       
       {/* CHAPTER 5: Closing (Contact) */}
