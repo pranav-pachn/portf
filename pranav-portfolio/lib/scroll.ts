@@ -16,7 +16,11 @@ export const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: st
 
   if (!stickyWrapper) {
     // Fallback: straightforward element scroll
-    element.scrollIntoView({ behavior: 'smooth' });
+    if (window.__lenis) {
+      window.__lenis.scrollTo(element, { duration: 1.2 });
+    } else {
+      element.scrollIntoView({ behavior: 'auto' });
+    }
     return;
   }
 
@@ -28,10 +32,14 @@ export const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: st
     currentEl = currentEl.offsetParent as HTMLElement;
   }
 
-  window.scrollTo({
-    top: absoluteTop,
-    behavior: 'smooth',
-  });
+  if (window.__lenis) {
+    window.__lenis.scrollTo(absoluteTop, { duration: 1.2 });
+  } else {
+    window.scrollTo({
+      top: absoluteTop,
+      behavior: 'smooth',
+    });
+  }
 
   window.history.pushState(null, '', href);
 };

@@ -22,7 +22,7 @@ export function useExperienceTimeline({ containerRef, shouldReduceMotion }: UseE
       },
     });
 
-    const isDesktop = window.innerWidth >= 768;
+    const isDesktop = typeof window !== 'undefined' ? window.innerWidth >= 768 : true;
 
     // 2. Animate all timeline items dynamically (left or right)
     const items = Array.from(containerRef.current.querySelectorAll<HTMLElement>('.timeline-item'));

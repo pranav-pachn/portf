@@ -20,11 +20,13 @@ export function ScrollColorProgression() {
   useGSAP(() => {
     if (shouldReduceMotion) return;
 
+    const triggers: globalThis.ScrollTrigger[] = [];
+
     chapterColors.forEach(({ selector, color }) => {
       const el = document.querySelector(selector);
       if (!el) return;
 
-      ScrollTrigger.create({
+      const trigger = ScrollTrigger.create({
         trigger: el,
         start: 'top 60%',
         end: 'bottom 40%',
@@ -45,14 +47,11 @@ export function ScrollColorProgression() {
           });
         },
       });
+      triggers.push(trigger);
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => {
-        if (chapterColors.some((c) => t.trigger === document.querySelector(c.selector))) {
-          t.kill();
-        }
-      });
+      triggers.forEach(t => t.kill());
     };
   }, { dependencies: [shouldReduceMotion] });
 
