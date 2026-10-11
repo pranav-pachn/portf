@@ -17,7 +17,7 @@ export function NextProjectCard({ project, index }: NextProjectCardProps) {
       <Container>
         <Link 
           href={`/work/${project.id}`}
-          className="group block relative overflow-hidden rounded-2xl border border-border bg-bg p-8 md:p-12 transition-all duration-500 hover:border-[var(--project-accent)] hover:shadow-2xl"
+          className="group block relative overflow-hidden rounded-2xl border border-border bg-white p-8 md:p-12 transition-all duration-500 hover:border-[var(--project-accent)] hover:shadow-xl shadow-[0_4px_20px_rgba(23,23,21,0.04)]"
           style={{
             '--project-accent': project.accentColor || 'var(--color-accent-500)',
           } as React.CSSProperties}

@@ -1,153 +1,271 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowLeft, ArrowRight, Layers, FileText, Github, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { featuredProjects } from '@/data/featured-projects';
-import { navLinks } from '@/data/nav-links';
 import { scrollToSection } from '@/lib/scroll';
+import { useActiveSection } from '@/hooks/use-active-section';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
+
+const chapters = [
+  { num: '01', label: 'Work',       href: '/#work',       id: 'work' },
+  { num: '02', label: 'Services',   href: '/#services',   id: 'services' },
+  { num: '03', label: 'About',      href: '/#about',      id: 'about' },
+  { num: '04', label: 'Experience', href: '/#experience', id: 'experience' },
+  { num: '05', label: 'Contact',    href: '/#contact',    id: 'contact' },
+];
+
+const SECTION_IDS = ['hero', 'work', 'services', 'about', 'experience', 'contact'];
 
 export function FloatingMenu() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
+  const shouldReduceMotion = useReducedMotion();
+  const activeSection = useActiveSection(SECTION_IDS);
+
   const isWorkRoute = pathname.startsWith('/work/');
   const slug = isWorkRoute ? pathname.split('/')[2] : null;
 
-  const [isScrolled, setIsScrolled] = useState(false);
-
+  // Close menu and restore scroll on route change
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    setIsOpen(false);
+  }, [pathname]);
+
+  // Lock background scroll, halt Lenis, and trigger underlying page receding effect
+  useEffect(() => {
+    if (isOpen) {
+      document.documentElement.setAttribute('data-menu-open', 'true');
+      document.body.style.overflow = 'hidden';
+      window.__lenis?.stop();
+    } else {
+      document.documentElement.removeAttribute('data-menu-open');
+      document.body.style.overflow = '';
+      window.__lenis?.start();
+    }
+
+    return () => {
+      document.documentElement.removeAttribute('data-menu-open');
+      document.body.style.overflow = '';
+      window.__lenis?.start();
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isOpen]);
 
-  // On home page, only show when scrolled down (since header disappears)
-  if (pathname === '/' && !isScrolled) return null;
+  // Keyboard accessibility: Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
 
-
-  let mainLinks: any[] = pathname === '/' 
-    ? [...navLinks]
-    : [
-        { label: 'Back to Home', href: '/', icon: <ArrowLeft className="w-4 h-4 mr-3" /> },
-      ];
-  let externalLinks: any[] = [];
-  let otherLinks: any[] = pathname === '/' ? [] : [...navLinks];
-
-  if (isWorkRoute && slug) {
-    const projectIndex = featuredProjects.findIndex((p) => p.id === slug);
-    
-    if (projectIndex !== -1) {
-      const project = featuredProjects[projectIndex];
-      const nextProject = featuredProjects[(projectIndex + 1) % featuredProjects.length];
-      const prevProject = featuredProjects[(projectIndex - 1 + featuredProjects.length) % featuredProjects.length];
-
-      mainLinks = [
-        { label: 'Back to Home', href: '/', icon: <ArrowLeft className="w-4 h-4 mr-3" /> },
-        { label: 'Previous Project', href: `/work/${prevProject.id}`, icon: <ArrowLeft className="w-4 h-4 mr-3" /> },
-        { label: 'Next Project', href: `/work/${nextProject.id}`, icon: <ArrowRight className="w-4 h-4 mr-3" /> },
-      ];
-
-      externalLinks = [
-        ...(project.liveUrl ? [{ label: 'View Live', href: project.liveUrl, icon: <Layers className="w-4 h-4 mr-3" />, external: true }] : []),
-        ...(project.githubUrl ? [{ label: 'Source Code', href: project.githubUrl, icon: <Github className="w-4 h-4 mr-3" />, external: true }] : []),
-      ];
+  const handleLinkClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setIsOpen(false);
+    if (pathname === '/') {
+      setTimeout(() => {
+        const id = href.replace('/#', '').replace('#', '');
+        const el = document.getElementById(id);
+        if (el) {
+          if (window.__lenis) {
+            window.__lenis.scrollTo(el, { duration: 1.0 });
+          } else {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+          window.history.pushState(null, '', href);
+        }
+      }, 80);
+    } else {
+      window.location.href = href;
     }
-  }
+  }, [pathname]);
 
-  const renderLink = (link: any) => {
-    const content = (
-      <>
-        {link.icon}
-        <span className="flex-1">{link.label}</span>
-        {link.external && <ExternalLink className="w-3 h-3 opacity-50 ml-2" />}
-      </>
-    );
+  const currentProject = isWorkRoute && slug
+    ? featuredProjects.find((p) => p.id === slug)
+    : null;
 
-    const className = "flex items-center px-4 py-3 md:py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface-hover transition-colors";
-
-    if (link.external) {
-      return (
-        <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={className} onClick={() => setIsOpen(false)}>
-          {content}
-        </a>
-      );
-    }
-
-    return (
-      <Link 
-        key={link.href} 
-        href={link.href} 
-        onClick={(e) => {
-          setIsOpen(false);
-          scrollToSection(e, link.href);
-        }} 
-        className={className}
-      >
-        {content}
-      </Link>
-    );
-  };
+  const isDarkSection = !isOpen && (activeSection === 'about' || activeSection === 'contact');
 
   return (
     <>
+      {/* ── Circular Morphing Menu Button (Available across all screen sizes) ───── */}
+      <button
+        type="button"
+        onClick={() => setIsOpen((prev) => !prev)}
+        className={cn(
+          'fixed top-3.5 right-4 sm:top-4 sm:right-6 md:top-3.5 md:right-8 lg:top-4 lg:right-10 z-50 group flex items-center justify-center rounded-full select-none outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2',
+          'w-11 h-11 sm:w-12 sm:h-12 border transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.03] active:scale-[0.97]',
+          isOpen
+            ? 'bg-white text-[#171715] border-[#D8D4CA] shadow-[0_2px_12px_rgba(23,23,21,0.06)]'
+            : 'bg-[var(--surface-bg)] text-[var(--surface-text)] border-[var(--surface-border)] shadow-[0_2px_14px_rgba(0,0,0,0.12)] hover:border-accent-500/50'
+        )}
+        aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-expanded={isOpen}
+      >
+        <span className="sr-only">{isOpen ? 'Close menu' : 'Open menu'}</span>
+
+        {/* Three fine lines morphing into X */}
+        <div className="relative w-4 h-4 flex items-center justify-center pointer-events-none">
+          {/* Top Line */}
+          <span
+            className={cn(
+              'absolute h-[1.5px] w-4 rounded-full origin-center transition-all duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
+              isOpen ? 'bg-[#171715] translate-y-0 rotate-45' : 'bg-[var(--surface-text)] -translate-y-[4.5px] group-hover:-translate-y-[3.5px]'
+            )}
+          />
+
+          {/* Middle Line */}
+          <span
+            className={cn(
+              'absolute h-[1.5px] w-4 rounded-full origin-center transition-all duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
+              isOpen ? 'opacity-0 scale-x-0' : 'bg-[var(--surface-text)] translate-y-0 opacity-100 scale-x-100'
+            )}
+          />
+
+          {/* Bottom Line */}
+          <span
+            className={cn(
+              'absolute h-[1.5px] w-4 rounded-full origin-center transition-all duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
+              isOpen ? 'bg-[#171715] translate-y-0 -rotate-45' : 'bg-[var(--surface-text)] translate-y-[4.5px] group-hover:translate-y-[3.5px]'
+            )}
+          />
+        </div>
+      </button>
+
+      {/* ── Refined Mobile Full-Screen Navigation Overlay ─────────────────── */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            key="mobile-editorial-fullscreen-menu"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-            className="fixed inset-0 z-40 bg-bg/40 backdrop-blur-sm"
-          />
-        )}
-      </AnimatePresence>
+            transition={{
+              duration: shouldReduceMotion ? 0.15 : 0.35,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="fixed inset-0 z-40 bg-bg text-text-primary flex flex-col justify-between overflow-y-auto overflow-x-hidden selection:bg-accent-500 selection:text-white"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation Menu"
+          >
+            {/* Top Bar: PRANAV. on left, close space on right */}
+            <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 pt-5 pb-4 flex items-center justify-between select-none shrink-0 border-b border-border/50">
+              <Link
+                href="/"
+                onClick={() => setIsOpen(false)}
+                className="font-editorial font-medium text-[19px] tracking-[-0.03em] text-text-primary transition-opacity hover:opacity-80"
+              >
+                Pranav<span className="text-accent-500">.</span>
+              </Link>
 
-      <div className="fixed top-6 right-6 z-50 flex flex-col items-end">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={cn(
-            "flex items-center justify-center w-12 h-12 rounded-full shadow-xl transition-all duration-300 z-50 text-white",
-            isOpen ? "bg-bg border border-border text-text-primary hover:bg-surface" : "bg-accent-500 hover:bg-accent-600 hover:scale-105"
-          )}
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X className="w-6 h-6 text-text-primary" /> : <Menu className="w-6 h-6 text-white" />}
-        </button>
+              <div className="font-mono text-xs text-text-muted tracking-wider pr-14">
+                2026
+              </div>
+            </div>
 
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              transition={{ duration: 0.25, type: 'spring', bounce: 0.15 }}
-              className="mt-4 w-[calc(100vw-3rem)] sm:w-64 rounded-2xl bg-surface/80 backdrop-blur-xl border border-border shadow-2xl overflow-hidden origin-top-right"
-            >
-              <nav className="flex flex-col py-2">
-                {mainLinks.map(renderLink)}
-                
-                {externalLinks.length > 0 && (
-                  <div className="my-1 border-t border-border/50">
-                    {externalLinks.map(renderLink)}
-                  </div>
-                )}
-                
-                {otherLinks.length > 0 && (
-                  <div className="my-1 border-t border-border/50">
-                    {otherLinks.map(renderLink)}
-                  </div>
+            {/* Main Stage: Compact, Tighter Mobile Navigation Links */}
+            <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 py-8 my-auto flex-1 flex items-center">
+              <nav className="w-full flex flex-col space-y-3">
+                {chapters.map((chapter, idx) => {
+                  const isActive = pathname === '/' && activeSection === chapter.id;
+
+                  return (
+                    <motion.div
+                      key={chapter.id}
+                      initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+                      transition={{
+                        duration: shouldReduceMotion ? 0.1 : 0.3,
+                        delay: shouldReduceMotion ? 0 : idx * 0.04,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                    >
+                      <Link
+                        href={chapter.href}
+                        onClick={(e) => handleLinkClick(e, chapter.href)}
+                        className="group flex items-baseline gap-4 py-2 transition-transform duration-200 hover:translate-x-1 outline-none"
+                      >
+                        {/* Number */}
+                        <span
+                          className={cn(
+                            'font-mono text-xs tracking-widest tabular-nums shrink-0 w-6',
+                            isActive
+                              ? 'text-accent-500 font-semibold'
+                              : 'text-text-muted group-hover:text-accent-500'
+                          )}
+                        >
+                          {chapter.num}
+                        </span>
+
+                        {/* Title: editorial typography */}
+                        <div className="flex flex-col">
+                          <span
+                            className={cn(
+                              'font-editorial text-2xl sm:text-3xl font-medium tracking-tight leading-tight transition-colors duration-200',
+                              isActive
+                                ? 'text-accent-500'
+                                : 'text-text-primary group-hover:text-accent-500'
+                            )}
+                          >
+                            {chapter.label}
+                          </span>
+
+                          {isActive && (
+                            <span className="block h-[1.5px] w-6 bg-accent-500 mt-1.5 rounded-full" />
+                          )}
+                        </div>
+
+                        {/* Subtle arrow reveal on hover */}
+                        <span className="text-accent-500 text-lg opacity-0 -translate-x-1 transition-all group-hover:opacity-100 group-hover:translate-x-0 ml-auto">
+                          →
+                        </span>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+
+                {/* Case Study sub-link if applicable */}
+                {currentProject && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.25 }}
+                    className="pt-4 mt-2 border-t border-border/50 flex items-center gap-2 text-xs font-mono"
+                  >
+                    <span className="text-text-muted">Case Study:</span>
+                    <span className="text-text-primary font-medium">{currentProject.title}</span>
+                    <Link
+                      href="/#work"
+                      onClick={(e) => handleLinkClick(e, '/#work')}
+                      className="text-accent-500 hover:underline ml-auto"
+                    >
+                      All Work →
+                    </Link>
+                  </motion.div>
                 )}
               </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+            </div>
+
+            {/* Bottom Bar */}
+            <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 pt-4 pb-8 flex items-center justify-between select-none shrink-0 border-t border-border/50">
+              <span className="font-mono text-[10.5px] text-text-muted tracking-[0.16em] uppercase">
+                FULL-STACK · AI · PRODUCT
+              </span>
+              <span className="font-mono text-[10px] text-text-muted tracking-[0.14em] uppercase">
+                ESC TO CLOSE
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

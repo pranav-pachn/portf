@@ -3,8 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Container } from '@/components/ui/container';
-import { ArchitecturalArtifact } from '@/components/home/ArchitecturalArtifact';
+import { HeroArtwork } from '@/components/home/HeroArtwork';
 
 export function HeroPanel() {
   const smoothScrollToWork = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -15,144 +14,129 @@ export function HeroPanel() {
     }
   };
 
-  // Editorial line-by-line reveal
-  const lineVariants = {
-    hidden: { y: '105%', opacity: 0 },
-    visible: (i: number) => ({
-      y: '0%',
-      opacity: 1,
-      transition: {
-        duration: 0.85,
-        delay: 0.12 + i * 0.1,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    }),
-  };
-
-  const lines = ['Building products', 'for complex', 'systems.'];
-
   return (
     <section
       id="hero"
-      className="relative min-h-[92vh] lg:min-h-screen flex flex-col justify-between pt-28 pb-10 lg:pt-36 lg:pb-12 bg-bg overflow-hidden"
+      className="relative pt-24 pb-8 lg:pt-28 lg:pb-10 bg-transparent overflow-hidden"
     >
-      <Container className="relative z-10 my-auto w-full">
-        {/* Asymmetric Split: 45% Left (Identity) / 55% Right (Artifact & Void) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      {/* Primary Split Viewport: 44% text / 56% artwork aligned around shared visual center */}
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12">
+        <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-8 lg:gap-6 xl:gap-12">
           
-          {/* LEFT COLUMN: 45% (5 cols on lg, with breathing room) */}
-          <div className="lg:col-span-6 xl:col-span-5 flex flex-col items-start text-left z-20 lg:-mt-10 -ml-1">
+          {/* LEFT COLUMN: 44% Text Column */}
+          <div className="w-full lg:w-[44%] flex flex-col items-start text-left z-20">
             
-            {/* Eyebrow: 01 — IDENTITY */}
+            {/* Eyebrow: Cobalt Blue Accent */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-              className="mb-4 lg:mb-5"
+              transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              className="mb-3.5 lg:mb-4"
             >
-              <span className="font-mono text-[10px] font-[500] text-accent-500 uppercase tracking-[0.18em]">
-                01 — IDENTITY
+              <span className="font-mono text-[11px] sm:text-[11.5px] font-semibold text-accent-500 uppercase tracking-[0.16em]">
+                FULL-STACK • AI • PRODUCT
               </span>
             </motion.div>
 
-            {/* Headline: Manrope Display, lighter weights (600/500), tight tracking */}
-            <h1 className="text-5xl sm:text-6xl lg:text-[3.75rem] xl:text-[4.25rem] font-display tracking-[-0.045em] text-text-primary leading-[0.98] lg:leading-[1.0] mb-8 whitespace-nowrap">
-              <span className="block overflow-hidden py-0.5">
-                <motion.span custom={0} variants={lineVariants} initial="hidden" animate="visible" className="block font-semibold">
-                  Building products
-                </motion.span>
-              </span>
-              <span className="block overflow-hidden py-0.5">
-                <motion.span custom={1} variants={lineVariants} initial="hidden" animate="visible" className="block font-semibold">
-                  for complex
-                </motion.span>
-              </span>
-              <span className="block overflow-hidden py-0.5">
-                <motion.span custom={2} variants={lineVariants} initial="hidden" animate="visible" className="block font-medium">
-                  systems.
-                </motion.span>
-              </span>
-            </h1>
-
-            {/* Subtitle: Geist Sans, lighter (400), narrower */}
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[17px] text-text-muted max-w-[28ch] font-normal leading-[1.55] mb-10"
-            >
-              Full-stack & AI product engineer building software from idea to deployment.
-            </motion.p>
-
-            {/* Quiet Editorial CTA: View selected work ↗ with growing line */}
-            <motion.div
+            {/* Headline: Refined Hierarchy & Balanced 3-Line Cadence */}
+            <motion.h1
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.58, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.75, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-4xl sm:text-5xl lg:text-[3.15rem] xl:text-[3.6rem] font-editorial tracking-[-0.025em] text-text-primary leading-[1.06] mb-4 lg:mb-5"
+            >
+              {/* Line 1: Connected Thought with Tightened Baseline & Spacing */}
+              <span className="block">
+                <span className="inline-flex items-baseline gap-2.5 sm:gap-3">
+                  <span className="font-serif-italic font-normal text-[1.06em] tracking-[-0.01em]">
+                    I build
+                  </span>
+                  <span className="font-editorial font-medium tracking-[-0.025em]">
+                    digital
+                  </span>
+                </span>
+              </span>
+
+              {/* Line 2: Sustaining Sans Rhythm */}
+              <span className="block font-editorial font-medium tracking-[-0.025em] mt-0.5">
+                products with
+              </span>
+
+              {/* Line 3: Sculptural Destination Word */}
+              <span className="block font-serif-italic font-normal text-[1.12em] tracking-[-0.01em] mt-0.5">
+                depth.
+              </span>
+            </motion.h1>
+
+            {/* Subtitle: Refined Supporting Copy, Sitting Closer to Headline */}
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="font-editorial text-[15.5px] sm:text-[16px] text-text-secondary max-w-[34ch] font-normal leading-[1.6] mb-8 lg:mb-10"
+            >
+              Thoughtful interfaces, reliable systems <br className="hidden sm:inline" />
+              and useful AI — from idea to deployment.
+            </motion.p>
+
+            {/* Understated Editorial CTA with Clearer Separation */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
               <Link
                 href="#work"
                 onClick={smoothScrollToWork}
-                className="group inline-flex flex-col text-[15px] font-medium text-text-primary transition-colors hover:text-white"
+                className="group inline-flex items-center gap-2.5 font-editorial text-[14.5px] sm:text-[15px] font-medium text-text-primary transition-colors hover:text-accent-500 pb-1 border-b border-text-primary/30 hover:border-accent-500"
               >
-                <span className="flex items-center gap-2">
-                  <span>View selected work</span>
-                  <span className="inline-block transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:-translate-y-0.5 text-text-muted group-hover:text-white">
-                    ↗
-                  </span>
-                </span>
-                {/* Thin Underline that scales on hover */}
-                <span className="h-[1px] w-full bg-border mt-1.5 transition-colors duration-300 group-hover:bg-text-primary relative overflow-hidden">
-                  <span className="absolute inset-0 bg-text-primary origin-left scale-x-0 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
+                <span>Explore selected work</span>
+                <span className="inline-block transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 text-text-secondary group-hover:text-accent-500">
+                  →
                 </span>
               </Link>
             </motion.div>
 
           </div>
 
-          {/* RIGHT COLUMN: 55% (6-7 cols on lg) - Void & Monolith */}
-          <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 xl:col-span-7 flex items-center justify-center lg:justify-end w-full relative"
-          >
-            {/* Object occupies ~105-120% of right column bleeding off the viewport on large screens */}
-            <div className="w-full lg:w-[105%] xl:w-[115%] 2xl:w-[125%] -mr-4 lg:-mr-12 xl:-mr-20 z-10">
-              <ArchitecturalArtifact />
+          {/* RIGHT COLUMN: 56% Large Photorealistic Artwork - Optically balanced vertical offset */}
+          <div className="w-full lg:w-[56%] flex items-center justify-center lg:justify-end relative lg:pt-5 xl:pt-6">
+            <div className="w-full max-w-[640px] lg:max-w-none">
+              <HeroArtwork />
             </div>
-          </motion.div>
+          </div>
 
         </div>
-      </Container>
 
-      {/* Hero Footer Meta: Scroll Indicator (settles once) + Location/Year */}
-      <Container className="relative z-10 w-full pt-8 lg:pt-0">
-        <div className="flex items-center justify-between border-t border-white/[0.04] pt-5 font-mono text-[11px] text-text-muted">
-          {/* Scroll Indicator: drops 6px once on load and stays still */}
-          <motion.div
-            initial={{ y: -6, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.9, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-2 tracking-wider"
-          >
-            <span className="text-text-secondary text-xs">↓</span>
-            <span className="tracking-[0.14em]">SCROLL TO EXPLORE</span>
-          </motion.div>
+        {/* Hero Lower Third: Single Footer Rule aligned with Main Container */}
+        <div className="w-full mt-10 sm:mt-12 lg:mt-14">
+          <div className="flex items-center justify-between border-t border-border/70 pt-4 font-mono text-[11px] text-text-muted">
+            {/* Scroll Indicator */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="flex items-center gap-2.5 text-text-secondary text-[10.5px]"
+            >
+              <span className="text-text-secondary text-xs">↓</span>
+              <span className="tracking-[0.14em]">SCROLL TO EXPLORE</span>
+            </motion.div>
 
-          {/* Metadata */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.95, duration: 0.6 }}
-            className="hidden sm:flex items-center gap-6 tracking-wider"
-          >
-            <span className="text-text-muted">INDIA</span>
-            <span className="text-border">/</span>
-            <span className="text-text-secondary">2026 →</span>
-          </motion.div>
+            {/* Geographic & Chronological Meta */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.45, duration: 0.6 }}
+              className="hidden sm:flex items-center gap-4 tracking-wider text-[10.5px]"
+            >
+              <span className="text-text-muted">INDIA</span>
+              <span className="text-border">/</span>
+              <span className="text-text-secondary">2026 →</span>
+            </motion.div>
+          </div>
         </div>
-      </Container>
+
+      </div>
     </section>
   );
 }

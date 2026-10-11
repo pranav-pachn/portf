@@ -374,7 +374,7 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
             </span>
             
             <div>
-              <h3 className="font-sans text-4xl md:text-5xl font-bold text-white leading-[1] tracking-[-0.04em] whitespace-pre-line">
+              <h3 className="font-display text-4xl md:text-5xl font-bold text-white leading-[1] tracking-[-0.04em] whitespace-pre-line">
                 {book.title}
               </h3>
               <div className="w-12 h-[2px] bg-accent-500 mt-6" />
@@ -397,7 +397,7 @@ export function ManualBook({ book, isOpen, onToggle, shouldReduceMotion }: Manua
           <div className="flex-1 flex flex-col justify-center">
             {isOpen && !pageTurned && (
               <div className="animate-fade-in-up" style={{ animationDelay: '400ms', animationDuration: '600ms', animationFillMode: 'both' }}>
-                <h4 className="font-sans text-2xl font-bold tracking-[-0.03em] mb-6 text-[#0d0d0d]">
+                <h4 className="font-display text-2xl font-bold tracking-[-0.03em] mb-6 text-[#0d0d0d]">
                   {book.title.replace('\n', ' ')}
                 </h4>
                 <p className="text-sm leading-relaxed text-[#525252] font-medium">

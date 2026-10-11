@@ -85,25 +85,25 @@ export function BrowserMockup({ children, className, animateFloat = true, enable
       <div
         ref={containerRef}
         className={cn(
-          'w-full rounded-2xl border border-border/80 bg-surface-elevated shadow-2xl overflow-hidden transition-colors duration-500 will-change-transform [transform-style:preserve-3d]',
+          'w-full rounded-2xl border border-border/80 bg-white shadow-[0_24px_50px_-12px_rgba(23,23,21,0.12)] overflow-hidden transition-colors duration-500 will-change-transform [transform-style:preserve-3d]',
           className
         )}
       >
         {/* Subtle Chrome Header */}
-        <div className="h-8 px-4 flex items-center gap-2 border-b border-border/50 bg-surface/80 select-none">
+        <div className="h-8 px-4 flex items-center gap-2 border-b border-border/60 bg-[#EAE7E0] select-none">
           <div className="flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity">
-            <span className="w-2 h-2 rounded-full bg-text-muted/60" />
-            <span className="w-2 h-2 rounded-full bg-text-muted/60" />
-            <span className="w-2 h-2 rounded-full bg-text-muted/60" />
+            <span className="w-2 h-2 rounded-full bg-[#B8B4AA]" />
+            <span className="w-2 h-2 rounded-full bg-[#B8B4AA]" />
+            <span className="w-2 h-2 rounded-full bg-[#B8B4AA]" />
           </div>
           <div className="mx-auto flex items-center justify-center">
-            <div className="h-4 w-32 md:w-48 rounded-full bg-border/40 opacity-50" />
+            <div className="h-4 w-32 md:w-48 rounded-full bg-[#F3F1EC] border border-[#D6D3CC]/60 opacity-80" />
           </div>
           <div className="w-10" /> {/* Spacer for centering the address bar indicator */}
         </div>
 
         {/* Screenshot Body with Parallax Ref */}
-        <div className="relative w-full aspect-[16/10] overflow-hidden bg-surface/30">
+        <div className="relative w-full aspect-[16/10] overflow-hidden bg-[#FAF9F5]">
           <div ref={screenshotRef} className="absolute -inset-1 w-[calc(100%+8px)] h-[calc(100%+8px)] will-change-transform">
             {children}
           </div>

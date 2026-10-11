@@ -1,6 +1,5 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Badge } from "./badge"
 
 export interface SectionHeadingProps extends React.HTMLAttributes<HTMLDivElement> {
   heading: string
@@ -20,15 +19,15 @@ export function SectionHeading({ className, heading, subtitle, eyebrow, align = 
       {...props}
     >
       {eyebrow && (
-        <Badge variant="accent" className="mb-4">
+        <span className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-accent-500 mb-3.5 select-none">
           {eyebrow}
-        </Badge>
+        </span>
       )}
-      <h2 className="text-4xl md:text-[56px] font-display font-semibold text-text-primary tracking-[-0.04em] leading-[1]">
+      <h2 className="text-3xl sm:text-4xl md:text-[44px] font-editorial font-medium text-text-primary tracking-[-0.03em] leading-[1.1]">
         {heading}
       </h2>
       {subtitle && (
-        <p className="mt-4 text-[20px] text-text-secondary max-w-[34rem] leading-[1.6] font-normal tracking-normal">
+        <p className="mt-4 text-[17px] md:text-[19px] text-text-secondary max-w-[34rem] leading-[1.55] font-normal tracking-normal">
           {subtitle}
         </p>
       )}

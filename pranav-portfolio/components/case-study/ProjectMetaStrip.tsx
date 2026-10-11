@@ -24,13 +24,13 @@ export function ProjectMetaStrip({ project }: ProjectMetaStripProps) {
               {project.stack.slice(0, 4).map((tech) => (
                 <span
                   key={tech}
-                  className="px-2.5 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide text-text-secondary bg-surface rounded-md border border-border/80 hover:border-[var(--project-accent)] hover:bg-[var(--project-accent)]/10 transition-colors duration-200"
+                  className="px-2.5 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide text-text-secondary bg-white rounded-md border border-border/90 shadow-[0_1px_2px_rgba(23,23,21,0.03)] hover:border-[var(--project-accent)] hover:text-text-primary transition-colors duration-200"
                 >
                   {tech}
                 </span>
               ))}
               {project.stack.length > 4 && (
-                <span className="px-2 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide text-text-muted bg-surface/50 rounded-md border border-border/40">
+                <span className="px-2 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide text-text-muted bg-white/70 rounded-md border border-border/50">
                   +{project.stack.length - 4}
                 </span>
               )}

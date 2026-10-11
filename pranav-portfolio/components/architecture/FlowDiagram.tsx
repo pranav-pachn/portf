@@ -130,29 +130,30 @@ export function FlowDiagram({ nodes, accentColor = 'var(--color-accent-500)', di
                 padding="sm"
                 className={cn(
                   "relative flex flex-col items-center text-center h-full transition-colors duration-500",
-                  "border-[var(--diagram-accent)] shadow-glow bg-surface-elevated"
+                  "border-[#363432] shadow-lg bg-[#222120]"
                 )}
+                style={{ borderColor: 'rgba(255,255,255,0.1)' }}
               >
                 <div 
                   className={cn(
                     "w-12 h-12 rounded-full flex items-center justify-center mb-3 transition-colors duration-500",
-                    "bg-[var(--diagram-accent)]/10 text-[var(--diagram-accent)]"
+                    "bg-[var(--diagram-accent)]/15 text-[var(--diagram-accent)]"
                   )}
                 >
                   <IconComponent className="w-6 h-6" />
                 </div>
                 <div className="flow-label">
-                  <h4 className="text-sm font-bold text-text-primary leading-tight mb-1">
+                  <h4 className="text-sm font-semibold text-[#F0EEE8] leading-tight mb-1">
                     {node.label}
                   </h4>
-                  <p className="text-xs text-text-secondary">
+                  <p className="text-xs text-[#A09A91]">
                     {node.caption}
                   </p>
                 </div>
                 
                 {node.reason && (
-                  <div className="absolute inset-0 bg-surface-elevated/95 backdrop-blur-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-3 text-center border border-[var(--diagram-accent)]/50 z-20 pointer-events-none">
-                    <p className="text-xs text-text-primary font-medium leading-relaxed">
+                  <div className="absolute inset-0 bg-[#1C1B1A]/95 backdrop-blur-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-3 text-center border border-[var(--diagram-accent)]/50 z-20 pointer-events-none">
+                    <p className="text-xs text-[#F0EEE8] font-medium leading-relaxed">
                       {node.reason}
                     </p>
                   </div>

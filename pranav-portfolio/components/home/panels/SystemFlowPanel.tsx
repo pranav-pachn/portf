@@ -123,7 +123,7 @@ export function SystemFlowPanel() {
   if (!diagram) return null;
 
   return (
-    <section ref={containerRef} className="py-24 bg-surface flex items-center min-h-[800px]">
+    <section ref={containerRef} className="pt-4 pb-32 bg-[#141413] flex items-center min-h-[800px] text-[#F0EEE8] relative">
       <Container wide>
         
         <div className="flex flex-wrap gap-3 mb-12 arch-text-reveal justify-center lg:justify-start">
@@ -134,10 +134,10 @@ export function SystemFlowPanel() {
               className={cn(
                 "font-mono px-4 py-2 rounded-full text-[13px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 flex items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
                 activeIndex === i 
-                  ? "bg-bg shadow-sm text-text-primary" 
-                  : "bg-transparent text-text-secondary hover:text-text-primary hover:bg-bg/50"
+                  ? "bg-[#1E1D1C] shadow-md text-white border border-[#403E3A]" 
+                  : "bg-transparent text-[#9E988E] border border-[#2E2C2A] hover:text-[#F0EEE8] hover:bg-[#1E1D1C]/60"
               )}
-              style={activeIndex === i ? { border: `1px solid ${d.accentColor}` } : { border: '1px solid var(--color-border)' }}
+              style={activeIndex === i ? { borderColor: d.accentColor } : undefined}
             >
               {activeIndex === i && (
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.accentColor }} />
@@ -149,25 +149,28 @@ export function SystemFlowPanel() {
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
           <div className="flex flex-col lg:w-[25%] flex-shrink-0 text-center lg:text-left">
-            <span className="arch-text-reveal font-mono text-[13px] font-semibold text-text-muted uppercase tracking-[0.14em] mb-4 block">
+            <span className="arch-text-reveal font-mono text-[11px] font-semibold text-accent-400 uppercase tracking-[0.18em] mb-4 block">
               System Flow
             </span>
-            <h3 className="arch-text-reveal text-3xl md:text-4xl font-display font-semibold tracking-[-0.04em] leading-[1] text-text-primary mb-6">
+            <h3 className="arch-text-reveal text-3xl md:text-4xl font-display font-semibold tracking-[-0.04em] leading-[1.05] text-[#F0EEE8] mb-6">
               {diagram.title}
             </h3>
-            <p className="arch-text-reveal text-[20px] text-text-secondary leading-[1.6] max-w-[34rem] font-normal tracking-normal mb-8">
+            <p className="arch-text-reveal text-[17px] text-[#A09A91] leading-[1.6] max-w-[34rem] font-normal tracking-normal mb-8">
               {diagram.description}
             </p>
           </div>
 
           <div className="lg:w-[75%] w-full">
-            <div className="arch-diagram-frame bg-bg rounded-xl border border-border p-6 md:p-12 w-full overflow-hidden shadow-sm">
+            <div className="arch-diagram-frame bg-[#181716] rounded-xl border border-[#2E2C2A] p-6 md:p-12 w-full overflow-hidden shadow-2xl">
               <FlowDiagram nodes={diagram.nodes} accentColor={diagram.accentColor} disableAnimation={true} />
             </div>
           </div>
         </div>
 
       </Container>
+
+      {/* Exit Design Moment: Transition back into daylight / warm ivory */}
+      <div className="absolute inset-x-0 bottom-0 h-24 md:h-36 bg-gradient-to-b from-transparent to-bg pointer-events-none" />
     </section>
   );
 }

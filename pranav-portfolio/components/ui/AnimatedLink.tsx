@@ -12,17 +12,25 @@ interface AnimatedLinkProps {
   external?: boolean;
   className?: string;
   active?: boolean;
+  theme?: 'light' | 'dark';
   onClick?: () => void;
 }
 
-export function AnimatedLink({ href, children, external, className, active, onClick }: AnimatedLinkProps) {
+export function AnimatedLink({ href, children, external, className, active, theme = 'light', onClick }: AnimatedLinkProps) {
   const isExternal = external || href.startsWith('http');
+  const isDark = theme === 'dark';
   
   const inner = (
     <span className="relative flex items-center py-1">
       <span className={cn(
-        "relative flex items-center overflow-hidden transition-colors duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] font-medium",
-        active ? "text-text-primary" : "text-text-secondary group-hover:text-text-primary"
+        "relative flex items-center overflow-hidden transition-colors duration-200 font-medium text-[14.5px] tracking-[-0.01em]",
+        isDark
+          ? active
+            ? "text-[#F2F0EA]"
+            : "text-[#A09A91] group-hover:text-[#F2F0EA]"
+          : active
+          ? "text-text-primary"
+          : "text-text-secondary group-hover:text-text-primary"
       )}>
         {/* Rolling Text Slot */}
         <span className="relative inline-flex flex-col overflow-hidden leading-normal">
@@ -33,21 +41,17 @@ export function AnimatedLink({ href, children, external, className, active, onCl
             {children}
           </span>
         </span>
-
-        {/* Branding dot matching Pranav. logo */}
-        <span className={cn(
-          "text-accent-500 font-semibold transition-all duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ml-0.5",
-          active ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"
-        )}>
-          .
-        </span>
       </span>
 
-      {/* CAD Measurement Underline */}
+      {/* Subtle Thin Cobalt Active Underline */}
       <span 
         className={cn(
-          "absolute bottom-0 left-0 right-0 h-[1.5px] origin-left transition-transform duration-[260ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
-          active ? "bg-accent-500 scale-x-100" : "bg-text-primary/30 scale-x-0 group-hover:scale-x-100 group-hover:bg-accent-500/60"
+          "absolute bottom-0 left-0 right-0 h-[1.5px] origin-left transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          active
+            ? "bg-accent-500 scale-x-100"
+            : isDark
+            ? "bg-white/20 scale-x-0 group-hover:scale-x-100 group-hover:bg-accent-500/80"
+            : "bg-text-primary/20 scale-x-0 group-hover:scale-x-100 group-hover:bg-accent-500/60"
         )}
       />
     </span>

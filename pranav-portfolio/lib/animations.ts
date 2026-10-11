@@ -109,10 +109,20 @@ export const staggerContainer: Variants = {
 };
 
 export const maskReveal: Variants = {
-  hidden: { clipPath: 'inset(100% 0 0 0)', y: 20 },
+  hidden: { opacity: 0, y: 18 },
   visible: { 
-    clipPath: 'inset(0% 0 0 0)', 
+    opacity: 1, 
     y: 0,
-    transition: { duration: 0.7, ease: TIMING.ease } 
+    transition: { duration: 0.6, ease: TIMING.ease } 
   },
 };
+
+export const subtleRise: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: TIMING.ease } 
+  },
+};
+

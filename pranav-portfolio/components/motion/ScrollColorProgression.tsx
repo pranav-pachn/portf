@@ -1,59 +1,157 @@
 'use client';
 
-import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
-const chapterColors: { selector: string; color: string }[] = [
-  { selector: '#hero', color: '#0a0a0a' },
-  { selector: '#work', color: '#0c0c0c' },
-  { selector: '#architecture', color: '#090e17' },
-  { selector: '#about', color: '#0b0a09' },
-  { selector: '#contact', color: '#0a0a0a' },
-];
+// Palette Tokens
+const PALETTES = {
+  ivory: {
+    bg: '#F2F0EA',
+    text: '#171715',
+    border: '#D8D4CA',
+    muted: '#77736B',
+  },
+  warmGrey: {
+    bg: '#E9E6DE',
+    text: '#171715',
+    border: '#D8D4CA',
+    muted: '#77736B',
+  },
+  charcoal: {
+    bg: '#191919',
+    text: '#F2F0EA',
+    border: '#2D2D2D',
+    muted: '#A09A91',
+  },
+};
 
 export function ScrollColorProgression() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
   useGSAP(() => {
     if (shouldReduceMotion) return;
 
-    const triggers: globalThis.ScrollTrigger[] = [];
+    const root = document.documentElement;
 
-    chapterColors.forEach(({ selector, color }) => {
-      const el = document.querySelector(selector);
-      if (!el) return;
+    // Helper to build a linear, reversible, scroll-progress-driven transition
+    const createBoundary = (
+      triggerSelector: string,
+      from: typeof PALETTES.ivory,
+      to: typeof PALETTES.ivory,
+      start: string,
+      end: string
+    ) => {
+      const el = document.querySelector(triggerSelector);
+      if (!el) return null;
 
-      const trigger = ScrollTrigger.create({
+      const lerpBg = gsap.utils.interpolate(from.bg, to.bg);
+      const lerpText = gsap.utils.interpolate(from.text, to.text);
+      const lerpBorder = gsap.utils.interpolate(from.border, to.border);
+      const lerpMuted = gsap.utils.interpolate(from.muted, to.muted);
+
+      const apply = (p: number) => {
+        root.style.setProperty('--surface-bg', lerpBg(p));
+        root.style.setProperty('--surface-text', lerpText(p));
+        root.style.setProperty('--surface-border', lerpBorder(p));
+        root.style.setProperty('--surface-muted', lerpMuted(p));
+      };
+
+      return ScrollTrigger.create({
         trigger: el,
-        start: 'top 60%',
-        end: 'bottom 40%',
-        onEnter: () => {
-          gsap.to(document.documentElement, {
-            '--color-bg': color,
-            duration: 0.9,
-            ease: 'power2.out',
-            overwrite: 'auto',
-          });
-        },
-        onEnterBack: () => {
-          gsap.to(document.documentElement, {
-            '--color-bg': color,
-            duration: 0.9,
-            ease: 'power2.out',
-            overwrite: 'auto',
-          });
+        start,
+        end,
+        scrub: true,
+        onUpdate: (self) => apply(self.progress),
+        onEnter: () => apply(0),
+        onLeave: () => apply(1),
+        onEnterBack: () => apply(1),
+        onLeaveBack: () => apply(0),
+        onRefresh: (self) => {
+          if (self.isActive) {
+            apply(self.progress);
+          }
         },
       });
-      triggers.push(trigger);
-    });
+    };
+
+    // 1. Hero → Selected Work: Ivory → Warm Grey
+    // Begins as Selected Work enters viewport, completes before pinning
+    const t1 = createBoundary(
+      '#work',
+      PALETTES.ivory,
+      PALETTES.warmGrey,
+      'top 95%',
+      'top 60%'
+    );
+
+    // 2. Selected Work → Services: Warm Grey → Ivory
+    // Begins as Selected Work runway finishes and Services approaches
+    const t2 = createBoundary(
+      '#services',
+      PALETTES.warmGrey,
+      PALETTES.ivory,
+      'top 95%',
+      'top 60%'
+    );
+
+    // 3. Services → About: Ivory → Charcoal
+    // Begins before boundary as About starts entering the viewport
+    const t3 = createBoundary(
+      '#about',
+      PALETTES.ivory,
+      PALETTES.charcoal,
+      'top 95%',
+      'top 35%'
+    );
+
+    // 4. About → Experience: Charcoal → Ivory
+    // Returns to ivory as Experience enters viewport
+    const t4 = createBoundary(
+      '#experience',
+      PALETTES.charcoal,
+      PALETTES.ivory,
+      'top 95%',
+      'top 35%'
+    );
+
+    // 5. Experience → Contact: Ivory → Charcoal
+    // Returns to charcoal as Contact enters viewport
+    const t5 = createBoundary(
+      '#contact',
+      PALETTES.ivory,
+      PALETTES.charcoal,
+      'top 95%',
+      'top 40%'
+    );
+
+    const syncCurrentColors = () => {
+      const triggers = [t1, t2, t3, t4, t5].filter(Boolean) as ScrollTrigger[];
+      for (let i = triggers.length - 1; i >= 0; i--) {
+        const st = triggers[i];
+        if (st.progress > 0) {
+          if (st.progress >= 1) {
+            st.vars.onLeave?.(st);
+          } else {
+            st.vars.onUpdate?.(st);
+          }
+          return;
+        }
+      }
+      root.style.setProperty('--surface-bg', PALETTES.ivory.bg);
+      root.style.setProperty('--surface-text', PALETTES.ivory.text);
+      root.style.setProperty('--surface-border', PALETTES.ivory.border);
+      root.style.setProperty('--surface-muted', PALETTES.ivory.muted);
+    };
+
+    ScrollTrigger.addEventListener('refresh', syncCurrentColors);
+    syncCurrentColors();
 
     return () => {
-      triggers.forEach(t => t.kill());
+      ScrollTrigger.removeEventListener('refresh', syncCurrentColors);
+      [t1, t2, t3, t4, t5].forEach((t) => t?.kill());
     };
   }, { dependencies: [shouldReduceMotion] });
 
-  return <div ref={containerRef} className="hidden pointer-events-none" aria-hidden="true" />;
+  return null;
 }

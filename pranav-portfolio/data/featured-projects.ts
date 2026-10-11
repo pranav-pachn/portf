@@ -2,11 +2,103 @@ import { FeaturedProject } from '../types/project';
 
 export const featuredProjects: FeaturedProject[] = [
   {
+    id: 'jobshield-ai',
+    title: 'JobShield AI',
+    category: 'Applied AI',
+    year: '2026',
+    tagline: 'Detecting suspicious job listings with AI-powered analysis and evidence.',
+    problem: 'Job seekers face fraudulent recruiter outreach with no reliable way to verify legitimacy before engaging.',
+    solution: 'Multi-layer verification engine combining domain analysis, heuristic pattern matching, NLP scoring, and risk aggregation into an explainable fraud report.',
+    stack: ['Next.js', 'TypeScript', 'Node.js', 'Express', 'FastAPI', 'PyTorch', 'Hugging Face Transformers', 'MongoDB Atlas', 'JWT'],
+    architectureDecisions: [
+      'Separated heuristic and ML scoring into independent layers so each could be tested and explained individually.',
+      'Parallelized all three signals (AI, recruiter trust, threat intel) with Promise.all — reducing p99 latency by ~60% vs serial calls.',
+      'Built explainability into the output layer natively rather than bolting it on — every verdict includes per-signal breakdowns.',
+      'NLP models are only invoked for ambiguous score ranges (0.2-0.8) — clear scams and legitimate posts bypass model inference, reducing costs by ~70%.'
+    ],
+    engineeringChallenge: 'Balancing NLP model accuracy against response time — solved by running heuristic pre-filters to reduce inference load. Only ambiguous cases hit the full DistilBERT + zero-shot pipeline.',
+    iteration: 'Initially used a single monolithic scoring function; refactored into a pipeline with discrete verification stages after the first version produced opaque risk scores that users could not understand or trust.',
+    learned: 'Explainability is a product feature, not a debugging tool — users trust systems they can understand. A confidence score without evidence is just another black box.',
+    motivation: 'Built to solve a personal frustration — encountering fraudulent recruiter outreach with no reliable way to verify legitimacy before engaging.',
+    nextImprovement: 'Add browser extension for inline verification and expand the training corpus with crowd-sourced labeled data.',
+    liveUrl: 'https://jobshield-ai-taupe.vercel.app',
+    githubUrl: 'https://github.com/pranav-pachn/JobShield-AI',
+    image: '/projects/jobshield.png',
+    accentColor: 'hsl(210, 80%, 55%)',
+    engineeringFocus: [
+      { label: 'Machine Learning', stars: 5 },
+      { label: 'Security', stars: 5 },
+      { label: 'Backend', stars: 4 },
+      { label: 'System Design', stars: 4 }
+    ],
+    keyDecision: 'Built native explainability directly into the multi-signal risk pipeline so users understand the evidence behind every fraud verdict.',
+    caseStudy: {
+      overview: 'JobShield AI helps job seekers verify recruiter outreach and identify recruitment scams by fusing three independent signals — NLP analysis, recruiter domain trust, and cross-referenced threat intelligence — into a single weighted, explainable verdict.',
+      problemContext: 'The modern job search landscape is plagued by sophisticated recruitment scams. Fraudsters create convincing replica domains, spoof legitimate recruiting agencies, and use social engineering to extract personal information or advance fees from desperate job seekers.\n\nExisting solutions either rely on static blacklists — easily bypassed by new domains — or opaque AI models that simply output a binary safe/unsafe score without explaining why. Job seekers need a way to verify outreach legitimacy in real-time, with clear explanations of what exactly is suspicious.\n\nJobShield AI addresses this with a parallel three-signal architecture: AI pipeline (rules to heuristics to NLP), recruiter domain trust (WHOIS, SSL, VirusTotal), and threat intelligence (MongoDB cross-reference). Final Risk = (AI Score x 0.5) + (Recruiter Score x 0.25) + (Threat Intel x 0.25). When signals agree, confidence is high; when they disagree, the system surfaces the ambiguity.',
+      systemDesignSteps: [
+        { id: 'input', label: 'Job Text / URL', caption: 'Paste or Submit', icon: 'Mail', reason: 'Accepts raw job descriptions, recruiter messages, or URLs — no structured input required.' },
+        { id: 'preprocess', label: 'Preprocessing', caption: 'Extract Indicators', icon: 'Scissors', reason: 'Extracts domains, email addresses, salary claims, and urgency phrases before analysis.' },
+        { id: 'fanout', label: 'Parallel Fan-out', caption: 'Promise.all Dispatch', icon: 'GitBranch', reason: 'All three signals are invoked concurrently via Promise.all — reducing p99 latency by ~60%.' },
+        { id: 'ai', label: 'AI Pipeline', caption: 'Rules → Heuristics → NLP', icon: 'Brain', reason: 'NLP models are only invoked for ambiguous (0.2–0.8) scores — clear cases bypass inference entirely.' },
+        { id: 'recruiter', label: 'Recruiter Check', caption: 'Domain · SSL · WHOIS', icon: 'Globe', reason: 'Validates domain age, SSL cert, and VirusTotal reputation independently of the text content.' },
+        { id: 'threat', label: 'Threat Intel', caption: 'MongoDB Cross-reference', icon: 'Shield', reason: 'Cross-references extracted indicators against stored threat patterns from previous analyses.' },
+        { id: 'fusion', label: 'Risk Fusion', caption: 'Weighted Verdict + Evidence', icon: 'FileText', reason: 'Combines signals: AI × 0.5 + Recruiter × 0.25 + Threat × 0.25 — each source is cited in the output.' }
+      ],
+      screenshots: [
+        { src: '/projects/jobshield-content.png', alt: 'JobShield AI Dashboard', caption: 'The main risk assessment dashboard showing aggregated scores, per-signal breakdowns, and threat evidence.' }
+      ]
+    }
+  },
+  {
+    id: 'temporalrent',
+    title: 'TemporalRent',
+    category: 'Distributed Systems',
+    year: '2026',
+    tagline: 'Conflict-free temporal inventory reservation platform with deterministically ordered ACID locking.',
+    problem: 'Event rental businesses use spreadsheets to track packages, but packages are abstractions over physical items. Two bookings for different packages can silently contest the same physical inventory, making overbooking inevitable.',
+    solution: 'A temporal inventory engine that expands package Bill of Materials into physical item demand, computes quantity-aware availability across buffer-padded time windows, and confirms reservations inside ACID transactions with deterministic row-level locking.',
+    stack: ['Next.js 14', 'TypeScript', 'Express.js', 'PostgreSQL', 'Prisma ORM', 'Turborepo', 'pnpm', 'Zod', 'JWT', 'Helmet'],
+    architectureDecisions: [
+      'Used PostgreSQL tstzrange range types and GiST indexes for all temporal overlap checks — moving correctness into the database engine where ACID guarantees apply.',
+      'Deterministic lock ordering (sorted inventory item ID) eliminates deadlocks during concurrent booking confirmation transactions.',
+      'Package versions are immutable once published — past bookings remain historically accurate even when package components are edited.',
+      'Idempotency keys on confirmation endpoints allow safe network retries without double-allocating inventory.'
+    ],
+    engineeringChallenge: 'Preventing race conditions during concurrent booking confirmations — two simultaneous requests for the same inventory window must not both succeed. Solved with ACID transactions, in-transaction re-verification under row-level locks, and deterministic sorted lock ordering.',
+    iteration: 'Initially modelled availability as a simple calendar slot check. Iterated to BOM expansion plus quantity-pool math plus temporal buffer resolution after discovering that two bookings for different packages could share physical items.',
+    learned: 'Temporal modelling at the database layer (tstzrange + GiST) is orders of magnitude simpler and more reliable than replicating the same logic in application code. The database is the single source of truth for time.',
+    motivation: 'Observed real event rental businesses losing money from accidental double-bookings caused by spreadsheet-based inventory tracking with no physical demand aggregation.',
+    liveUrl: null,
+    githubUrl: 'https://github.com/pranav-pachn/TemporalRent',
+    image: '/projects/temporalrent.png',
+    accentColor: 'hsl(30, 80%, 55%)',
+    engineeringFocus: [
+      { label: 'System Design', stars: 5 },
+      { label: 'Database Engineering', stars: 5 },
+      { label: 'Backend', stars: 5 },
+      { label: 'API Design', stars: 4 }
+    ],
+    keyDecision: 'Moved temporal correctness into PostgreSQL using tstzrange + GiST indexes, eliminating application-level availability race conditions.',
+    caseStudy: {
+      overview: 'TemporalRent is a temporal inventory reservation engine for event rental businesses. It expands package Bill of Materials into physical item demand, computes buffer-aware time windows, and confirms bookings inside ACID transactions — guaranteeing conflict-free reservations at scale.',
+      problemContext: 'Event rental businesses frequently promise inventory based on package names — "Premium Haldi Setup x 1" — using spreadsheets or calendar entries. But a package is not a physical item. It is an abstraction that expands into 6-10 individual physical components, each with its own stock pool.\n\nTwo bookings for completely different packages may silently contest the exact same shared physical inventory. Without physical demand aggregation and temporal buffer awareness — accounting for prep, transit, event runtime, teardown, and cleaning — overbooking is inevitable.\n\nWhen a conflict is detected, TemporalRent returns actionable diagnostics: which items are short, by how many units, and which existing bookings are responsible — so the business can act rather than guess.',
+      systemDesignSteps: [
+        { id: 'booking', label: 'Booking Request', caption: 'Package + Item Selection', icon: 'ShoppingCart', reason: 'Accepts packages or individual items; both are normalized into the same demand pipeline.' },
+        { id: 'bom', label: 'BOM Expansion', caption: 'Package → Physical Items', icon: 'GitBranch', reason: 'Expands package abstractions into concrete physical item quantities before any availability check.' },
+        { id: 'buffer', label: 'Buffer Resolution', caption: 'Prep + Transit + Cleanup', icon: 'Clock', reason: 'Widens the effective time window by adding logistical buffers — prevents conflicts from staging overlap.' },
+        { id: 'check', label: 'Availability Check', caption: 'tstzrange Overlap Query', icon: 'Search', reason: 'PostgreSQL GiST-indexed range queries detect all overlapping committed demand in a single query.' },
+        { id: 'lock', label: 'ACID Transaction', caption: 'Row Locks + Re-verify', icon: 'Lock', reason: 'Deterministic lock ordering prevents deadlocks; in-transaction re-check prevents TOCTOU race conditions.' },
+        { id: 'confirm', label: 'Reservation', caption: 'Audit + State Machine', icon: 'CheckCircle', reason: 'Transitions booking through a typed state machine and writes an immutable audit event.' }
+      ],
+      screenshots: []
+    }
+  },
+  {
     id: 'specforge',
     title: 'SpecForge',
-    category: 'AI Engineering Platform',
+    category: 'AI Orchestration',
     year: '2026',
-    tagline: 'AI engineering workspace that converts product ideas into structured specifications, development tasks, and implementation plans.',
+    tagline: 'Translating product concepts into versioned specifications, schemas, and execution plans.',
     problem: 'Teams struggle to translate ideas into actionable engineering plans without losing context or introducing ambiguity.',
     solution: 'An AI-driven platform that orchestrates multi-agent LLM workflows to generate structured product requirements, database schemas, task breakdowns, and execution plans from natural language — keeping every artifact consistent with the original intent.',
     stack: ['Next.js 14', 'TypeScript', 'PostgreSQL', 'Prisma ORM', 'Redis', 'Vercel AI SDK', 'NextAuth', 'Tailwind CSS', 'OpenAI', 'BullMQ'],
@@ -48,103 +140,11 @@ export const featuredProjects: FeaturedProject[] = [
     }
   },
   {
-    id: 'temporalrent',
-    title: 'TemporalRent',
-    category: 'Inventory & Booking Platform',
-    year: '2026',
-    tagline: 'Conflict-free inventory reservation platform for event rental businesses — know what you can safely promise before you promise it.',
-    problem: 'Event rental businesses use spreadsheets to track packages, but packages are abstractions over physical items. Two bookings for different packages can silently contest the same physical inventory, making overbooking inevitable.',
-    solution: 'A temporal inventory engine that expands package Bill of Materials into physical item demand, computes quantity-aware availability across buffer-padded time windows, and confirms reservations inside ACID transactions with deterministic row-level locking.',
-    stack: ['Next.js 14', 'TypeScript', 'Express.js', 'PostgreSQL', 'Prisma ORM', 'Turborepo', 'pnpm', 'Zod', 'JWT', 'Helmet'],
-    architectureDecisions: [
-      'Used PostgreSQL tstzrange range types and GiST indexes for all temporal overlap checks — moving correctness into the database engine where ACID guarantees apply.',
-      'Deterministic lock ordering (sorted inventory item ID) eliminates deadlocks during concurrent booking confirmation transactions.',
-      'Package versions are immutable once published — past bookings remain historically accurate even when package components are edited.',
-      'Idempotency keys on confirmation endpoints allow safe network retries without double-allocating inventory.'
-    ],
-    engineeringChallenge: 'Preventing race conditions during concurrent booking confirmations — two simultaneous requests for the same inventory window must not both succeed. Solved with ACID transactions, in-transaction re-verification under row-level locks, and deterministic sorted lock ordering.',
-    iteration: 'Initially modelled availability as a simple calendar slot check. Iterated to BOM expansion plus quantity-pool math plus temporal buffer resolution after discovering that two bookings for different packages could share physical items.',
-    learned: 'Temporal modelling at the database layer (tstzrange + GiST) is orders of magnitude simpler and more reliable than replicating the same logic in application code. The database is the single source of truth for time.',
-    motivation: 'Observed real event rental businesses losing money from accidental double-bookings caused by spreadsheet-based inventory tracking with no physical demand aggregation.',
-    liveUrl: null,
-    githubUrl: 'https://github.com/pranav-pachn/TemporalRent',
-    image: '/projects/temporalrent.png',
-    accentColor: 'hsl(30, 80%, 55%)',
-    engineeringFocus: [
-      { label: 'System Design', stars: 5 },
-      { label: 'Database Engineering', stars: 5 },
-      { label: 'Backend', stars: 5 },
-      { label: 'API Design', stars: 4 }
-    ],
-    keyDecision: 'Moved temporal correctness into PostgreSQL using tstzrange + GiST indexes, eliminating application-level availability race conditions.',
-    caseStudy: {
-      overview: 'TemporalRent is a temporal inventory reservation engine for event rental businesses. It expands package Bill of Materials into physical item demand, computes buffer-aware time windows, and confirms bookings inside ACID transactions — guaranteeing conflict-free reservations at scale.',
-      problemContext: 'Event rental businesses frequently promise inventory based on package names — "Premium Haldi Setup x 1" — using spreadsheets or calendar entries. But a package is not a physical item. It is an abstraction that expands into 6-10 individual physical components, each with its own stock pool.\n\nTwo bookings for completely different packages may silently contest the exact same shared physical inventory. Without physical demand aggregation and temporal buffer awareness — accounting for prep, transit, event runtime, teardown, and cleaning — overbooking is inevitable.\n\nWhen a conflict is detected, TemporalRent returns actionable diagnostics: which items are short, by how many units, and which existing bookings are responsible — so the business can act rather than guess.',
-      systemDesignSteps: [
-        { id: 'booking', label: 'Booking Request', caption: 'Package + Item Selection', icon: 'ShoppingCart', reason: 'Accepts packages or individual items; both are normalized into the same demand pipeline.' },
-        { id: 'bom', label: 'BOM Expansion', caption: 'Package → Physical Items', icon: 'GitBranch', reason: 'Expands package abstractions into concrete physical item quantities before any availability check.' },
-        { id: 'buffer', label: 'Buffer Resolution', caption: 'Prep + Transit + Cleanup', icon: 'Clock', reason: 'Widens the effective time window by adding logistical buffers — prevents conflicts from staging overlap.' },
-        { id: 'check', label: 'Availability Check', caption: 'tstzrange Overlap Query', icon: 'Search', reason: 'PostgreSQL GiST-indexed range queries detect all overlapping committed demand in a single query.' },
-        { id: 'lock', label: 'ACID Transaction', caption: 'Row Locks + Re-verify', icon: 'Lock', reason: 'Deterministic lock ordering prevents deadlocks; in-transaction re-check prevents TOCTOU race conditions.' },
-        { id: 'confirm', label: 'Reservation', caption: 'Audit + State Machine', icon: 'CheckCircle', reason: 'Transitions booking through a typed state machine and writes an immutable audit event.' }
-      ],
-      screenshots: []
-    }
-  },
-  {
-    id: 'jobshield-ai',
-    title: 'JobShield AI',
-    category: 'AI Security Platform',
-    year: '2025',
-    tagline: 'Analyzes job postings and recruiter information to identify potential recruitment scams using heuristics and AI-assisted risk scoring.',
-    problem: 'Job seekers face fraudulent recruiter outreach with no reliable way to verify legitimacy before engaging.',
-    solution: 'Multi-layer verification engine combining domain analysis, heuristic pattern matching, NLP scoring, and risk aggregation into an explainable fraud report.',
-    stack: ['Next.js', 'TypeScript', 'Node.js', 'Express', 'FastAPI', 'PyTorch', 'Hugging Face Transformers', 'MongoDB Atlas', 'JWT'],
-    architectureDecisions: [
-      'Separated heuristic and ML scoring into independent layers so each could be tested and explained individually.',
-      'Parallelized all three signals (AI, recruiter trust, threat intel) with Promise.all — reducing p99 latency by ~60% vs serial calls.',
-      'Built explainability into the output layer natively rather than bolting it on — every verdict includes per-signal breakdowns.',
-      'NLP models are only invoked for ambiguous score ranges (0.2-0.8) — clear scams and legitimate posts bypass model inference, reducing costs by ~70%.'
-    ],
-    engineeringChallenge: 'Balancing NLP model accuracy against response time — solved by running heuristic pre-filters to reduce inference load. Only ambiguous cases hit the full DistilBERT + zero-shot pipeline.',
-    iteration: 'Initially used a single monolithic scoring function; refactored into a pipeline with discrete verification stages after the first version produced opaque risk scores that users could not understand or trust.',
-    learned: 'Explainability is a product feature, not a debugging tool — users trust systems they can understand. A confidence score without evidence is just another black box.',
-    motivation: 'Built to solve a personal frustration — encountering fraudulent recruiter outreach with no reliable way to verify legitimacy before engaging.',
-    nextImprovement: 'Add browser extension for inline verification and expand the training corpus with crowd-sourced labeled data.',
-    liveUrl: 'https://jobshield-ai-taupe.vercel.app',
-    githubUrl: 'https://github.com/pranav-pachn/JobShield-AI',
-    image: '/projects/jobshield.png',
-    accentColor: 'hsl(210, 80%, 55%)',
-    engineeringFocus: [
-      { label: 'Machine Learning', stars: 5 },
-      { label: 'Security', stars: 5 },
-      { label: 'Backend', stars: 4 },
-      { label: 'System Design', stars: 4 }
-    ],
-    keyDecision: 'Built native explainability directly into the multi-signal risk pipeline so users understand the evidence behind every fraud verdict.',
-    caseStudy: {
-      overview: 'JobShield AI helps job seekers verify recruiter outreach and identify recruitment scams by fusing three independent signals — NLP analysis, recruiter domain trust, and cross-referenced threat intelligence — into a single weighted, explainable verdict.',
-      problemContext: 'The modern job search landscape is plagued by sophisticated recruitment scams. Fraudsters create convincing replica domains, spoof legitimate recruiting agencies, and use social engineering to extract personal information or advance fees from desperate job seekers.\n\nExisting solutions either rely on static blacklists — easily bypassed by new domains — or opaque AI models that simply output a binary safe/unsafe score without explaining why. Job seekers need a way to verify outreach legitimacy in real-time, with clear explanations of what exactly is suspicious.\n\nJobShield AI addresses this with a parallel three-signal architecture: AI pipeline (rules to heuristics to NLP), recruiter domain trust (WHOIS, SSL, VirusTotal), and threat intelligence (MongoDB cross-reference). Final Risk = (AI Score x 0.5) + (Recruiter Score x 0.25) + (Threat Intel x 0.25). When signals agree, confidence is high; when they disagree, the system surfaces the ambiguity.',
-      systemDesignSteps: [
-        { id: 'input', label: 'Job Text / URL', caption: 'Paste or Submit', icon: 'Mail', reason: 'Accepts raw job descriptions, recruiter messages, or URLs — no structured input required.' },
-        { id: 'preprocess', label: 'Preprocessing', caption: 'Extract Indicators', icon: 'Scissors', reason: 'Extracts domains, email addresses, salary claims, and urgency phrases before analysis.' },
-        { id: 'fanout', label: 'Parallel Fan-out', caption: 'Promise.all Dispatch', icon: 'GitBranch', reason: 'All three signals are invoked concurrently via Promise.all — reducing p99 latency by ~60%.' },
-        { id: 'ai', label: 'AI Pipeline', caption: 'Rules → Heuristics → NLP', icon: 'Brain', reason: 'NLP models are only invoked for ambiguous (0.2–0.8) scores — clear cases bypass inference entirely.' },
-        { id: 'recruiter', label: 'Recruiter Check', caption: 'Domain · SSL · WHOIS', icon: 'Globe', reason: 'Validates domain age, SSL cert, and VirusTotal reputation independently of the text content.' },
-        { id: 'threat', label: 'Threat Intel', caption: 'MongoDB Cross-reference', icon: 'Shield', reason: 'Cross-references extracted indicators against stored threat patterns from previous analyses.' },
-        { id: 'fusion', label: 'Risk Fusion', caption: 'Weighted Verdict + Evidence', icon: 'FileText', reason: 'Combines signals: AI × 0.5 + Recruiter × 0.25 + Threat × 0.25 — each source is cited in the output.' }
-      ],
-      screenshots: [
-        { src: '/projects/jobshield.png', alt: 'JobShield AI Dashboard', caption: 'The main risk assessment dashboard showing aggregated scores, per-signal breakdowns, and threat evidence.' }
-      ]
-    }
-  },
-  {
     id: 'agrimitra360',
     title: 'AgriMitra360',
     category: 'Computer Vision',
-    year: '2025-2026',
-    tagline: 'Helps farmers identify crop diseases and receive actionable recommendations using computer vision and multilingual NLP.',
+    year: '2026',
+    tagline: 'Deep learning crop disease identification with Grad-CAM visual proof and multilingual guidance.',
     problem: 'Farmers in multilingual regions lack accessible, real-time crop disease identification and actionable treatment guidance.',
     solution: 'Image-based crop analysis pipeline using FastAPI inference, Grad-CAM explainability overlays, weather-aware risk scoring, yield projection, and a multilingual recommendation engine — turning a single photo into a lender-ready farm intelligence report.',
     stack: ['React 18', 'Vite', 'Node.js', 'Express', 'FastAPI', 'TensorFlow', 'Grad-CAM', 'Supabase', 'OpenWeather API', 'i18next'],

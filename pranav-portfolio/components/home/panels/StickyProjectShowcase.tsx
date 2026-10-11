@@ -1,13 +1,9 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ExternalLink, Github } from 'lucide-react';
 import { FeaturedProject } from '@/types/project';
-import { Container } from '@/components/ui/container';
-import { BrowserMockup } from '@/components/ui/BrowserMockup';
-import { CursorHover } from '@/components/motion/CursorHover';
 import { useGSAP } from '@gsap/react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
@@ -18,13 +14,20 @@ interface StickyProjectShowcaseProps {
 }
 
 export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const counterRef     = useRef<HTMLSpanElement>(null);
-  const glowRef        = useRef<HTMLDivElement>(null);
+  const digitStripRef  = useRef<HTMLDivElement>(null);
   const lastIndexRef   = useRef<number>(0);
 
+  // Circle Cursor Refs
+  const screenshotBoxRef = useRef<HTMLDivElement>(null);
+  const circleCursorRef  = useRef<HTMLDivElement>(null);
+  const xToRef           = useRef<((val: number) => void) | null>(null);
+  const yToRef           = useRef<((val: number) => void) | null>(null);
+
   // Structural Refs
-  const sectionRef        = useRef<HTMLElement>(null);
+  const sectionRef        = useRef<HTMLDivElement>(null);
   const stickyRef         = useRef<HTMLDivElement>(null);
   const contentWrapperRef = useRef<HTMLDivElement>(null);
   const detailsLayersRef  = useRef<(HTMLDivElement | null)[]>([]);
@@ -33,6 +36,78 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
   const shouldReduceMotion = useReducedMotion();
   const total = projects.length;
 
+  // Initialize quickTo for 60fps cursor follower without re-renders
+  useEffect(() => {
+    if (!circleCursorRef.current) return;
+    gsap.set(circleCursorRef.current, { scale: 0, opacity: 0, xPercent: -50, yPercent: -50 });
+    xToRef.current = gsap.quickTo(circleCursorRef.current, 'x', { duration: 0.22, ease: 'power2.out' });
+    yToRef.current = gsap.quickTo(circleCursorRef.current, 'y', { duration: 0.22, ease: 'power2.out' });
+  }, []);
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduceMotion || !circleCursorRef.current || !screenshotBoxRef.current) return;
+    const rect = screenshotBoxRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    gsap.set(circleCursorRef.current, { x, y });
+    gsap.to(circleCursorRef.current, {
+      scale: 1,
+      opacity: 1,
+      duration: 0.28,
+      ease: 'back.out(1.8)',
+      overwrite: 'auto',
+    });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduceMotion || !screenshotBoxRef.current || !xToRef.current || !yToRef.current) return;
+    const rect = screenshotBoxRef.current.getBoundingClientRect();
+    xToRef.current(e.clientX - rect.left);
+    yToRef.current(e.clientY - rect.top);
+  };
+
+  const handleMouseLeave = () => {
+    if (!circleCursorRef.current) return;
+    gsap.to(circleCursorRef.current, {
+      scale: 0,
+      opacity: 0,
+      duration: 0.2,
+      ease: 'power2.in',
+      overwrite: 'auto',
+    });
+  };
+
+  const handleMouseDown = () => {
+    if (!circleCursorRef.current) return;
+    gsap.to(circleCursorRef.current, {
+      scale: 0.88,
+      duration: 0.12,
+      overwrite: 'auto',
+    });
+  };
+
+  const handleMouseUp = () => {
+    if (!circleCursorRef.current) return;
+    gsap.to(circleCursorRef.current, {
+      scale: 1,
+      duration: 0.2,
+      ease: 'back.out(2)',
+      overwrite: 'auto',
+    });
+  };
+
+  const handleScreenshotClick = () => {
+    const cur = projects[lastIndexRef.current] || projects[activeIndex];
+    if (!cur) return;
+    if (cur.liveUrl) {
+      window.open(cur.liveUrl, '_blank', 'noopener,noreferrer');
+    } else if (cur.caseStudy) {
+      window.location.href = `/work/${cur.id}`;
+    } else if (cur.githubUrl) {
+      window.open(cur.githubUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   useGSAP(() => {
     if (!sectionRef.current || !stickyRef.current) return;
 
@@ -40,7 +115,7 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
     const images  = imageLayersRef.current;
 
     // Dynamically size the details container to the actual maximum content height
-    // so visual center alignment with the browser mockup is exact with zero artificial padding
+    // so vertical alignment with the project mockup is exact with zero artificial padding
     const updateContainerHeight = () => {
       const maxH = Math.max(...details.map((d) => d?.offsetHeight || 0));
       if (maxH > 0 && contentWrapperRef.current) {
@@ -51,13 +126,14 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
     window.addEventListener('resize', updateContainerHeight);
 
     // ── Reduced Motion Adjustments ───────────────────────────────────────────
-    const yShift   = shouldReduceMotion ? 0 : 28;
-    const xShift   = shouldReduceMotion ? 0 : 4;
-    const scaleOut = shouldReduceMotion ? 1 : 1.012;
-    const scaleIn  = shouldReduceMotion ? 1 : 0.988;
+    const yShift   = shouldReduceMotion ? 0 : 18;
+    const scaleOut = shouldReduceMotion ? 1 : 1.008;
+    const scaleIn  = shouldReduceMotion ? 1 : 0.995;
 
     // ── 1. Initial states ─────────────────────────────────────────────────────
-    // GSAP owns opacity/y/scale/x. No CSS transitions on these properties.
+    if (digitStripRef.current) {
+      gsap.set(digitStripRef.current, { yPercent: 0 });
+    }
     details.forEach((el, i) => {
       if (!el) return;
       gsap.set(el, {
@@ -72,7 +148,6 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
       gsap.set(el, {
         opacity:       i === 0 ? 1 : 0,
         scale:         i === 0 ? 1 : scaleIn,
-        x:             i === 0 ? 0 : xShift,
         zIndex:        i === 0 ? 10 : 0,
         pointerEvents: i === 0 ? 'auto' : 'none',
       });
@@ -82,30 +157,29 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
     }
 
     // ── 2. Scrubbed content timeline and Pinned Stage ─────────────────────────
-    // 70% dwell, 30% transition per project.
-    // DWELL = 7 units, TRANS = 3 units, SEGMENT = 10 units.
-    // Final project receives a generous 13-unit dwell before releasing the pinned stage.
-    const DWELL       = 7;
-    const TRANS       = 3;
+    // Generous reading interval (DWELL = 8.5 units), short transition (TRANS = 1.5 units)
+    // 85% dwell, 15% transition per project
+    const DWELL       = 8.5;
+    const TRANS       = 1.5;
     const SEGMENT     = DWELL + TRANS; // 10 units per project
-    const FINAL_DWELL = 13;
-    const TOTAL_UNITS = (total - 1) * SEGMENT + FINAL_DWELL; // e.g. 4 * 10 + 13 = 53 units
+    const FINAL_DWELL = 14;
+    const TOTAL_UNITS = (total - 1) * SEGMENT + FINAL_DWELL; // e.g. 4 * 10 + 14 = 54 units
 
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger:  sectionRef.current,
-        start:    'top top',
-        end:      'bottom bottom',
-        scrub:    true,
-        pin:      stickyRef.current,
-        pinSpacing: false,
+        trigger:       sectionRef.current,
+        start:         'top top',
+        end:           'bottom bottom',
+        scrub:         true,
+        pin:           stickyRef.current,
+        pinSpacing:    false,
         anticipatePin: 1,
         onUpdate: (self) => {
           if (progressBarRef.current) {
             gsap.set(progressBarRef.current, { scaleX: self.progress });
           }
 
-          // Transitions switch discrete active index right at the crossfade midpoint (unit i * 10 + 9.25)
+          // Discrete active index calculated at crossfade midpoint
           const currentUnit = self.progress * TOTAL_UNITS;
           const nextIdx = Math.min(
             total - 1,
@@ -118,31 +192,17 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
 
           if (nextIdx !== lastIndexRef.current) {
             lastIndexRef.current = nextIdx;
-            const activeColor = projects[nextIdx]?.accentColor || 'var(--color-accent-500)';
-            if (sectionRef.current) {
-              sectionRef.current.style.setProperty('--project-accent', activeColor);
-            }
-            if (glowRef.current) {
-              glowRef.current.style.backgroundColor = activeColor;
-            }
+            setActiveIndex(nextIdx);
           }
         },
       },
     });
 
     // ── Transition timing constants ───────────────────────────────────────────
-    // TEXT: outgoing must finish before incoming starts — no simultaneous readable state.
-    //   Outgoing text:  crossfadeAt → crossfadeAt + 1.35  (TRANS * 0.45)
-    //   Incoming text:  crossfadeAt + 1.35 → crossfadeAt + 3.00  (offset 0.45, dur 0.55)
-    //   Gap/overlap:    0 units — clean sequential handoff.
     const TEXT_OUT        = TRANS * 0.45;
     const TEXT_IN         = TRANS * 0.55;
     const TEXT_IN_OFFSET  = TRANS * 0.45;
 
-    // IMAGE: small controlled overlap — incoming starts when outgoing is mostly gone.
-    //   Outgoing image: crossfadeAt → crossfadeAt + 1.50  (TRANS * 0.50)
-    //   Incoming image: crossfadeAt + 1.20 → crossfadeAt + 3.00  (offset 0.40, dur 0.60)
-    //   Overlap window: 1.20 → 1.50 = 0.30 units only (~10% of transition)
     const IMAGE_OUT        = TRANS * 0.50;
     const IMAGE_IN         = TRANS * 0.60;
     const IMAGE_IN_OFFSET  = TRANS * 0.40;
@@ -159,12 +219,11 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
       const imageInStart = crossfadeAt + IMAGE_IN_OFFSET;
       const textInStart  = crossfadeAt + TEXT_IN_OFFSET;
 
-      // ── Current project OUT ────────────────────────────────────────────────
+      // Current project text OUT: moves up slightly and fades
       if (curD) {
         tl.to(curD, {
           opacity: 0, y: -yShift, duration: TEXT_OUT, ease: 'none',
           onStart: () => {
-            // Drop outgoing below incoming immediately so it can never render on top
             gsap.set(curD, { pointerEvents: 'none', zIndex: 5 });
           },
           onReverseComplete: () => {
@@ -173,9 +232,23 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
         }, crossfadeAt);
       }
 
+      // Rolling digit transition from index i to index i + 1 (synchronized with text)
+      if (digitStripRef.current) {
+        tl.to(
+          digitStripRef.current,
+          {
+            yPercent: -((i + 1) * (100 / total)),
+            duration: TRANS,
+            ease: shouldReduceMotion ? 'none' : 'power2.inOut',
+          },
+          crossfadeAt
+        );
+      }
+
+      // Current screenshot OUT: subtle crossfade
       if (curI) {
         tl.to(curI, {
-          opacity: 0, scale: scaleOut, x: -xShift, duration: IMAGE_OUT, ease: 'none',
+          opacity: 0, scale: scaleOut, duration: IMAGE_OUT, ease: 'none',
           onStart: () => {
             gsap.set(curI, { pointerEvents: 'none', zIndex: 5 });
           },
@@ -185,7 +258,7 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
         }, crossfadeAt);
       }
 
-      // ── Next project IN ────────────────────────────────────────────────────
+      // Next project text IN: rises gently into place
       if (nxtD) {
         tl.fromTo(nxtD,
           { opacity: 0, y: yShift, zIndex: 15 },
@@ -195,7 +268,6 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
               gsap.set(nxtD, { zIndex: 15, pointerEvents: 'none' });
             },
             onComplete: () => {
-              // Settle to normal active z-index once fully in
               gsap.set(nxtD, { zIndex: 10, pointerEvents: 'auto' });
             },
             onReverseComplete: () => {
@@ -206,11 +278,12 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
         );
       }
 
+      // Next screenshot IN: subtle crossfade settle
       if (nxtI) {
         tl.fromTo(nxtI,
-          { opacity: 0, scale: scaleIn, x: xShift, zIndex: 15 },
+          { opacity: 0, scale: scaleIn, zIndex: 15 },
           {
-            opacity: 1, scale: 1, x: 0, duration: IMAGE_IN, ease: 'none',
+            opacity: 1, scale: 1, duration: IMAGE_IN, ease: 'none',
             onStart: () => {
               gsap.set(nxtI, { zIndex: 15, pointerEvents: 'none' });
             },
@@ -236,56 +309,72 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
   }, { scope: sectionRef, dependencies: [total, shouldReduceMotion] });
 
   return (
-    <>
+    <section id="work" className="relative w-full bg-[var(--surface-bg)] scroll-mt-20">
       {/* ======================================================================== */}
       {/* DESKTOP: Scroll-runway + Pinned Stage (lg:block)                         */}
       {/* ======================================================================== */}
-      <section
+      <div
         ref={sectionRef}
-        className="hidden lg:block relative w-full bg-bg border-t border-border/50"
+        className="hidden lg:block relative w-full border-t border-[var(--surface-border)]"
         style={{
-          // The explicit height IS the scroll runway. GSAP reads this for pinSpacing.
-          // 53 units total = 530vh runway, providing generous dwell for the final project.
-          height: `${Math.round((((total - 1) * 10 + 13) / 10) * 100)}vh`,
-          '--project-accent': projects[0]?.accentColor || 'var(--color-accent-500)',
-        } as React.CSSProperties}
+          height: `${Math.round((((total - 1) * 10 + 14) / 10) * 100)}vh`,
+        }}
       >
-        {/* ── Pinned Stage ── GSAP pins this div against the scroll runway above */}
+        {/* ── Pinned Stage ── GSAP pins this container against the scroll runway */}
         <div
           ref={stickyRef}
-          className="h-screen w-full flex items-center justify-center overflow-hidden"
+          className="h-screen w-full flex flex-col justify-between overflow-hidden relative py-6 xl:py-8"
         >
-          {/* Atmospheric background glow — very low opacity (0.05) subtle ambient lighting */}
+          {/* Subtle Ambient Lighting Glow */}
           <div
-            ref={glowRef}
-            className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-[0.05] blur-[140px] pointer-events-none transition-colors duration-700"
-            style={{ backgroundColor: projects[0]?.accentColor || 'var(--color-accent-500)' }}
+            className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.03] blur-[150px] pointer-events-none bg-accent-500"
           />
 
-          <Container wide>
-            <div className="grid grid-cols-12 gap-8 lg:gap-12 xl:gap-16 items-center pl-4 lg:pl-8">
+          {/* ── TOP LEDGER BAR ──────────────────────────────────────────────── */}
+          <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12 flex items-center justify-between gap-6 select-none shrink-0 z-20">
+            <span className="font-mono text-xs uppercase tracking-[0.2em] font-medium text-text-secondary shrink-0">
+              SELECTED WORK
+            </span>
+            <div className="flex-1 h-[1px] bg-[var(--surface-border)]" />
+            <span className="font-mono text-xs text-text-secondary tracking-wider shrink-0">
+              2026
+            </span>
+          </div>
 
-              {/* ── LEFT: Project Details ─────────────────────────────────────── */}
-              <div className="col-span-5 relative flex flex-col justify-center">
+          {/* ── CENTER STAGE: 2-Column Split ─────────────────────────────────── */}
+          <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12 flex-1 flex items-center my-auto z-10">
+            <div className="grid grid-cols-12 gap-8 lg:gap-12 xl:gap-16 items-center w-full">
 
-                {/* Progress indicator — direct DOM counter + GSAP scaleX bar */}
-                <div className="w-3/4 max-w-[260px] z-20 pointer-events-none mb-5 select-none">
-                  <div className="flex items-center font-mono text-xs text-text-muted/70 tracking-wider mb-2">
-                    <span className="relative inline-block overflow-hidden h-[1.25em] w-[1.7em]">
-                      <span ref={counterRef} className="block tabular-nums">01</span>
-                    </span>
-                    <span className="mx-1 text-text-muted/40">/</span>
-                    <span>{total.toString().padStart(2, '0')}</span>
-                  </div>
-                  <div className="h-[1.5px] w-full bg-border/40 relative overflow-hidden rounded-full">
+              {/* ── LEFT COLUMN: Oversized 01 + Title + Tagline + Link ─────────── */}
+              <div className="col-span-12 lg:col-span-5 relative flex flex-col justify-center">
+
+                {/* ── OVERSIZED NUMBER: Fixed '0', Rolling Right Digit ────────── */}
+                <div className="select-none leading-[0.82] mb-3 lg:mb-3.5 flex items-baseline">
+                  {/* Fixed 0 */}
+                  <span className="font-editorial font-normal text-[84px] sm:text-[96px] md:text-[110px] lg:text-[120px] xl:text-[132px] text-text-muted/45 tracking-[-0.05em] tabular-nums shrink-0">
+                    0
+                  </span>
+
+                  {/* Masked Changing Right Digit */}
+                  <div className="relative overflow-hidden h-[0.82em] inline-flex items-baseline font-editorial font-normal text-[84px] sm:text-[96px] md:text-[110px] lg:text-[120px] xl:text-[132px] text-text-muted/45 tracking-[-0.05em]">
                     <div
-                      ref={progressBarRef}
-                      className="absolute inset-y-0 left-0 w-full bg-[var(--project-accent)] transition-colors duration-700"
-                    />
+                      ref={digitStripRef}
+                      className="flex flex-col will-change-transform"
+                      style={{ transform: 'translateY(0%)' }}
+                    >
+                      {projects.map((_, i) => (
+                        <span
+                          key={i}
+                          className="tabular-nums block h-[0.82em] leading-[0.82em] text-center"
+                        >
+                          {i + 1}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                {/* Stacked project detail layers — sized dynamically to natural content height */}
+                {/* ── STACKED PROJECT DETAILS: Category + Title + Tagline + Link ── */}
                 <div ref={contentWrapperRef} className="relative w-full transition-[height] duration-200">
                   {projects.map((proj, idx) => (
                     <div
@@ -293,91 +382,52 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
                       ref={(el) => { detailsLayersRef.current[idx] = el; }}
                       className="absolute top-0 left-0 w-full flex flex-col justify-start"
                     >
-                      {/* Category */}
-                      <div className="flex items-center gap-2 mb-2.5 select-none">
-                        <span
-                          className="font-mono text-[11px] xl:text-xs font-semibold uppercase tracking-[0.16em] transition-colors duration-500"
-                          style={{ color: 'var(--project-accent)', opacity: 0.75 }}
-                        >
+                      {/* Category with Electric-Blue Accent Dash */}
+                      <div className="flex items-center gap-2 mb-2 select-none">
+                        <span className="font-mono text-[10.5px] sm:text-[11px] font-medium uppercase tracking-[0.12em] text-text-secondary">
                           {proj.category}
                         </span>
+                        <span className="w-4 h-[1.5px] bg-accent-500 inline-block rounded-full" />
                       </div>
 
-                      {/* Title */}
-                      <h3 className="text-3xl xl:text-4xl font-display font-semibold text-[var(--project-accent)] tracking-[-0.035em] leading-[1.1] mb-2.5 transition-colors duration-500">
+                      {/* Title: Editorial Typography */}
+                      <h3 className="text-3xl sm:text-4xl lg:text-[38px] xl:text-[42px] font-editorial font-medium text-text-primary tracking-[-0.025em] leading-[1.12] mb-2.5">
                         {proj.title}
                       </h3>
 
-                      {/* Tagline */}
-                      <p className="text-[17px] xl:text-[18.5px] text-text-secondary leading-[1.5] font-normal tracking-normal mb-4 max-w-[33rem]">
+                      {/* Description / Tagline */}
+                      <p className="text-[15px] sm:text-[16px] text-text-secondary leading-[1.58] font-normal tracking-normal mb-5 max-w-[29rem]">
                         {proj.tagline}
                       </p>
 
-                      {/* Key Engineering Decision */}
-                      {(proj.keyDecision || proj.architectureDecisions?.[0] || proj.engineeringChallenge) && (
-                        <div className="border-l-2 pl-3.5 py-1.5 border-[var(--project-accent)] bg-surface/30 rounded-r-md transition-colors duration-500 max-w-[33rem] mb-4">
-                          <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-text-muted/80 block mb-1">
-                            Key Engineering Decision
-                          </span>
-                          <p className="text-xs xl:text-[13px] text-text-secondary/90 leading-[1.5] font-normal">
-                            &ldquo;{proj.keyDecision || proj.architectureDecisions?.[0] || proj.engineeringChallenge}&rdquo;
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Tech Stack */}
-                      <div className="flex flex-wrap items-center gap-1.5 mb-5">
-                        {proj.stack.slice(0, 5).map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-2.5 py-1 font-mono text-[11px] xl:text-xs font-medium uppercase tracking-wide text-text-secondary bg-surface rounded-md border border-border/80 hover:border-[var(--project-accent)] hover:bg-[var(--project-accent)]/10 transition-colors duration-200"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {proj.stack.length > 5 && (
-                          <span className="px-2.5 py-1 font-mono text-[11px] xl:text-xs font-medium uppercase tracking-wide text-text-muted bg-surface/50 rounded-md border border-border/40">
-                            +{proj.stack.length - 5}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Links */}
-                      <div className="flex items-center gap-6">
+                      {/* Action Link: Explore project → */}
+                      <div className="flex items-center">
                         {proj.caseStudy ? (
                           <Link
                             href={`/work/${proj.id}`}
-                            className="inline-flex items-center text-[var(--project-accent)] hover:text-text-primary transition-colors font-medium hover:font-semibold group text-sm xl:text-[15px]"
+                            className="group inline-flex items-center gap-2 font-editorial text-[14px] sm:text-[14.5px] font-medium text-text-primary transition-colors hover:text-accent-500 pb-0.5 border-b border-text-primary/30 hover:border-accent-500"
                           >
-                            Case Study
-                            <ArrowRight className="w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform" />
+                            <span>Explore project</span>
+                            <span className="inline-block transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 text-accent-500 font-normal">
+                              →
+                            </span>
                           </Link>
-                        ) : (
-                          <span className="inline-flex items-center text-text-muted font-medium cursor-not-allowed text-xs xl:text-sm">
-                            Case Study Coming Soon
-                          </span>
-                        )}
-                        {proj.liveUrl && (
+                        ) : proj.liveUrl ? (
                           <a
                             href={proj.liveUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center text-text-secondary hover:text-[var(--project-accent)] transition-colors font-medium text-xs xl:text-sm group"
+                            className="group inline-flex items-center gap-2 font-editorial text-[14px] sm:text-[14.5px] font-medium text-text-primary transition-colors hover:text-accent-500 pb-0.5 border-b border-text-primary/30 hover:border-accent-500"
                           >
-                            <ExternalLink className="w-3.5 h-3.5 mr-1.5 opacity-70 group-hover:opacity-100 transition-opacity" />
-                            Live Demo
+                            <span>Explore project</span>
+                            <span className="inline-block transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 text-accent-500 font-normal">
+                              →
+                            </span>
                           </a>
-                        )}
-                        {proj.githubUrl && (
-                          <a
-                            href={proj.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-text-secondary hover:text-[var(--project-accent)] transition-colors font-medium text-xs xl:text-sm group"
-                          >
-                            <Github className="w-3.5 h-3.5 mr-1.5 opacity-70 group-hover:opacity-100 transition-opacity" />
-                            GitHub
-                          </a>
+                        ) : (
+                          <span className="inline-flex items-center text-text-muted font-medium text-sm pb-0.5 border-b border-transparent">
+                            In Progress
+                          </span>
                         )}
                       </div>
                     </div>
@@ -385,149 +435,243 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
                 </div>
               </div>
 
-              {/* ── RIGHT: Screenshot ─────────────────────────────────────────── */}
-              <div className="col-span-7 relative flex items-center justify-center">
-                <CursorHover
-                  href={null}
-                  text="Case Study"
-                  external={false}
-                  className="w-full block"
-                >
-                  <BrowserMockup animateFloat={false} enableTilt={false}>
-                    {projects.map((proj, idx) => {
-                      const imageElement = proj.image ? (
-                        <Image
-                          src={proj.image}
-                          alt={proj.title}
-                          fill
-                          className="object-contain p-2 md:p-4"
-                          sizes="(max-width: 1200px) 60vw, 800px"
-                          quality={90}
-                          priority={idx === 0}
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-[var(--project-accent)]/30 font-sans tracking-[-0.03em] text-2xl font-bold bg-surface">
-                          {proj.title} Screenshot
-                        </div>
-                      );
+              {/* ── RIGHT COLUMN: Anchored Art-Directed Screenshot Preview ───────── */}
+              <div className="col-span-12 lg:col-span-7 relative flex items-center justify-center">
+                <div className="w-full relative">
+                  <div
+                    ref={screenshotBoxRef}
+                    onClick={handleScreenshotClick}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                    className="w-full rounded-xl bg-[#121213] border border-black/[0.08] dark:border-white/[0.08] shadow-[0_10px_30px_-6px_rgba(20,20,18,0.08),0_2px_6px_rgba(20,20,18,0.03)] overflow-hidden cursor-none select-none relative group"
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleScreenshotClick();
+                      }
+                    }}
+                    aria-label={`View ${projects[activeIndex]?.title || 'project'}`}
+                  >
+                    {/* Compact Dark Window Top Bar with 3 Window Control Dots */}
+                    <div className="h-7 px-3.5 flex items-center gap-1.5 bg-[#121213] border-b border-white/[0.06] select-none pointer-events-none">
+                      <span className="w-2 h-2 rounded-full bg-white/20" />
+                      <span className="w-2 h-2 rounded-full bg-white/20" />
+                      <span className="w-2 h-2 rounded-full bg-white/20" />
+                    </div>
 
-                      return (
+                    {/* Screenshot Frame Container (10-15% larger preview with minimal border padding) */}
+                    <div className="relative w-full aspect-[16/10] bg-[#121213] overflow-hidden pointer-events-none">
+                      {projects.map((proj, idx) => (
                         <div
                           key={proj.id}
                           ref={(el) => { imageLayersRef.current[idx] = el; }}
                           className="absolute inset-0 w-full h-full"
                         >
-                          {proj.caseStudy ? (
-                            <Link
-                              href={`/work/${proj.id}`}
-                              className="relative block w-full h-full cursor-pointer"
-                              aria-label={`View ${proj.title} case study`}
-                            >
-                              {imageElement}
-                            </Link>
-                          ) : (
-                            imageElement
-                          )}
+                          <div className="relative w-full h-full">
+                            {proj.image ? (
+                              <Image
+                                src={proj.image}
+                                alt={proj.title}
+                                fill
+                                className="object-contain p-0.5 md:p-1"
+                                sizes="(max-width: 1200px) 60vw, 850px"
+                                quality={95}
+                                priority={idx === 0}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-white/40 font-mono text-sm">
+                                {proj.title}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      );
-                    })}
-                  </BrowserMockup>
-                </CursorHover>
+                      ))}
+                    </div>
+
+                    {/* ── Interactive View Live Circle Cursor Follower ────────── */}
+                    <div
+                      ref={circleCursorRef}
+                      className="pointer-events-none absolute left-0 top-0 z-30 flex h-[82px] w-[82px] flex-col items-center justify-center rounded-full bg-accent-500 text-white shadow-[0_14px_36px_rgba(20,50,160,0.55)] border border-white/30 select-none will-change-transform"
+                      style={{ opacity: 0, transform: 'scale(0)' }}
+                    >
+                      <span className="font-mono text-[9px] font-bold tracking-[0.14em] uppercase text-white leading-tight text-center px-2">
+                        {projects[activeIndex]?.liveUrl ? 'VIEW LIVE' : projects[activeIndex]?.caseStudy ? 'CASE STUDY' : 'VIEW CODE'}
+                      </span>
+                      <svg
+                        className="w-3.5 h-3.5 text-white/90 mt-0.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2.4}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H9M17 7V15" />
+                      </svg>
+                    </div>
+
+                  </div>
+                </div>
               </div>
 
             </div>
-          </Container>
+          </div>
+
+          {/* ── BOTTOM LEDGER BAR: Single Continuous Progress Track ─────────── */}
+          <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12 flex items-center justify-between gap-5 select-none shrink-0 z-20">
+            {/* Scroll Indicator */}
+            <div className="flex items-center gap-2 font-mono text-[10.5px] text-text-muted tracking-[0.14em] uppercase shrink-0">
+              <span className="text-text-secondary text-xs">↓</span>
+              <span>SCROLL TO EXPLORE</span>
+            </div>
+
+            {/* Single Continuous Thin Progress Track with Blue Progress Segment */}
+            <div className="flex-1 h-[1.5px] bg-[var(--surface-border)] relative overflow-hidden rounded-full mx-2 sm:mx-4">
+              <div
+                ref={progressBarRef}
+                className="absolute inset-y-0 left-0 w-full bg-accent-500 origin-left"
+              />
+            </div>
+
+            {/* Step Counter at Far Right */}
+            <div className="flex items-center gap-1.5 font-mono text-xs text-text-secondary tracking-wider shrink-0">
+              <span ref={counterRef} className="tabular-nums font-medium text-text-primary">
+                01
+              </span>
+              <span className="text-border">—</span>
+              <span>{total.toString().padStart(2, '0')}</span>
+              <span className="text-text-muted ml-0.5">→</span>
+            </div>
+          </div>
+
         </div>
-      </section>
+      </div>
 
       {/* ======================================================================== */}
-      {/* MOBILE: Stacked project cards (lg:hidden)                                */}
+      {/* MOBILE: Stacked Editorial Project Cards (lg:hidden)                      */}
       {/* ======================================================================== */}
-      <div className="lg:hidden w-full bg-bg py-16 px-4 md:px-8 space-y-20 border-t border-border/50">
+      <div className="lg:hidden w-full bg-[var(--surface-bg)] py-16 px-6 sm:px-8 space-y-16 border-t border-[var(--surface-border)]">
+        {/* Mobile Header Rule */}
+        <div className="flex items-center justify-between gap-4 select-none pb-4 border-b border-[var(--surface-border)]">
+          <span className="font-mono text-xs uppercase tracking-[0.2em] font-medium text-text-secondary">
+            SELECTED WORK
+          </span>
+          <span className="font-mono text-xs text-text-secondary tracking-wider">
+            2026
+          </span>
+        </div>
+
         {projects.map((proj, idx) => {
           const formattedNum = (idx + 1).toString().padStart(2, '0');
           return (
             <div
               key={proj.id}
-              className="flex flex-col gap-6"
-              style={{ '--project-accent': proj.accentColor || 'var(--color-accent-500)' } as React.CSSProperties}
+              className="flex flex-col gap-4 pt-2"
             >
-              {/* Header */}
-              <div className="flex items-center gap-2 border-b border-border/50 pb-3">
-                <span className="font-mono text-xs font-light text-text-muted/60 tracking-wider">{formattedNum}</span>
-                <span className="text-border/50 font-mono text-xs select-none">/</span>
-                <span className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[var(--project-accent)]">{proj.category}</span>
+              {/* Oversized Number */}
+              <div className="select-none leading-[0.82]">
+                <span className="font-editorial font-normal text-[60px] sm:text-[72px] text-text-muted/45 tracking-[-0.05em] block tabular-nums">
+                  {formattedNum}
+                </span>
+              </div>
+
+              {/* Category with Electric-Blue Accent Dash */}
+              <div className="flex items-center gap-2 select-none -mt-1">
+                <span className="font-mono text-[10.5px] font-medium uppercase tracking-[0.12em] text-text-secondary">
+                  {proj.category}
+                </span>
+                <span className="w-4 h-[1.5px] bg-accent-500 inline-block rounded-full" />
               </div>
 
               {/* Title & Tagline */}
               <div>
-                <h3 className="text-3xl font-display font-semibold tracking-[-0.04em] leading-[1] text-[var(--project-accent)] mb-3">{proj.title}</h3>
-                <p className="text-base text-text-secondary leading-[1.6] font-normal max-w-[34rem]">{proj.tagline}</p>
+                <h3 className="text-2xl sm:text-3xl font-editorial font-medium tracking-[-0.025em] leading-[1.12] text-text-primary mb-2">
+                  {proj.title}
+                </h3>
+                <p className="text-[15px] text-text-secondary leading-[1.58] font-normal max-w-[34rem]">
+                  {proj.tagline}
+                </p>
               </div>
 
-              {/* Screenshot */}
+              {/* Screenshot in Restrained Dark Frame */}
               <div className="w-full">
-                <Link
-                  href={proj.caseStudy ? `/work/${proj.id}` : '#'}
-                  className={cn('block w-full', !proj.caseStudy && 'pointer-events-none')}
-                >
-                  <BrowserMockup animateFloat={false}>
-                    {proj.image ? (
-                      <Image
-                        src={proj.image}
-                        alt={proj.title}
-                        fill
-                        className="object-contain p-2"
-                        sizes="(max-width: 768px) 95vw, (max-width: 1200px) 70vw, 800px"
-                        quality={85}
-                      />
+                <div className="w-full rounded-xl bg-[#121213] border border-black/[0.08] dark:border-white/[0.08] shadow-[0_10px_24px_-8px_rgba(20,20,18,0.1)] overflow-hidden">
+                  <div className="h-7 px-3 flex items-center gap-1.5 bg-[#121213] border-b border-white/[0.06] select-none">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                  </div>
+                  <div className="relative w-full aspect-[16/10] bg-[#121213] overflow-hidden">
+                    {proj.caseStudy ? (
+                      <Link
+                        href={`/work/${proj.id}`}
+                        className="relative block w-full h-full"
+                        aria-label={`View ${proj.title} case study`}
+                      >
+                        {proj.image && (
+                          <Image
+                            src={proj.image}
+                            alt={proj.title}
+                            fill
+                            className="object-contain p-0.5"
+                            sizes="(max-width: 768px) 95vw, 600px"
+                            quality={90}
+                          />
+                        )}
+                      </Link>
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-[var(--project-accent)]/30 font-sans tracking-[-0.03em] text-lg font-bold">
-                        {proj.title}
-                      </div>
+                      proj.image && (
+                        <Image
+                          src={proj.image}
+                          alt={proj.title}
+                          fill
+                          className="object-contain p-0.5"
+                          sizes="(max-width: 768px) 95vw, 600px"
+                          quality={90}
+                        />
+                      )
                     )}
-                  </BrowserMockup>
-                </Link>
+                  </div>
+                </div>
               </div>
 
-              {/* Key Decision */}
-              {(proj.keyDecision || proj.architectureDecisions?.[0] || proj.engineeringChallenge) && (
-                <div className="border-l-2 pl-4 py-1.5 border-[var(--project-accent)] bg-surface/40 rounded-r-lg max-w-[34rem]">
-                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-text-muted block mb-1">Key Engineering Decision</span>
-                  <p className="text-xs text-text-secondary italic leading-[1.6] font-normal">
-                    &ldquo;{proj.keyDecision || proj.architectureDecisions?.[0] || proj.engineeringChallenge}&rdquo;
-                  </p>
-                </div>
-              )}
-
-              {/* Stack & Links */}
-              <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-                <div className="flex flex-wrap gap-1.5">
-                  {proj.stack.slice(0, 4).map((tech) => (
-                    <span key={tech} className="px-2.5 py-1 font-mono text-[11px] font-medium uppercase tracking-wide text-text-secondary bg-surface rounded-md border border-border/80">
-                      {tech}
+              {/* Action Link */}
+              <div className="pt-1">
+                {proj.caseStudy ? (
+                  <Link
+                    href={`/work/${proj.id}`}
+                    className="group inline-flex items-center gap-2 font-editorial text-[14px] font-medium text-text-primary hover:text-accent-500 pb-0.5 border-b border-text-primary/30 hover:border-accent-500"
+                  >
+                    <span>Explore project</span>
+                    <span className="inline-block transition-transform duration-300 group-hover:translate-x-1.5 text-accent-500">
+                      →
                     </span>
-                  ))}
-                  {proj.stack.length > 4 && (
-                    <span className="px-2.5 py-1 font-mono text-[11px] font-medium uppercase tracking-wide text-text-muted bg-surface/50 rounded-md border border-border/40">
-                      +{proj.stack.length - 4}
+                  </Link>
+                ) : proj.liveUrl ? (
+                  <a
+                    href={proj.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2 font-editorial text-[14px] font-medium text-text-primary hover:text-accent-500 pb-0.5 border-b border-text-primary/30 hover:border-accent-500"
+                  >
+                    <span>Explore project</span>
+                    <span className="inline-block transition-transform duration-300 group-hover:translate-x-1.5 text-accent-500">
+                      →
                     </span>
-                  )}
-                </div>
-                <div className="flex items-center gap-4">
-                  {proj.caseStudy ? (
-                    <Link href={`/work/${proj.id}`} className="inline-flex items-center text-[var(--project-accent)] font-medium text-sm group">
-                      Case Study <ArrowRight className="w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  ) : (
-                    <span className="text-text-muted font-medium text-xs cursor-not-allowed">Coming Soon</span>
-                  )}
-                </div>
+                  </a>
+                ) : (
+                  <span className="text-text-muted font-medium text-xs">
+                    Coming Soon
+                  </span>
+                )}
               </div>
             </div>
           );
         })}
       </div>
-    </>
+    </section>
   );
 }

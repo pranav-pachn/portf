@@ -4,7 +4,6 @@ import { AnimateOnScroll } from '@/components/motion/AnimateOnScroll';
 import { site } from '@/data/site';
 import { socialLinks } from '@/data/social-links';
 import { ArrowRight, Mail } from 'lucide-react';
-import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 import { MagneticButton } from '@/components/motion/MagneticButton';
 import { Card } from '@/components/ui/card';
@@ -12,76 +11,80 @@ import Link from 'next/link';
 
 export function ContactPanel() {
   return (
-    <section id="contact" className="relative py-24 md:py-32 bg-bg overflow-hidden min-h-screen flex items-center">
-      {/* Background Accent */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-[400px] bg-accent-500/5 blur-[120px] rounded-full pointer-events-none" />
-      
-      <Container className="relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center">
+    <section id="contact" className="relative py-28 md:py-36 bg-transparent text-[var(--surface-text)] overflow-hidden flex items-center border-t border-[var(--surface-border)] scroll-mt-20">
+      <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-center">
           {/* Left Side */}
-          <AnimateOnScroll variant="maskReveal" delay={0.1}>
-            <div className="flex flex-col items-start text-left">
-              <span className="font-mono text-[13px] font-semibold text-accent-500 uppercase tracking-[0.14em] mb-6">
+          <div className="md:col-span-7 flex flex-col items-start text-left">
+            <AnimateOnScroll variant="subtleRise" delay={0.05}>
+              <span className="font-mono text-[11px] font-medium text-accent-500 uppercase tracking-[0.18em] mb-4 block select-none">
                 05 — CONTACT
               </span>
-              <h2 className="text-4xl md:text-5xl lg:text-[56px] font-display font-semibold text-text-primary leading-[1] tracking-[-0.04em] mb-8">
+              <h2 className="text-[34px] md:text-[40px] lg:text-[44px] font-editorial font-medium text-[var(--surface-text)] leading-[1.08] tracking-[-0.03em] mb-5">
                 Let’s build something meaningful.
               </h2>
-              <p className="text-[20px] text-text-secondary leading-[1.6] max-w-[34rem] font-normal tracking-normal">
-                I’m currently open to internships and software engineering opportunities focused on full-stack products, AI-integrated systems, and scalable user experiences. If you're building something ambitious and need someone who cares about both architecture and execution, let’s connect.
+              <p className="text-[16px] md:text-[17px] text-[var(--surface-muted)] leading-[1.65] max-w-[34rem] font-normal mb-7">
+                I’m currently open to software engineering opportunities focused on full-stack products, AI-integrated systems, and scalable user experiences. If you're building something ambitious and care about both architecture and execution, let’s talk.
               </p>
-            </div>
-          </AnimateOnScroll>
+              
+              <div className="flex items-center gap-3 font-mono text-xs text-[var(--surface-muted)]">
+                <span className="text-[var(--surface-text)] font-medium">BASED IN HYDERABAD, INDIA</span>
+                <span className="opacity-40">/</span>
+                <span>OPEN TO REMOTE & RELOCATION</span>
+              </div>
+            </AnimateOnScroll>
+          </div>
           
           {/* Right Side */}
-          <AnimateOnScroll variant="maskReveal" delay={0.25}>
-            <Card className="flex flex-col gap-8 p-8 md:p-10 border border-border bg-surface/50 backdrop-blur-xl rounded-3xl relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-              
-              <div className="flex items-center gap-3 relative z-10 bg-bg/50 w-fit px-4 py-2 rounded-full border border-border/50">
-                <span className="relative flex h-2 w-2">
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-                <span className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-text-primary leading-none mt-px">
-                  Open to internships and engineering opportunities
-                </span>
-              </div>
-
-              <div className="flex flex-col gap-4 relative z-10">
-                <MagneticButton>
-                  <Button 
-                    href={`mailto:${site.socials.email}`} 
-                    size="lg" 
-                    icon={<Mail className="w-5 h-5 ml-2" />}
-                    className="w-full justify-between px-6 py-6"
-                  >
-                    Say Hello
-                  </Button>
-                </MagneticButton>
-                
-                <div className="flex flex-col gap-2 mt-2">
-                  {socialLinks.map(link => {
-                    if (link.label.toLowerCase() === 'email') return null;
-                    return (
-                      <Link 
-                        key={link.label}
-                        href={link.href} 
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-between p-4 rounded-xl hover:bg-surface-hover border border-transparent hover:border-border transition-all text-text-secondary hover:text-text-primary font-medium group"
-                      >
-                        {link.label}
-                        <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-accent-500" />
-                      </Link>
-                    );
-                  })}
-
+          <div className="md:col-span-5 w-full">
+            <AnimateOnScroll variant="subtleRise" delay={0.15}>
+              <Card className="flex flex-col gap-6 p-7 md:p-8 border border-[var(--surface-border)] bg-black/10 dark:bg-white/[0.03] rounded-xl shadow-[0_16px_40px_-16px_rgba(0,0,0,0.4)] backdrop-blur-xs">
+                {/* Status Indicator */}
+                <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-md bg-black/20 border border-[var(--surface-border)] w-fit select-none">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[var(--surface-text)]">
+                    AVAILABLE FOR ENGINEERING ROLES
+                  </span>
                 </div>
-              </div>
-            </Card>
-          </AnimateOnScroll>
+
+                <div className="flex flex-col gap-4">
+                  <MagneticButton>
+                    <Button 
+                      href={`mailto:${site.socials.email}`} 
+                      size="lg" 
+                      icon={<Mail className="w-4 h-4 ml-2" />}
+                      className="w-full justify-between px-6 py-5 rounded-lg text-sm bg-accent-500 hover:bg-accent-600 text-white font-medium"
+                    >
+                      <span>Say Hello</span>
+                    </Button>
+                  </MagneticButton>
+                  
+                  <div className="flex flex-col gap-1.5 pt-2 border-t border-[var(--surface-border)]">
+                    {socialLinks.map(link => {
+                      if (link.label.toLowerCase() === 'email') return null;
+                      return (
+                        <Link 
+                          key={link.label}
+                          href={link.href} 
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between p-3 rounded-lg hover:bg-black/10 border border-transparent hover:border-[var(--surface-border)] transition-all text-[var(--surface-muted)] hover:text-[var(--surface-text)] text-sm font-medium group"
+                        >
+                          <span className="font-mono text-xs">{link.label}</span>
+                          <ArrowRight className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-accent-500" />
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </Card>
+            </AnimateOnScroll>
+          </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

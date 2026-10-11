@@ -45,7 +45,7 @@ export function useExperienceTimeline({ containerRef, shouldReduceMotion }: UseE
         tl.to(dot, {
           borderColor: 'var(--color-accent-500)',
           backgroundColor: 'var(--color-accent-500)',
-          boxShadow: '0 0 12px rgba(20, 184, 166, 0.45)',
+          boxShadow: '0 0 12px rgba(33, 90, 220, 0.35)',
           duration: 0.35,
         });
       }
@@ -91,7 +91,7 @@ export function useExperienceTimeline({ containerRef, shouldReduceMotion }: UseE
         tl.to(dot, {
           borderColor: 'var(--color-accent-500)',
           backgroundColor: 'var(--color-accent-500)',
-          boxShadow: '0 0 12px rgba(20, 184, 166, 0.45)',
+          boxShadow: '0 0 12px rgba(33, 90, 220, 0.35)',
           duration: 0.35,
         });
       }

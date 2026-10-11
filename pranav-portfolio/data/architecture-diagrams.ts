@@ -2,16 +2,17 @@ import { FlowDiagramData } from '../types/architecture';
 
 export const architectureDiagrams: FlowDiagramData[] = [
   {
-    id: 'specforge',
-    title: 'SpecForge LLM Pipeline',
-    description: 'An AI orchestration pipeline that reliably transforms natural language product ideas into strict engineering specs, database schemas, and step-by-step execution plans.',
-    accentColor: 'hsl(240, 80%, 60%)',
+    id: 'temporalrent',
+    title: 'TemporalRent Reservation Engine',
+    description: 'A conflict-free inventory reservation pipeline that expands package BOMs into physical item demand, computes buffer-aware time windows, and confirms bookings inside ACID transactions.',
+    accentColor: 'hsl(30, 80%, 55%)',
     nodes: [
-      { id: 'input', label: 'User Intent', caption: 'Natural Language', icon: 'MessageSquare', reason: 'Unstructured idea input from the user.' },
-      { id: 'router', label: 'AI Router', caption: 'Agent Orchestration', icon: 'Workflow', reason: 'Routes tasks to specialized agents (planning vs execution).' },
-      { id: 'spec', label: 'Spec Generation', caption: 'LLM Workflow', icon: 'FileText', reason: 'Generates structured product requirements.' },
-      { id: 'schema', label: 'DB Schema', caption: 'Structured Output', icon: 'Database', reason: 'Forces LLM to output valid SQL schemas.' },
-      { id: 'plan', label: 'Execution Plan', caption: 'Discrete Steps', icon: 'ListChecks', reason: 'Breaks down the spec into actionable development tasks.' }
+      { id: 'booking', label: 'Booking Request', caption: 'Package + Items', icon: 'ShoppingCart', reason: 'Accepts packages or individual items; both normalized into the same demand pipeline.' },
+      { id: 'bom', label: 'BOM Expansion', caption: 'Package \u2192 Physical Items', icon: 'GitBranch', reason: 'Expands package abstractions into concrete physical quantities before any availability check.' },
+      { id: 'buffer', label: 'Buffer Resolution', caption: 'Prep + Transit + Cleanup', icon: 'Clock', reason: 'Widens the effective time window to prevent conflicts from staging and logistics overlap.' },
+      { id: 'check', label: 'Availability Check', caption: 'tstzrange Overlap Query', icon: 'Search', reason: 'PostgreSQL GiST-indexed range queries detect all overlapping demand in a single query.' },
+      { id: 'lock', label: 'ACID Transaction', caption: 'Row Locks + Re-verify', icon: 'Lock', reason: 'Deterministic lock ordering prevents deadlocks; in-transaction re-check prevents race conditions.' },
+      { id: 'confirm', label: 'Reservation', caption: 'Audit + State Machine', icon: 'CheckCircle', reason: 'Transitions booking through a typed state machine and writes an immutable audit event.' }
     ]
   },
   {
@@ -28,17 +29,16 @@ export const architectureDiagrams: FlowDiagramData[] = [
     ]
   },
   {
-    id: 'temporalrent',
-    title: 'TemporalRent Reservation Engine',
-    description: 'A conflict-free inventory reservation pipeline that expands package BOMs into physical item demand, computes buffer-aware time windows, and confirms bookings inside ACID transactions.',
-    accentColor: 'hsl(30, 80%, 55%)',
+    id: 'specforge',
+    title: 'SpecForge LLM Pipeline',
+    description: 'An AI orchestration pipeline that reliably transforms natural language product ideas into strict engineering specs, database schemas, and step-by-step execution plans.',
+    accentColor: 'hsl(240, 80%, 60%)',
     nodes: [
-      { id: 'booking', label: 'Booking Request', caption: 'Package + Items', icon: 'ShoppingCart', reason: 'Accepts packages or individual items; both normalized into the same demand pipeline.' },
-      { id: 'bom', label: 'BOM Expansion', caption: 'Package \u2192 Physical Items', icon: 'GitBranch', reason: 'Expands package abstractions into concrete physical quantities before any availability check.' },
-      { id: 'buffer', label: 'Buffer Resolution', caption: 'Prep + Transit + Cleanup', icon: 'Clock', reason: 'Widens the effective time window to prevent conflicts from staging and logistics overlap.' },
-      { id: 'check', label: 'Availability Check', caption: 'tstzrange Overlap Query', icon: 'Search', reason: 'PostgreSQL GiST-indexed range queries detect all overlapping demand in a single query.' },
-      { id: 'lock', label: 'ACID Transaction', caption: 'Row Locks + Re-verify', icon: 'Lock', reason: 'Deterministic lock ordering prevents deadlocks; in-transaction re-check prevents race conditions.' },
-      { id: 'confirm', label: 'Reservation', caption: 'Audit + State Machine', icon: 'CheckCircle', reason: 'Transitions booking through a typed state machine and writes an immutable audit event.' }
+      { id: 'input', label: 'User Intent', caption: 'Natural Language', icon: 'MessageSquare', reason: 'Unstructured idea input from the user.' },
+      { id: 'router', label: 'AI Router', caption: 'Agent Orchestration', icon: 'Workflow', reason: 'Routes tasks to specialized agents (planning vs execution).' },
+      { id: 'spec', label: 'Spec Generation', caption: 'LLM Workflow', icon: 'FileText', reason: 'Generates structured product requirements.' },
+      { id: 'schema', label: 'DB Schema', caption: 'Structured Output', icon: 'Database', reason: 'Forces LLM to output valid SQL schemas.' },
+      { id: 'plan', label: 'Execution Plan', caption: 'Discrete Steps', icon: 'ListChecks', reason: 'Breaks down the spec into actionable development tasks.' }
     ]
   },
   {

@@ -12,6 +12,7 @@ import { CommandPalette } from '@/components/ui/command-palette';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { CursorSpotlight } from '@/components/motion/CursorSpotlight';
 import { RouteTransition } from '@/components/motion/RouteTransition';
+import IntroReveal from '@/components/transitions/IntroReveal';
 import { constructMetadata } from '@/lib/metadata';
 
 export const metadata = constructMetadata();
@@ -25,28 +26,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           __html: `
             (function() {
               try {
-                document.documentElement.setAttribute('data-theme', 'dark');
+                document.documentElement.setAttribute('data-theme', 'light');
               } catch (e) {}
             })();
           `
         }} />
+        <IntroReveal />
         <ScrollOrchestrator>
           <ThemeProvider>
-            <div className="flex flex-col min-h-screen">
-              {/* Global Noise Layer */}
-              <div className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.015] mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')]" />
-              
-              <CursorSpotlight />
-              <ScrollProgress />
-              <Header />
+            <div className="relative min-h-screen">
+              <div
+                id="page-wrapper"
+                className="flex flex-col min-h-screen origin-center"
+              >
+                <CursorSpotlight />
+                <ScrollProgress />
+                <Header />
+                <main className="flex-1 flex flex-col">
+                  <RouteTransition>
+                    {children}
+                  </RouteTransition>
+                </main>
+                <Footer />
+                <CommandPalette />
+              </div>
               <FloatingMenu />
-              <main className="flex-1 flex flex-col">
-                <RouteTransition>
-                  {children}
-                </RouteTransition>
-              </main>
-              <Footer />
-              <CommandPalette />
             </div>
           </ThemeProvider>
         </ScrollOrchestrator>

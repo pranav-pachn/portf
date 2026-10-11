@@ -35,7 +35,7 @@ export function RouteTransition({ children }: { children: React.ReactNode }) {
 
         {/* The Premium Overlay Sweep */}
         <motion.div
-          className="fixed inset-0 z-[60] bg-[#0a0a0a] pointer-events-none"
+          className="fixed inset-0 z-[60] bg-bg pointer-events-none"
           initial={{ scaleY: 1, transformOrigin: "bottom" }}
           animate={{ scaleY: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }}
           exit={{ scaleY: 1, transformOrigin: "top", transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }}

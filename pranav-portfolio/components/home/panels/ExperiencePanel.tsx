@@ -3,7 +3,6 @@
 import { useRef } from 'react';
 import { AnimateOnScroll } from '@/components/motion/AnimateOnScroll';
 import { experience } from '@/data/experience';
-import { Container } from '@/components/ui/container';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { Card } from '@/components/ui/card';
 import { GitPullRequest, Sparkles } from 'lucide-react';
@@ -21,21 +20,21 @@ export function ExperiencePanel() {
     <section 
       ref={containerRef} 
       id="experience" 
-      className="py-24 md:py-32 bg-surface/40 border-t border-border relative z-10 overflow-hidden"
+      className="py-24 md:py-32 bg-transparent border-t border-[var(--surface-border)] relative z-10 overflow-hidden scroll-mt-20"
     >
-      <Container narrow>
-        <AnimateOnScroll variant="maskReveal">
+      <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12">
+        <AnimateOnScroll variant="subtleRise">
           <SectionHeading 
             eyebrow="04 — EXPERIENCE" 
             heading="From learning to shipping production software." 
           />
         </AnimateOnScroll>
 
-        <div className="timeline-container relative max-w-4xl mx-auto mt-20 md:mt-24">
+        <div className="timeline-container relative max-w-4xl mx-auto mt-16 md:mt-20">
           {/* Base Inactive Central Timeline Line */}
-          <div className="absolute left-6 md:left-1/2 top-0 bottom-12 w-[1.5px] bg-white/10 dark:bg-white/10 -translate-x-1/2" />
+          <div className="absolute left-6 md:left-1/2 top-0 bottom-12 w-[1.5px] bg-[var(--surface-border)] -translate-x-1/2" />
           
-          {/* Active Growing Teal Line (Scrubbed on Scroll) */}
+          {/* Active Growing Cobalt Line (Scrubbed on Scroll) */}
           <div className="timeline-active-line absolute left-6 md:left-1/2 top-0 bottom-12 w-[1.5px] bg-[var(--color-accent-500)] -translate-x-1/2 origin-top scale-y-0" />
 
           <div className="flex flex-col gap-16 md:gap-24 relative">
@@ -55,7 +54,7 @@ export function ExperiencePanel() {
                   )}
                 >
                   {/* Center Node / Dot */}
-                  <div className="timeline-dot absolute left-6 md:left-1/2 top-6 md:top-7 w-3.5 h-3.5 rounded-full bg-surface border-2 border-border -translate-x-1/2 z-20 transition-colors duration-300" />
+                  <div className="timeline-dot absolute left-6 md:left-1/2 top-6 md:top-7 w-3.5 h-3.5 rounded-full bg-white border-2 border-[var(--surface-border)] -translate-x-1/2 z-20 transition-colors duration-300" />
                   
                   {/* Horizontal Connector Line (Desktop Only) */}
                   {isLeft ? (
@@ -68,7 +67,7 @@ export function ExperiencePanel() {
                   <div className="w-full md:w-[calc(50%-32px)] pl-14 md:pl-0">
                     <div className="timeline-card opacity-0">
                       <Card className={cn(
-                        "p-6 md:p-7 border-border/80 bg-bg/95 transition-all duration-300 shadow-md relative overflow-hidden group",
+                        "p-6 md:p-7 border-[var(--surface-border)] bg-white transition-all duration-300 shadow-[0_2px_8px_rgba(23,23,21,0.04)] relative overflow-hidden group",
                         isPrimary 
                           ? "hover:border-[var(--color-accent-500)]/60" 
                           : "hover:border-[var(--color-accent-500)]/40"
@@ -81,7 +80,7 @@ export function ExperiencePanel() {
                         <div className="flex items-start justify-between gap-3 mb-4">
                           <div className="flex items-center gap-3.5">
                             {/* 44px Icon Container */}
-                            <div className="w-11 h-11 rounded-lg bg-surface border border-border/60 flex items-center justify-center p-2 overflow-hidden flex-shrink-0 group-hover:border-[var(--color-accent-500)]/40 transition-colors">
+                            <div className="w-11 h-11 rounded-lg bg-[#FAF9F5] border border-border/70 flex items-center justify-center p-2 overflow-hidden flex-shrink-0 group-hover:border-[var(--color-accent-500)]/40 transition-colors">
                               {item.logo ? (
                                 <img 
                                   src={item.logo} 
@@ -98,9 +97,9 @@ export function ExperiencePanel() {
                               <div className="font-mono text-[10px] font-semibold text-accent-500 uppercase tracking-widest mb-1">
                                 {isPrimary ? `${itemNum} · PRIMARY EXPERIENCE` : item.type === 'opensource' ? `${itemNum} · OPEN SOURCE` : `${itemNum} · EXPERIENCE`}
                               </div>
-                              <h3 className="font-display font-semibold text-lg md:text-xl tracking-tight text-text-primary leading-tight">
-                                {item.title}
-                              </h3>
+                            <h3 className="font-editorial font-medium text-base md:text-lg tracking-tight text-text-primary leading-snug">
+                              {item.title}
+                            </h3>
                             </div>
                           </div>
                         </div>
@@ -127,7 +126,7 @@ export function ExperiencePanel() {
                                   {item.techStack.map((tech) => (
                                     <span 
                                       key={tech} 
-                                      className="font-mono text-[11px] px-2.5 py-1 rounded bg-surface border border-border/70 text-text-secondary tracking-wide uppercase"
+                                      className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#FAF9F5] border border-border/60 text-text-muted tracking-wide uppercase"
                                     >
                                       {tech}
                                     </span>
@@ -169,18 +168,18 @@ export function ExperiencePanel() {
               
               {/* Terminal-like Content */}
               <div className="w-full pl-14 md:pl-0 md:ml-[calc(50%+40px)] md:max-w-md">
-                <div className="timeline-currently-content opacity-0 bg-bg/85 border border-border/70 rounded-lg p-4 md:p-5 relative shadow-sm">
+                <div className="timeline-currently-content opacity-0 bg-surface-elevated border border-border/80 rounded-xl p-5 md:p-6 relative shadow-[0_4px_16px_rgba(23,23,21,0.05)]">
                   <div className="flex items-center gap-2.5 mb-2">
                     <span className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-500 opacity-75" />
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-500" />
                     </span>
-                    <span className="font-mono text-[11px] font-bold text-accent-500 tracking-widest uppercase">
+                    <span className="font-mono text-[10.5px] font-semibold text-accent-500 tracking-[0.16em] uppercase">
                       CURRENTLY
                     </span>
                   </div>
-                  <p className="text-text-primary text-sm md:text-base leading-relaxed font-normal">
-                    Building AI-powered products and scalable full-stack systems.
+                  <p className="text-text-primary text-[15px] leading-relaxed font-normal">
+                    Building AI-powered web products and scalable full-stack systems.
                   </p>
                 </div>
               </div>
@@ -193,7 +192,7 @@ export function ExperiencePanel() {
             <div className="timeline-fade-line w-[1.5px] h-20 bg-gradient-to-b from-[var(--color-accent-500)] via-[var(--color-accent-500)]/30 to-transparent scale-y-0 origin-top" />
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

@@ -1,52 +1,68 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedLink } from '@/components/ui/AnimatedLink';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
 import { navLinks } from '@/data/nav-links';
 import { useActiveSection } from '@/hooks/use-active-section';
-import { Container } from '@/components/ui/container';
 import { cn } from '@/lib/utils';
-import { scrollToSection } from '@/lib/scroll';
+import { useLenis } from '@/components/layout/ScrollOrchestrator';
 
 export function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
-  const sectionIds = navLinks.map((link) => link.href.replace('/#', ''));
+  const sectionIds = ['hero', ...navLinks.map((link) => link.href.replace('/#', ''))];
   const activeSection = useActiveSection(sectionIds);
   const [isScrolled, setIsScrolled] = useState(false);
+  const lenis = useLenis();
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 20);
+      const scrollY = lenis ? lenis.scroll : window.scrollY;
+      setIsScrolled(scrollY > 20);
     };
+    handleScroll();
+    if (lenis) {
+      lenis.on('scroll', handleScroll);
+    }
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    return () => {
+      if (lenis) {
+        lenis.off('scroll', handleScroll);
+      }
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lenis]);
 
   const pathname = usePathname();
   if (pathname !== '/') return null;
 
+  const isDark = activeSection === 'about' || activeSection === 'contact';
+
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-[var(--duration-normal)] ease-[var(--ease-out)]',
+        'fixed top-0 left-0 right-0 z-40 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
         isScrolled
           ? '-translate-y-full opacity-0 pointer-events-none'
-          : 'bg-transparent py-5 translate-y-0 opacity-100'
+          : 'translate-y-0 opacity-100 bg-transparent border-b border-transparent'
       )}
     >
-      <Container className="flex items-center justify-between">
-        <Link href="/" className="font-display font-[600] text-[20px] tracking-[-0.03em] text-text-primary transition-transform hover:scale-[1.02] active:scale-[0.98]">
+      <div
+        className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12 flex items-center justify-between h-[80px] lg:h-[84px]"
+      >
+        {/* Left Aligned: Logo flush with Hero container left edge */}
+        <Link
+          href="/"
+          className={cn(
+            'font-display font-[600] text-[20px] tracking-[-0.03em] transition-all hover:scale-[1.02] active:scale-[0.98]',
+            isDark ? 'text-[#F2F0EA]' : 'text-text-primary'
+          )}
+        >
           Pranav<span className="text-accent-500">.</span>
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-8">
+        {/* Desktop Navigation: Permanent horizontal navbar flush with right edge */}
+        <nav className="hidden md:flex items-center gap-8 lg:gap-10 xl:gap-12 md:pr-14 lg:pr-16">
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.replace('/#', '');
             return (
@@ -54,60 +70,14 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 active={isActive}
+                theme={isDark ? 'dark' : 'light'}
               >
                 {link.label}
               </AnimatedLink>
             );
           })}
         </nav>
-
-        {/* Mobile Nav Toggle */}
-        <div className="flex items-center space-x-2 md:hidden">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-500)] rounded-md p-2"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-      </Container>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-surface border-b border-border overflow-hidden shadow-md rounded-b-[var(--radius-xl)]"
-          >
-            <div className="flex flex-col px-4 py-4 space-y-2">
-              {navLinks.map((link) => {
-                const isActive = activeSection === link.href.replace('/#', '');
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={(e) => {
-                      setMobileMenuOpen(false);
-                      scrollToSection(e, link.href);
-                    }}
-                    className={cn(
-                      "px-4 py-3 rounded-md text-base font-medium transition-colors",
-                      isActive 
-                        ? "bg-accent-500/10 text-accent-500" 
-                        : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </div>
     </header>
   );
 }
