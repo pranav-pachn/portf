@@ -5,13 +5,13 @@ import { EngineeringManuals } from './EngineeringManuals';
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-0 bg-transparent text-[var(--surface-text)] overflow-hidden flex flex-col scroll-mt-20">
+    <section id="about" className="py-0 bg-transparent text-[var(--surface-text)] overflow-hidden flex flex-col scroll-mt-20 border-t border-[var(--surface-border)]">
       {/* Top: Engineering Manuals (Capability Chapter) */}
       <div className="w-full bg-transparent pb-20 pt-16 border-b border-[var(--surface-border)]">
         <AnimateOnScroll variant="subtleRise">
           <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12 mb-14 text-left">
             <span className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-accent-500 block mb-3 select-none">
-              03 — ENGINEERING MANUALS
+              04 — ENGINEERING MANUALS
             </span>
             <h2 className="font-editorial font-medium tracking-[-0.025em] text-2xl sm:text-3xl md:text-[38px] leading-[1.1] text-[var(--surface-text)]">
               Technical depth, by discipline.
@@ -33,7 +33,7 @@ export function AboutSection() {
             <AnimateOnScroll variant="subtleRise">
               <div>
                 <span className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-accent-500 block mb-4 select-none">
-                  03B — PERSPECTIVE
+                  04B — PERSPECTIVE
                 </span>
                 <h3 className="font-editorial font-medium text-[28px] sm:text-[32px] lg:text-[36px] text-[var(--surface-text)] leading-[1.12] tracking-[-0.025em] mb-7">
                   Systems architecture meets interaction design.

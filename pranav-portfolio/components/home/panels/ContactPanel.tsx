@@ -18,7 +18,7 @@ export function ContactPanel() {
           <div className="md:col-span-7 flex flex-col items-start text-left">
             <AnimateOnScroll variant="subtleRise" delay={0.05}>
               <span className="font-mono text-[11px] font-medium text-accent-500 uppercase tracking-[0.18em] mb-4 block select-none">
-                05 — CONTACT
+                06 — CONTACT
               </span>
               <h2 className="text-[34px] md:text-[40px] lg:text-[44px] font-editorial font-medium text-[var(--surface-text)] leading-[1.08] tracking-[-0.03em] mb-5">
                 Let’s build something meaningful.

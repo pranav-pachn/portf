@@ -75,39 +75,29 @@ export function ScrollColorProgression() {
       });
     };
 
-    // 1. Hero → Selected Work: Ivory → Warm Grey
+    // 1. Services → Selected Work: Ivory → Warm Grey
     // Begins as Selected Work enters viewport, completes before pinning
     const t1 = createBoundary(
       '#work',
       PALETTES.ivory,
       PALETTES.warmGrey,
       'top 95%',
-      'top 60%'
+      'top 55%'
     );
 
-    // 2. Selected Work → Services: Warm Grey → Ivory
-    // Begins as Selected Work runway finishes and Services approaches
+    // 2. Selected Work → About: Warm Grey → Charcoal
+    // Smooth scroll-connected darkening as About enters viewport
     const t2 = createBoundary(
-      '#services',
-      PALETTES.warmGrey,
-      PALETTES.ivory,
-      'top 95%',
-      'top 60%'
-    );
-
-    // 3. Services → About: Ivory → Charcoal
-    // Begins before boundary as About starts entering the viewport
-    const t3 = createBoundary(
       '#about',
-      PALETTES.ivory,
+      PALETTES.warmGrey,
       PALETTES.charcoal,
       'top 95%',
       'top 35%'
     );
 
-    // 4. About → Experience: Charcoal → Ivory
-    // Returns to ivory as Experience enters viewport
-    const t4 = createBoundary(
+    // 3. About → Experience: Charcoal → Ivory
+    // Returns to ivory for readable experience timeline
+    const t3 = createBoundary(
       '#experience',
       PALETTES.charcoal,
       PALETTES.ivory,
@@ -115,9 +105,9 @@ export function ScrollColorProgression() {
       'top 35%'
     );
 
-    // 5. Experience → Contact: Ivory → Charcoal
-    // Returns to charcoal as Contact enters viewport
-    const t5 = createBoundary(
+    // 4. Experience → Contact: Ivory → Charcoal
+    // Returns to charcoal for strong closing chapter
+    const t4 = createBoundary(
       '#contact',
       PALETTES.ivory,
       PALETTES.charcoal,
@@ -126,7 +116,7 @@ export function ScrollColorProgression() {
     );
 
     const syncCurrentColors = () => {
-      const triggers = [t1, t2, t3, t4, t5].filter(Boolean) as ScrollTrigger[];
+      const triggers = [t1, t2, t3, t4].filter(Boolean) as ScrollTrigger[];
       for (let i = triggers.length - 1; i >= 0; i--) {
         const st = triggers[i];
         if (st.progress > 0) {
@@ -149,7 +139,7 @@ export function ScrollColorProgression() {
 
     return () => {
       ScrollTrigger.removeEventListener('refresh', syncCurrentColors);
-      [t1, t2, t3, t4, t5].forEach((t) => t?.kill());
+      [t1, t2, t3, t4].forEach((t) => t?.kill());
     };
   }, { dependencies: [shouldReduceMotion] });
 

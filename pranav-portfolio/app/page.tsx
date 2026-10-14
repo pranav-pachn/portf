@@ -23,13 +23,13 @@ export default function Home() {
       <BlueprintTransition>
         <HeroPanel />
       </BlueprintTransition>
-      
-      {/* CHAPTER 2: Work (Sticky Showcase Engine) — Warm Grey */}
+
+      {/* CHAPTER 2: Services (Outcomes & Capabilities) — Warm Ivory */}
+      <ServicesPanel />
+
+      {/* CHAPTER 3: Work (Sticky Showcase Engine) — Warm Grey */}
       <StickyProjectShowcase projects={allProjects} />
 
-      {/* CHAPTER 3: Services (Outcomes & Capabilities) — Warm Ivory */}
-      <ServicesPanel />
-      
       {/* CHAPTER 4: About & Perspective (Manuals + Manifesto) — Charcoal */}
       <AboutSection />
 

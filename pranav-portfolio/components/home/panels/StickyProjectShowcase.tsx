@@ -309,7 +309,7 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
   }, { scope: sectionRef, dependencies: [total, shouldReduceMotion] });
 
   return (
-    <section id="work" className="relative w-full bg-[var(--surface-bg)] scroll-mt-20">
+    <section id="work" className="relative w-full bg-[var(--surface-bg)] scroll-mt-0">
       {/* ======================================================================== */}
       {/* DESKTOP: Scroll-runway + Pinned Stage (lg:block)                         */}
       {/* ======================================================================== */}
@@ -333,7 +333,7 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
           {/* ── TOP LEDGER BAR ──────────────────────────────────────────────── */}
           <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12 flex items-center justify-between gap-6 select-none shrink-0 z-20">
             <span className="font-mono text-xs uppercase tracking-[0.2em] font-medium text-text-secondary shrink-0">
-              SELECTED WORK
+              03 — SELECTED WORK
             </span>
             <div className="flex-1 h-[1px] bg-[var(--surface-border)]" />
             <span className="font-mono text-xs text-text-secondary tracking-wider shrink-0">
@@ -446,7 +446,7 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
                     onMouseLeave={handleMouseLeave}
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
-                    className="w-full rounded-xl bg-[#121213] border border-black/[0.08] dark:border-white/[0.08] shadow-[0_10px_30px_-6px_rgba(20,20,18,0.08),0_2px_6px_rgba(20,20,18,0.03)] overflow-hidden cursor-none select-none relative group"
+                    className="w-full rounded-xl border border-black/[0.08] dark:border-white/[0.08] shadow-[0_16px_40px_-12px_rgba(20,20,18,0.08),0_2px_6px_rgba(20,20,18,0.04)] overflow-hidden cursor-none select-none relative group bg-black/5"
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => {
@@ -457,15 +457,8 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
                     }}
                     aria-label={`View ${projects[activeIndex]?.title || 'project'}`}
                   >
-                    {/* Compact Dark Window Top Bar with 3 Window Control Dots */}
-                    <div className="h-7 px-3.5 flex items-center gap-1.5 bg-[#121213] border-b border-white/[0.06] select-none pointer-events-none">
-                      <span className="w-2 h-2 rounded-full bg-white/20" />
-                      <span className="w-2 h-2 rounded-full bg-white/20" />
-                      <span className="w-2 h-2 rounded-full bg-white/20" />
-                    </div>
-
-                    {/* Screenshot Frame Container (10-15% larger preview with minimal border padding) */}
-                    <div className="relative w-full aspect-[16/10] bg-[#121213] overflow-hidden pointer-events-none">
+                    {/* Direct Product UI Preview Frame (Edge-to-edge product interface with no artificial chrome) */}
+                    <div className="relative w-full aspect-[16/8.2] overflow-hidden pointer-events-none">
                       {projects.map((proj, idx) => (
                         <div
                           key={proj.id}
@@ -478,13 +471,16 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
                                 src={proj.image}
                                 alt={proj.title}
                                 fill
-                                className="object-contain p-0.5 md:p-1"
+                                className={cn(
+                                  "transition-transform duration-500 ease-out",
+                                  proj.imageFit === 'contain' ? "object-contain" : "object-cover"
+                                )}
                                 sizes="(max-width: 1200px) 60vw, 850px"
                                 quality={95}
                                 priority={idx === 0}
                               />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-white/40 font-mono text-sm">
+                              <div className="w-full h-full flex items-center justify-center text-text-muted font-mono text-sm">
                                 {proj.title}
                               </div>
                             )}
@@ -520,30 +516,36 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
             </div>
           </div>
 
-          {/* ── BOTTOM LEDGER BAR: Single Continuous Progress Track ─────────── */}
-          <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12 flex items-center justify-between gap-5 select-none shrink-0 z-20">
+          {/* ── BOTTOM LEDGER BAR: Continuous Ledger with Restrained Progress Track ── */}
+          <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12 flex items-center justify-between gap-6 select-none shrink-0 z-20">
             {/* Scroll Indicator */}
             <div className="flex items-center gap-2 font-mono text-[10.5px] text-text-muted tracking-[0.14em] uppercase shrink-0">
               <span className="text-text-secondary text-xs">↓</span>
               <span>SCROLL TO EXPLORE</span>
             </div>
 
-            {/* Single Continuous Thin Progress Track with Blue Progress Segment */}
-            <div className="flex-1 h-[1.5px] bg-[var(--surface-border)] relative overflow-hidden rounded-full mx-2 sm:mx-4">
-              <div
-                ref={progressBarRef}
-                className="absolute inset-y-0 left-0 w-full bg-accent-500 origin-left"
-              />
-            </div>
+            {/* Hairline Structural Divider matching top ledger */}
+            <div className="flex-1 h-[1px] bg-[var(--surface-border)]" />
 
-            {/* Step Counter at Far Right */}
-            <div className="flex items-center gap-1.5 font-mono text-xs text-text-secondary tracking-wider shrink-0">
-              <span ref={counterRef} className="tabular-nums font-medium text-text-primary">
-                01
-              </span>
-              <span className="text-border">—</span>
-              <span>{total.toString().padStart(2, '0')}</span>
-              <span className="text-text-muted ml-0.5">→</span>
+            {/* Right Cluster: Restrained Progress Track + Step Counter */}
+            <div className="flex items-center gap-3.5 sm:gap-4 shrink-0">
+              {/* Restrained 160px–208px Progress Track */}
+              <div className="w-36 sm:w-44 lg:w-52 h-[1.5px] bg-[var(--surface-border)] relative overflow-hidden rounded-full">
+                <div
+                  ref={progressBarRef}
+                  className="absolute inset-y-0 left-0 w-full bg-accent-500 origin-left"
+                />
+              </div>
+
+              {/* Step Counter at Far Right */}
+              <div className="flex items-center gap-1.5 font-mono text-xs text-text-secondary tracking-wider shrink-0">
+                <span ref={counterRef} className="tabular-nums font-medium text-text-primary">
+                  01
+                </span>
+                <span className="text-border">—</span>
+                <span>{total.toString().padStart(2, '0')}</span>
+                <span className="text-text-muted ml-0.5">→</span>
+              </div>
             </div>
           </div>
 
@@ -557,7 +559,7 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
         {/* Mobile Header Rule */}
         <div className="flex items-center justify-between gap-4 select-none pb-4 border-b border-[var(--surface-border)]">
           <span className="font-mono text-xs uppercase tracking-[0.2em] font-medium text-text-secondary">
-            SELECTED WORK
+            03 — SELECTED WORK
           </span>
           <span className="font-mono text-xs text-text-secondary tracking-wider">
             2026
@@ -596,15 +598,10 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
                 </p>
               </div>
 
-              {/* Screenshot in Restrained Dark Frame */}
+              {/* Screenshot in Restrained Product Frame */}
               <div className="w-full">
-                <div className="w-full rounded-xl bg-[#121213] border border-black/[0.08] dark:border-white/[0.08] shadow-[0_10px_24px_-8px_rgba(20,20,18,0.1)] overflow-hidden">
-                  <div className="h-7 px-3 flex items-center gap-1.5 bg-[#121213] border-b border-white/[0.06] select-none">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
-                  </div>
-                  <div className="relative w-full aspect-[16/10] bg-[#121213] overflow-hidden">
+                <div className="w-full rounded-xl border border-black/[0.08] dark:border-white/[0.08] shadow-[0_12px_28px_-8px_rgba(20,20,18,0.08)] overflow-hidden bg-black/5">
+                  <div className="relative w-full aspect-[16/8.2] overflow-hidden">
                     {proj.caseStudy ? (
                       <Link
                         href={`/work/${proj.id}`}
@@ -616,19 +613,38 @@ export function StickyProjectShowcase({ projects }: StickyProjectShowcaseProps) 
                             src={proj.image}
                             alt={proj.title}
                             fill
-                            className="object-contain p-0.5"
+                            className={proj.imageFit === 'contain' ? "object-contain" : "object-cover"}
                             sizes="(max-width: 768px) 95vw, 600px"
                             quality={90}
                           />
                         )}
                       </Link>
+                    ) : proj.liveUrl ? (
+                      <a
+                        href={proj.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="relative block w-full h-full"
+                        aria-label={`View ${proj.title} live demo`}
+                      >
+                        {proj.image && (
+                          <Image
+                            src={proj.image}
+                            alt={proj.title}
+                            fill
+                            className={proj.imageFit === 'contain' ? "object-contain" : "object-cover"}
+                            sizes="(max-width: 768px) 95vw, 600px"
+                            quality={90}
+                          />
+                        )}
+                      </a>
                     ) : (
                       proj.image && (
                         <Image
                           src={proj.image}
                           alt={proj.title}
                           fill
-                          className="object-contain p-0.5"
+                          className={proj.imageFit === 'contain' ? "object-contain" : "object-cover"}
                           sizes="(max-width: 768px) 95vw, 600px"
                           quality={90}
                         />

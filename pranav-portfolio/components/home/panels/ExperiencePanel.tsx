@@ -25,7 +25,7 @@ export function ExperiencePanel() {
       <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12">
         <AnimateOnScroll variant="subtleRise">
           <SectionHeading 
-            eyebrow="04 — EXPERIENCE" 
+            eyebrow="05 — EXPERIENCE" 
             heading="From learning to shipping production software." 
           />
         </AnimateOnScroll>

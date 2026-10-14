@@ -14,6 +14,7 @@ export interface FeaturedProject {
   liveUrl: string | null;
   githubUrl: string | null;
   image: string;
+  imageFit?: 'cover' | 'contain';
   accentColor?: string;
   motivation?: string;
   nextImprovement?: string;

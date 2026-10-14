@@ -4,14 +4,11 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { HeroArtwork } from '@/components/home/HeroArtwork';
+import { scrollToSection } from '@/lib/scroll';
 
 export function HeroPanel() {
   const smoothScrollToWork = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const workSection = document.getElementById('work');
-    if (workSection) {
-      workSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    scrollToSection(e, '/#work');
   };
 
   return (

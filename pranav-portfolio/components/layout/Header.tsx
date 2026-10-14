@@ -54,7 +54,7 @@ export function Header() {
         <Link
           href="/"
           className={cn(
-            'font-display font-[600] text-[20px] tracking-[-0.03em] transition-all hover:scale-[1.02] active:scale-[0.98]',
+            'font-display font-[600] text-[20px] tracking-[-0.03em] transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer',
             isDark ? 'text-[#F2F0EA]' : 'text-text-primary'
           )}
         >
